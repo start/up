@@ -4,6 +4,10 @@ import { TokenRole } from '../TokenRole'
 import { MatchResult, TextConsumer } from './TextConsumer'
 import { Token } from './Token'
 
+type InlineCodeTokenizationResult = null | {
+    inlineCodeOrTextToken: Token,
+    lengthConsumed: number
+}
 
 // Text surrounded on either side by an equal number of backticks is treated as inline code.
 //
@@ -41,19 +45,13 @@ import { Token } from './Token'
 // Furthermore, that single space is only trimmed away when it's used to separate a delimiter from
 // backticks in the inline code. If a given "side" of inline code has any non-whitespace characters
 // between the delimiter and the first backtick, nothing gets trimmed from that side.
-export function tryToTokenizeInlineCode(
-  args: {
-    markup: string
-    then: (inlineCodeToken: Token, lengthConsumed: number) => void
-  }
-): boolean {
-  const { markup, then } = args
+export function tryToTokenizeInlineCode(markup: string): InlineCodeTokenizationResult {
   const markupConsumer = new TextConsumer(markup)
 
   const startDelimiterResult = markupConsumer.consume(DELIMITER_PATTERN)
 
   if (!startDelimiterResult) {
-    return false
+    return null
   }
 
   const startDelimiter = startDelimiterResult.match
@@ -79,14 +77,16 @@ export function tryToTokenizeInlineCode(
     // simply include it in our inline code.
     //
     // We can safely cast to a non-nullable `MatchResult` because we know we must be up against a
-    // backtick (thanks to the fact that the above loop terminated). Therefore, `DELIMITER_PATTERN`
-    // is guaranteed to find a match.
+    // backtick (thanks to the fact that the above loop terminated without breaking out of the
+    // `COLLECT_INLINE_CODE` loop). Therefore, `DELIMITER_PATTERN` is guaranteed to find a match.
     const possibleEndDelimiter =
       (markupConsumer.consume(DELIMITER_PATTERN) as MatchResult).match
 
-    if (startDelimiter === possibleEndDelimiter) {
-      then(new Token(TokenRole.InlineCode, trimCode(inlineCode)), markupConsumer.index)
-      return true
+    if (possibleEndDelimiter === startDelimiter) {
+      return {
+        inlineCodeOrTextToken: new Token(TokenRole.InlineCode, trimCode(inlineCode)),
+        lengthConsumed: markupConsumer.index
+      }
     }
 
     inlineCode += possibleEndDelimiter
@@ -94,8 +94,10 @@ export function tryToTokenizeInlineCode(
 
   // We couldn't find a matching end delimiter, so there's nothing left to do but treat the
   // start delimiter as plain text.
-  then(new Token(TokenRole.Text, startDelimiter), startDelimiter.length)
-  return true
+  return {
+    inlineCodeOrTextToken: new Token(TokenRole.Text, startDelimiter),
+    lengthConsumed: startDelimiter.length
+  }
 }
 
 

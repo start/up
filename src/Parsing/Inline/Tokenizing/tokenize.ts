@@ -22,7 +22,7 @@ import { TextConsumer } from './TextConsumer'
 import { Token } from './Token'
 import { TokenizerSnapshot } from './TokenizerSnapshot'
 import { trimEscapedAndUnescapedOuterWhitespace } from './trimEscapedAndUnescapedOuterWhitespace'
-import { tryToTokenizeInlineCode } from './tryToTokenizeInlineCode'
+import { tryToTokenizeInlineCode as tryToTokenizeInlineCodeOrUnmatchedDelimiter } from './tryToTokenizeInlineCode'
 
 
 // Returns a collection of tokens representing inline conventions and their components.
@@ -1293,14 +1293,17 @@ class Tokenizer {
 
   // Because inline code doesn't require any of the special machinery of this class, we keep its logic separate.
   private tryToTokenizeInlineCodeOrUnmatchedDelimiter(): boolean {
-    return tryToTokenizeInlineCode({
-      markup: this.markupConsumer.remaining,
-      then: (inlineCodeToken, lengthConsumed) => {
-        this.flushNonEmptyBufferToTextToken()
-        this.appendToken(inlineCodeToken)
-        this.markupConsumer.index += lengthConsumed
-      }
-    })
+    const result = tryToTokenizeInlineCodeOrUnmatchedDelimiter(this.markupConsumer.remaining)
+
+    if (!result) {
+      return false
+    }
+
+    this.flushNonEmptyBufferToTextToken()
+    this.appendToken(result.inlineCodeOrTextToken)
+    this.markupConsumer.index += result.lengthConsumed
+
+    return true
   }
 
   private tryToTokenizeTypographicalConvention(): boolean {
