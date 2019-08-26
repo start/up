@@ -89,10 +89,6 @@ export function getOutlineSyntaxNodes(
         break
       }
     }
-
-    if (!OUTLINE_CONVENTION_PARSERS.some(tryToParse => tryToParse(outlineParserArgs))) {
-      parseParagraphOrLineBlock(outlineParserArgs)
-    }
   }
 
   return condenseConsecutiveThematicBreaks(nodes)
