@@ -740,7 +740,7 @@ describe('A link node', () => {
 
 
 describe('A section link node that is not associated with a table of contents entry', () => {
-  it("renders an <i> element containing its snippet", () => {
+  it('renders an <i> element containing its snippet', () => {
     const document = new Up.Document([
       new Up.Paragraph([
         new Up.SectionLink('When I became ruler of the world')
@@ -753,7 +753,7 @@ describe('A section link node that is not associated with a table of contents en
 
 
 describe('A section link node that is associated with a table of contents entry', () => {
-  it("renders a link to the entry in the document", () => {
+  it('renders a link to the entry in the document', () => {
     const heading = new Up.Heading([
       new Up.Text('Howdy there')
     ], { level: 1, titleMarkup: NOT_USED, ordinalInTableOfContents: 1 })
@@ -800,15 +800,15 @@ describe('A footnote block node', () => {
 })
 
 
-describe("Each footnote in a footnote block", () => {
-  it("produce a <dt> element with an ID indicating its reference number, containing a link that contains the reference number and points to the reference; and a <dd> element containing the footnote contents", () => {
+describe('Each footnote in a footnote block', () => {
+  it('produce a <dt> element with an ID indicating its reference number, containing a link that contains the reference number and points to the reference; and a <dd> element containing the footnote contents', () => {
     const document = new Up.Document([
       new Up.FootnoteBlock([
         new Up.Footnote([
-          new Up.Text("Arwings")
+          new Up.Text('Arwings')
         ], { referenceNumber: 2 }),
         new Up.Footnote([
-          new Up.Text("Killer Bees")
+          new Up.Text('Killer Bees')
         ], { referenceNumber: 3 })
       ])
     ])

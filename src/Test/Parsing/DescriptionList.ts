@@ -52,7 +52,7 @@ Torchic
 })
 
 
-describe("A subject in a description list", () => {
+describe('A subject in a description list', () => {
   it('can contain inline conventions', () => {
     const markup = `
 Ash "Little Marco" Ketchum
@@ -79,7 +79,7 @@ Ash "Little Marco" Ketchum
 })
 
 
-describe("A description in a description list", () => {
+describe('A description in a description list', () => {
   it('can contain inline conventions', () => {
     const markup = `
 Ash Ketchum
@@ -156,7 +156,7 @@ Gary
 })
 
 
-describe("A description list", () => {
+describe('A description list', () => {
   it('can be directly followed by a paragraph', () => {
     const markup = `
 Ash Ketchum

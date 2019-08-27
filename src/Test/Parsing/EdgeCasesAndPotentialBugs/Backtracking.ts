@@ -150,7 +150,7 @@ describe('A convention overlapping double emphasis (with the outer emphasis encl
 
 
 describe('Overlapped stressed, parenthesized, and quoted text, with an unmatched start delimiter (requiring backtracking) inside the normal parenthetical convention', () => {
-  it("is parsed as though the unmatched opening delimiter were any other bit of plain text", () => {
+  it('is parsed as though the unmatched opening delimiter were any other bit of plain text', () => {
     expect(Up.parse('I **love (quickly [^ "eating** pepperoni) pizza" all the time.')).to.deep.equal(
       insideDocumentAndParagraph([
         new Up.Text('I '),
@@ -178,7 +178,7 @@ describe('Overlapped stressed, parenthesized, and quoted text, with an unmatched
 
 
 describe('Overlapped stressed, parenthesized, and quoted text, with an unmatched start delimiter (requiring backtracking) inside the square parenthetical convention', () => {
-  it("is parsed as though the unmatched opening delimiter were any other bit of plain text", () => {
+  it('is parsed as though the unmatched opening delimiter were any other bit of plain text', () => {
     expect(Up.parse('I **love (quickly "eating** [^ pepperoni) pizza" all the time.')).to.deep.equal(
       insideDocumentAndParagraph([
         new Up.Text('I '),
@@ -207,9 +207,9 @@ describe('Overlapped stressed, parenthesized, and quoted text, with an unmatched
 
 describe('Several unmatched footnote start delimiters in the same paragraph, with varying different of leading whitespace,', () => {
   it('are all preserved as plain text, along with all their leading whitespace', () => {
-    expect(Up.parse("(^(^ (^  \t (^ Palm trees?  (^(^ \t(^")).to.deep.equal(
+    expect(Up.parse('(^(^ (^  \t (^ Palm trees?  (^(^ \t(^')).to.deep.equal(
       insideDocumentAndParagraph([
-        new Up.Text("(^(^ (^  \t (^ Palm trees?  (^(^ \t(^")
+        new Up.Text('(^(^ (^  \t (^ Palm trees?  (^(^ \t(^')
       ]))
   })
 })

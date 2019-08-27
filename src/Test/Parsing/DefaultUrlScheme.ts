@@ -58,7 +58,7 @@ describe('The default URL scheme ("https://" unless changed via setting)', () =>
       ]))
   })
 
-  it("is prefixed to schemeless linkified footnote URLs", () => {
+  it('is prefixed to schemeless linkified footnote URLs', () => {
     const markup = "I don't eat cereal. (^Well, I eat one.)(prod-web-4/cereals/lucky-charms?show=nutrition) Never have."
 
     const footnote = new Up.Footnote([
@@ -72,7 +72,7 @@ describe('The default URL scheme ("https://" unless changed via setting)', () =>
         new Up.Paragraph([
           new Up.Text("I don't eat cereal."),
           footnote,
-          new Up.Text(" Never have.")
+          new Up.Text(' Never have.')
         ]),
         new Up.FootnoteBlock([footnote])
       ]))

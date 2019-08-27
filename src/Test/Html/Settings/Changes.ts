@@ -24,8 +24,8 @@ function itCanBeProvidedMultipleWaysWithTheSameResult(
     Up.renderWithTableOfContents(document)
 
 
-  describe("when provided to the default renderWithTableOfContents function", () => {
-    it("does not alter subsequent calls to the default method", () => {
+  describe('when provided to the default renderWithTableOfContents function', () => {
+    it('does not alter subsequent calls to the default method', () => {
       // Let's make sure the changed settings would actually change the HTML
       expect(Up.renderWithTableOfContents(document, change)).to.not.equal(htmlFromDefaultSettings)
 

@@ -248,7 +248,7 @@ context("Each table of contents entry renders a heading corresponding to the ent
 
 
 context("The table of contents has no effect on elements that aren't referenced by it", () => {
-  specify("even when syntax nodes represented by those elements are otherwise identical", () => {
+  specify('even when syntax nodes represented by those elements are otherwise identical', () => {
     const headingInTableOfContents =
       new Up.Heading([new Up.Text('I enjoy apples')], {
         level: 1,
@@ -390,7 +390,7 @@ context('When a table of contents has multiple entries', () => {
 })
 
 
-context("Within the table of contents itself", () => {
+context('Within the table of contents itself', () => {
   specify('footnotes produce no HTML (they are totally ignored).', () => {
     const topLevelFootnote =
       new Up.Footnote([new Up.Text('Sometimes')], { referenceNumber: 1 })
@@ -446,7 +446,7 @@ context("Within the table of contents itself", () => {
 })
 
 
-context("Within the table of contents itself", () => {
+context('Within the table of contents itself', () => {
   specify('the IDs of revealable content elements do not clash with those in the document', () => {
     const applesHeading =
       new Up.Heading([
@@ -542,7 +542,7 @@ context("Within the table of contents itself", () => {
 
 
 context('Like outline syntax nodes in the document, table of contents entries render their source line numbers:', () => {
-  specify("Level 1 entries", () => {
+  specify('Level 1 entries', () => {
     const heading =
       new Up.Heading([new Up.Text('I enjoy apples')], {
         level: 1,
@@ -563,7 +563,7 @@ context('Like outline syntax nodes in the document, table of contents entries re
       '<h1 data-up-source-line="2" id="up-topic-1">I enjoy apples</h1>')
   })
 
-  specify("Level 7 entries", () => {
+  specify('Level 7 entries', () => {
     const heading =
       new Up.Heading([new Up.Text('I enjoy apples')], {
         level: 7,

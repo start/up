@@ -56,17 +56,17 @@ describe('Overlapped stress and doubly parenthesized text (opening at the same t
     expect(Up.parse("**I need to sleep. ((So** what?) It's late.)")).to.deep.equal(
       insideDocumentAndParagraph([
         new Up.Stress([
-          new Up.Text("I need to sleep. "),
+          new Up.Text('I need to sleep. '),
           new Up.NormalParenthetical([
             new Up.Text('('),
             new Up.NormalParenthetical([
-              new Up.Text("(So")
+              new Up.Text('(So')
             ])
           ])
         ]),
         new Up.NormalParenthetical([
           new Up.NormalParenthetical([
-            new Up.Text(" what?)")
+            new Up.Text(' what?)')
           ]),
           new Up.Text(" It's late.)")
         ])
@@ -80,11 +80,11 @@ describe('Overlapped stress and doubly parenthesized text (opening at different 
     expect(Up.parse("**I need to sleep. (I know. (Well**, I don't really.))")).to.deep.equal(
       insideDocumentAndParagraph([
         new Up.Stress([
-          new Up.Text("I need to sleep. "),
+          new Up.Text('I need to sleep. '),
           new Up.NormalParenthetical([
             new Up.Text('(I know. '),
             new Up.NormalParenthetical([
-              new Up.Text("(Well")
+              new Up.Text('(Well')
             ])
           ])
         ]),

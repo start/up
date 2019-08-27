@@ -48,8 +48,8 @@ context('A long string of whitespace should never cause cause the parser to hang
   })
 
 
-  specify("Before a footnote", () => {
-    const markup = "I don't eat cereal." + lotsOfSpaces + "(^Well, I do, but I pretend not to.)"
+  specify('Before a footnote', () => {
+    const markup = "I don't eat cereal." + lotsOfSpaces + '(^Well, I do, but I pretend not to.)'
 
     const footnote = new Up.Footnote([
       new Up.Text('Well, I do, but I pretend not to.')
@@ -109,7 +109,7 @@ context('A long string of whitespace should never cause cause the parser to hang
 
 
   context("In a link's URL:", () => {
-    specify("At the start", () => {
+    specify('At the start', () => {
       expect(Up.parse('[Hear me?](' + lotsOfSpaces + 'example.com)')).to.deep.equal(
         insideDocumentAndParagraph([
           new Up.Link([
@@ -118,7 +118,7 @@ context('A long string of whitespace should never cause cause the parser to hang
         ]))
     })
 
-    specify("At the end", () => {
+    specify('At the end', () => {
       expect(Up.parse('[Hear me?](example.com' + lotsOfSpaces + ')')).to.deep.equal(
         insideDocumentAndParagraph([
           new Up.Link([
@@ -127,7 +127,7 @@ context('A long string of whitespace should never cause cause the parser to hang
         ]))
     })
 
-    specify("Before an open bracket", () => {
+    specify('Before an open bracket', () => {
       expect(Up.parse('[Hear me?](example.com?some=ridiculous-' + lotsOfSpaces + '[arg])')).to.deep.equal(
         insideDocumentAndParagraph([
           new Up.Link([
@@ -139,21 +139,21 @@ context('A long string of whitespace should never cause cause the parser to hang
 
 
   context("In a media convention's description:", () => {
-    specify("At the start", () => {
+    specify('At the start', () => {
       expect(Up.parse('[image:' + lotsOfSpaces + 'ear](example.com/ear.svg)')).to.deep.equal(
         new Up.Document([
           new Up.Image('ear', 'https://example.com/ear.svg')
         ]))
     })
 
-    specify("At the end", () => {
+    specify('At the end', () => {
       expect(Up.parse('[image: ear' + lotsOfSpaces + '](example.com/ear.svg)')).to.deep.equal(
         new Up.Document([
           new Up.Image('ear', 'https://example.com/ear.svg')
         ]))
     })
 
-    specify("Before an open bracket", () => {
+    specify('Before an open bracket', () => {
       expect(Up.parse('[image: haunted' + lotsOfSpaces + '[house]](http://example.com/?state=NE)')).to.deep.equal(
         new Up.Document([
           new Up.Image('haunted' + lotsOfSpaces + '[house]', 'http://example.com/?state=NE')
@@ -171,21 +171,21 @@ context('A long string of whitespace should never cause cause the parser to hang
 
 
   context("In a media convention's URL:", () => {
-    specify("At the start", () => {
+    specify('At the start', () => {
       expect(Up.parse('[image: ear](' + lotsOfSpaces + 'example.com/ear.svg)')).to.deep.equal(
         new Up.Document([
           new Up.Image('ear', 'https://example.com/ear.svg')
         ]))
     })
 
-    specify("At the end", () => {
+    specify('At the end', () => {
       expect(Up.parse('[image: ear](example.com/ear.svg' + lotsOfSpaces + ')')).to.deep.equal(
         new Up.Document([
           new Up.Image('ear', 'https://example.com/ear.svg')
         ]))
     })
 
-    specify("Before an open bracket", () => {
+    specify('Before an open bracket', () => {
       expect(Up.parse('[image: ear](example.com/ear.svg?some=ridiculous-' + lotsOfSpaces + '[arg])')).to.deep.equal(
         new Up.Document([
           new Up.Image('ear', 'https://example.com/ear.svg?some=ridiculous-' + lotsOfSpaces + '[arg]')
@@ -205,7 +205,7 @@ context('A long string of whitespace should never cause cause the parser to hang
 
 
   context("In a linkified media convention's linkifying URL:", () => {
-    specify("At the start", () => {
+    specify('At the start', () => {
       expect(Up.parse('[image: ear] (example.com/ear.svg)(' + lotsOfSpaces + 'example.com)')).to.deep.equal(
         new Up.Document([
           new Up.Link([
@@ -214,7 +214,7 @@ context('A long string of whitespace should never cause cause the parser to hang
         ]))
     })
 
-    specify("At the end", () => {
+    specify('At the end', () => {
       expect(Up.parse('[image: ear] (example.com/ear.svg)(example.com' + lotsOfSpaces + ')')).to.deep.equal(
         new Up.Document([
           new Up.Link([
@@ -223,7 +223,7 @@ context('A long string of whitespace should never cause cause the parser to hang
         ]))
     })
 
-    specify("Before an open bracketURL", () => {
+    specify('Before an open bracketURL', () => {
       expect(Up.parse('[image: ear] (example.com/ear.svg)(example.com?some=ridiculous-' + lotsOfSpaces + '[arg])')).to.deep.equal(
         new Up.Document([
           new Up.Link([
@@ -247,7 +247,7 @@ context('A long string of whitespace should never cause cause the parser to hang
 
 
   context("In a non-media convention's linkifying URL:", () => {
-    specify("At the start", () => {
+    specify('At the start', () => {
       expect(Up.parse('[SPOILER: His ear grew back!](' + lotsOfSpaces + 'example.com)')).to.deep.equal(
         insideDocumentAndParagraph([
           new Up.InlineRevealable([
@@ -258,7 +258,7 @@ context('A long string of whitespace should never cause cause the parser to hang
         ]))
     })
 
-    specify("At the end", () => {
+    specify('At the end', () => {
       expect(Up.parse('[SPOILER: His ear grew back!](example.com' + lotsOfSpaces + ')')).to.deep.equal(
         insideDocumentAndParagraph([
           new Up.InlineRevealable([
@@ -269,7 +269,7 @@ context('A long string of whitespace should never cause cause the parser to hang
         ]))
     })
 
-    specify("Before a an open bracket", () => {
+    specify('Before a an open bracket', () => {
       expect(Up.parse('[SPOILER: His ear grew back!](example.com?some=ridiculous-' + lotsOfSpaces + '[arg])')).to.deep.equal(
         insideDocumentAndParagraph([
           new Up.InlineRevealable([
@@ -282,7 +282,7 @@ context('A long string of whitespace should never cause cause the parser to hang
   })
 
 
-  specify("Between the delimiters of a a rich convention", () => {
+  specify('Between the delimiters of a a rich convention', () => {
     expect(Up.parse('(SPOILER:' + lotsOfSpaces + ')')).to.deep.equal(
       insideDocumentAndParagraph([
         new Up.InlineRevealable([])
@@ -291,7 +291,7 @@ context('A long string of whitespace should never cause cause the parser to hang
 
 
   context('In a rich convention:', () => {
-    specify("At the start", () => {
+    specify('At the start', () => {
       expect(Up.parse('[SPOILER:' + lotsOfSpaces + 'He did not die.]')).to.deep.equal(
         insideDocumentAndParagraph([
           new Up.InlineRevealable([
@@ -300,7 +300,7 @@ context('A long string of whitespace should never cause cause the parser to hang
         ]))
     })
 
-    specify("At the end", () => {
+    specify('At the end', () => {
       expect(Up.parse('[SPOILER: He did not die.' + lotsOfSpaces + ']')).to.deep.equal(
         insideDocumentAndParagraph([
           new Up.InlineRevealable([
@@ -312,21 +312,21 @@ context('A long string of whitespace should never cause cause the parser to hang
 
 
   context('In a section link', () => {
-    specify("At the start", () => {
+    specify('At the start', () => {
       expect(Up.parse('[topic:' + lotsOfSpaces + 'He did not die.]')).to.deep.equal(
         insideDocumentAndParagraph([
           new Up.SectionLink('He did not die.')
         ]))
     })
 
-    specify("At the end", () => {
+    specify('At the end', () => {
       expect(Up.parse('[topic: He did not die.' + lotsOfSpaces + ']')).to.deep.equal(
         insideDocumentAndParagraph([
           new Up.SectionLink('He did not die.')
         ]))
     })
 
-    specify("Before an open bracket", () => {
+    specify('Before an open bracket', () => {
       expect(Up.parse('[topic: He did not die.' + lotsOfSpaces + '(Really.)]')).to.deep.equal(
         insideDocumentAndParagraph([
           new Up.SectionLink('He did not die.' + lotsOfSpaces + '(Really.)')

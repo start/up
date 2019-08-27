@@ -43,15 +43,15 @@ context("Some bare URLs produce links. The content of a bare URL's link is the U
     })
 
 
-    context("The scheme is immediately followed by punctuation, including (but not limited to):", () => {
-      specify("Commas", () => {
+    context('The scheme is immediately followed by punctuation, including (but not limited to):', () => {
+      specify('Commas', () => {
         expect(Up.parse('http://, now that is my favorite URL scheme!')).to.deep.equal(
           insideDocumentAndParagraph([
             new Up.Text('http://, now that is my favorite URL scheme!')
           ]))
       })
 
-      specify("Periods", () => {
+      specify('Periods', () => {
         expect(Up.parse('http://. Now that is my favorite URL scheme!')).to.deep.equal(
           insideDocumentAndParagraph([
             new Up.Text('http://. Now that is my favorite URL scheme!')
@@ -60,14 +60,14 @@ context("Some bare URLs produce links. The content of a bare URL's link is the U
 
 
       context('Dashes', () => {
-        specify("comprising a typographical convention", () => {
+        specify('comprising a typographical convention', () => {
           expect(Up.parse('http://---now that is my favorite URL scheme!')).to.deep.equal(
             insideDocumentAndParagraph([
               new Up.Text('http://—now that is my favorite URL scheme!')
             ]))
         })
 
-        specify("not comprising a typographical convention", () => {
+        specify('not comprising a typographical convention', () => {
           expect(Up.parse('http://-now that is my favorite URL scheme!')).to.deep.equal(
             insideDocumentAndParagraph([
               new Up.Text('http://-now that is my favorite URL scheme!')
@@ -191,7 +191,7 @@ describe('A bare URL', () => {
       ]))
   })
 
-  it("can be inside a link", () => {
+  it('can be inside a link', () => {
     expect(Up.parse('[Visit https://inner.example.com/fake right now!](https://outer.example.com/real)')).to.deep.equal(
       insideDocumentAndParagraph([
         new Up.Link([
@@ -206,7 +206,7 @@ describe('A bare URL', () => {
 
 
   context('if not inside an emphasis/stress convention', () => {
-    specify("can contain unescaped asterisks", () => {
+    specify('can contain unescaped asterisks', () => {
       expect(Up.parse('https://example.org/a*normal*url')).to.deep.equal(
         insideDocumentAndParagraph([
           new Up.Link([
@@ -215,7 +215,7 @@ describe('A bare URL', () => {
         ]))
     })
 
-    specify("can contain unescaped consecutive asterisks", () => {
+    specify('can contain unescaped consecutive asterisks', () => {
       expect(Up.parse('https://example.org/a**normal**url')).to.deep.equal(
         insideDocumentAndParagraph([
           new Up.Link([
@@ -227,7 +227,7 @@ describe('A bare URL', () => {
 
 
   context('if not inside an italics/bold convention', () => {
-    specify("can contain unescaped underscores", () => {
+    specify('can contain unescaped underscores', () => {
       expect(Up.parse('https://example.org/a_normal_url')).to.deep.equal(
         insideDocumentAndParagraph([
           new Up.Link([
@@ -236,7 +236,7 @@ describe('A bare URL', () => {
         ]))
     })
 
-    specify("can contain unescaped consecutive underscores", () => {
+    specify('can contain unescaped consecutive underscores', () => {
       expect(Up.parse('https://example.org/a__normal__url')).to.deep.equal(
         insideDocumentAndParagraph([
           new Up.Link([
@@ -286,7 +286,7 @@ context('Bare URLs are terminated when any outer convention closes. This include
       ]))
   })
 
-  specify("Highlights", () => {
+  specify('Highlights', () => {
     expect(Up.parse('==I love https://archive.org/fake==!')).to.deep.equal(
       insideDocumentAndParagraph([
         new Up.Highlight([
@@ -299,7 +299,7 @@ context('Bare URLs are terminated when any outer convention closes. This include
       ]))
   })
 
-  specify("Inline revealables", () => {
+  specify('Inline revealables', () => {
     expect(Up.parse('[SPOILER: I love https://archive.org/fake and you should too!]')).to.deep.equal(
       insideDocumentAndParagraph([
         new Up.InlineRevealable([
@@ -312,7 +312,7 @@ context('Bare URLs are terminated when any outer convention closes. This include
       ]))
   })
 
-  specify("Links", () => {
+  specify('Links', () => {
     expect(Up.parse('[I love https://archive.org/fake] (example.com/outer) and you should too!')).to.deep.equal(
       insideDocumentAndParagraph([
         new Up.Link([
@@ -325,7 +325,7 @@ context('Bare URLs are terminated when any outer convention closes. This include
       ]))
   })
 
-  specify("Footnotes", () => {
+  specify('Footnotes', () => {
     const markup = "I don't eat cereal. [^ Well, I do: https://example.com/cereal] Never have."
 
     const footnote = new Up.Footnote([
@@ -633,8 +633,8 @@ describe('Inside square brackets, a bare URL', () => {
 
 
 context('If a bare URL does not have a path, it is terminated by any punctuation. ', () => {
-  context("This includes (but is not limited to):", () => {
-    specify("Commas", () => {
+  context('This includes (but is not limited to):', () => {
+    specify('Commas', () => {
       expect(Up.parse('https://www.demo.example.co.uk, now that is my favorite site!')).to.deep.equal(
         insideDocumentAndParagraph([
           new Up.Link([
@@ -644,7 +644,7 @@ context('If a bare URL does not have a path, it is terminated by any punctuation
         ]))
     })
 
-    specify("Periods", () => {
+    specify('Periods', () => {
       expect(Up.parse('https://www.demo.example.co.uk. Now that is my favorite site!')).to.deep.equal(
         insideDocumentAndParagraph([
           new Up.Link([
@@ -654,7 +654,7 @@ context('If a bare URL does not have a path, it is terminated by any punctuation
         ]))
     })
 
-    specify("Question marks", () => {
+    specify('Question marks', () => {
       expect(Up.parse('https://www.demo.example.co.uk? Now that is my favorite site!')).to.deep.equal(
         insideDocumentAndParagraph([
           new Up.Link([
@@ -664,7 +664,7 @@ context('If a bare URL does not have a path, it is terminated by any punctuation
         ]))
     })
 
-    specify("Exclamation points", () => {
+    specify('Exclamation points', () => {
       expect(Up.parse('https://www.demo.example.co.uk! Now that is my favorite site!')).to.deep.equal(
         insideDocumentAndParagraph([
           new Up.Link([
@@ -676,7 +676,7 @@ context('If a bare URL does not have a path, it is terminated by any punctuation
 
 
     context('Dashes', () => {
-      specify("comprising a typographical convention", () => {
+      specify('comprising a typographical convention', () => {
         expect(Up.parse('https://www.demo.example.co.uk---now that is my favorite site!')).to.deep.equal(
           insideDocumentAndParagraph([
             new Up.Link([
@@ -686,7 +686,7 @@ context('If a bare URL does not have a path, it is terminated by any punctuation
           ]))
       })
 
-      specify("not comprising a typographical convention", () => {
+      specify('not comprising a typographical convention', () => {
         expect(Up.parse('https://www.demo.example.co.uk-now that is my favorite site!')).to.deep.equal(
           insideDocumentAndParagraph([
             new Up.Link([

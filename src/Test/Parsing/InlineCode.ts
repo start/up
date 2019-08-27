@@ -25,7 +25,7 @@ describe('Inline code', () => {
 })
 
 
-context("Inline code can be surrounded by more than 1 backrick on each side, but the delimiters must be balanced. Each side must have exactly the same number of backticks.", () => {
+context('Inline code can be surrounded by more than 1 backrick on each side, but the delimiters must be balanced. Each side must have exactly the same number of backticks.', () => {
   context("This means that inline code can contain streaks of backticks that aren't exactly as long as the surrounding delimiters", () => {
     specify('Inline code surrounded by 1 backtick on each side can contain streaks of 3 backticks', () => {
       expect(Up.parse('`let display = ```score:``` + 5`')).to.deep.equal(
@@ -50,7 +50,7 @@ context("Inline code can be surrounded by more than 1 backrick on each side, but
   })
 
 
-  context("When your inline code needs to start or end with backtacks, separate those backticks from the delimiters by a single space. Those single spaces on either side will be trimmed away.", () => {
+  context('When your inline code needs to start or end with backtacks, separate those backticks from the delimiters by a single space. Those single spaces on either side will be trimmed away.', () => {
     context('This works when there is a separating space', () => {
       specify('on both sides', () => {
         expect(Up.parse('` ``inline_code`` `')).to.deep.equal(
@@ -92,21 +92,21 @@ context("Inline code can be surrounded by more than 1 backrick on each side, but
 
     context('The single spaces are only trimmed away when they separate the delimiters from backticks.', () => {
       context('Otherwise, a single space is preserved:', () => {
-        specify("When it is trailing", () => {
+        specify('When it is trailing', () => {
           expect(Up.parse('`1. `')).to.deep.equal(
             insideDocumentAndParagraph([
               new Up.InlineCode('1. ')
             ]))
         })
 
-        specify("When it is leading", () => {
+        specify('When it is leading', () => {
           expect(Up.parse('` ]`')).to.deep.equal(
             insideDocumentAndParagraph([
               new Up.InlineCode(' ]')
             ]))
         })
 
-        specify("When the other side has to be trimmed due to a neighboring backtick", () => {
+        specify('When the other side has to be trimmed due to a neighboring backtick', () => {
           expect(Up.parse('`  ``... `')).to.deep.equal(
             insideDocumentAndParagraph([
               new Up.InlineCode(' ``... ')

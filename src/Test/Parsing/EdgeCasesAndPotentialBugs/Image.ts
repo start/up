@@ -77,7 +77,7 @@ context('Unmatched opening parentheses in an image description have no affect on
 })
 
 
-describe("Unmatched opening parentheses in an image URL", () => {
+describe('Unmatched opening parentheses in an image URL', () => {
   it('do not affect any markup that follows the link', () => {
     const markup = '(^[image: West Virginia exit polling][https://example.com/a(normal(url])'
 
@@ -98,8 +98,8 @@ describe("Unmatched opening parentheses in an image URL", () => {
 })
 
 
-describe("A line consistingly solely of a link that contains both an image and regular text", () => {
-  it("is placed into a paragraph node", () => {
+describe('A line consistingly solely of a link that contains both an image and regular text', () => {
+  it('is placed into a paragraph node', () => {
     expect(Up.parse('[Look: (image: haunted house)(example.com/hauntedhouse.svg)] [example.com]')).to.deep.equal(
       insideDocumentAndParagraph([
         new Up.Link([

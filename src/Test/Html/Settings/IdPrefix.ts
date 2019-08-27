@@ -15,7 +15,7 @@ describe("A footnote reference's ID (as well as the ID of the footnote it points
       '<p><sup class="up-footnote-reference" id="up-footnote-reference-3"><a href="#up-footnote-3">3</a></sup></p>')
   })
 
-  it("is prefixed with the ID prefix, if one was provided", () => {
+  it('is prefixed with the ID prefix, if one was provided', () => {
     const up = new Up.Up({
       rendering: { idPrefix: 'reply-11' }
     })
@@ -30,7 +30,7 @@ describe("A footnote reference's ID (as well as the ID of the footnote it points
       '<p><sup class="up-footnote-reference" id="reply-11-footnote-reference-3"><a href="#reply-11-footnote-3">3</a></sup></p>')
   })
 
-  it("is not prefixed with a ID prefix if an empty prefix was provided", () => {
+  it('is not prefixed with a ID prefix if an empty prefix was provided', () => {
     const up = new Up.Up({
       rendering: { idPrefix: '' }
     })
@@ -45,7 +45,7 @@ describe("A footnote reference's ID (as well as the ID of the footnote it points
       '<p><sup class="up-footnote-reference" id="footnote-reference-3"><a href="#footnote-3">3</a></sup></p>')
   })
 
-  it("is not prefixed with a ID prefix if a blank prefix was provided", () => {
+  it('is not prefixed with a ID prefix if a blank prefix was provided', () => {
     const up = new Up.Up({
       rendering: { idPrefix: ' \t' }
     })
@@ -60,7 +60,7 @@ describe("A footnote reference's ID (as well as the ID of the footnote it points
       '<p><sup class="up-footnote-reference" id="footnote-reference-3"><a href="#footnote-3">3</a></sup></p>')
   })
 
-  it("is properly escaped if the ID prefix contains any ampersands or double quotes", () => {
+  it('is properly escaped if the ID prefix contains any ampersands or double quotes', () => {
     const up = new Up.Up({
       rendering: { idPrefix: '"reply" && "response"' }
     })
@@ -87,10 +87,10 @@ describe("A footnote's ID (as well as the ID of the footnote reference pointing 
       new Up.Document([
         new Up.FootnoteBlock([
           new Up.Footnote([
-            new Up.Text("Arwings")
+            new Up.Text('Arwings')
           ], { referenceNumber: 2 }),
           new Up.Footnote([
-            new Up.Text("Killer Bees")
+            new Up.Text('Killer Bees')
           ], { referenceNumber: 3 })
         ])
       ])
@@ -104,7 +104,7 @@ describe("A footnote's ID (as well as the ID of the footnote reference pointing 
     expect(Up.render(document)).to.equal(html)
   })
 
-  it("is prefixed with the provided ID prefix", () => {
+  it('is prefixed with the provided ID prefix', () => {
     const up = new Up.Up({
       rendering: { idPrefix: 'reply-11' }
     })
@@ -113,10 +113,10 @@ describe("A footnote's ID (as well as the ID of the footnote reference pointing 
       new Up.Document([
         new Up.FootnoteBlock([
           new Up.Footnote([
-            new Up.Text("Arwings")
+            new Up.Text('Arwings')
           ], { referenceNumber: 2 }),
           new Up.Footnote([
-            new Up.Text("Killer Bees")
+            new Up.Text('Killer Bees')
           ], { referenceNumber: 3 })
         ])
       ])
@@ -130,7 +130,7 @@ describe("A footnote's ID (as well as the ID of the footnote reference pointing 
     expect(up.render(document)).to.equal(html)
   })
 
-  it("is not prefixed with a ID prefix if an empty prefix was provided", () => {
+  it('is not prefixed with a ID prefix if an empty prefix was provided', () => {
     const up = new Up.Up({
       rendering: { idPrefix: '' }
     })
@@ -139,10 +139,10 @@ describe("A footnote's ID (as well as the ID of the footnote reference pointing 
       new Up.Document([
         new Up.FootnoteBlock([
           new Up.Footnote([
-            new Up.Text("Arwings")
+            new Up.Text('Arwings')
           ], { referenceNumber: 2 }),
           new Up.Footnote([
-            new Up.Text("Killer Bees")
+            new Up.Text('Killer Bees')
           ], { referenceNumber: 3 })
         ])
       ])
@@ -156,7 +156,7 @@ describe("A footnote's ID (as well as the ID of the footnote reference pointing 
     expect(up.render(document)).to.equal(html)
   })
 
-  it("is not prefixed with a ID prefix if a blank prefix was provided", () => {
+  it('is not prefixed with a ID prefix if a blank prefix was provided', () => {
     const up = new Up.Up({
       rendering: { idPrefix: ' \t' }
     })
@@ -165,10 +165,10 @@ describe("A footnote's ID (as well as the ID of the footnote reference pointing 
       new Up.Document([
         new Up.FootnoteBlock([
           new Up.Footnote([
-            new Up.Text("Arwings")
+            new Up.Text('Arwings')
           ], { referenceNumber: 2 }),
           new Up.Footnote([
-            new Up.Text("Killer Bees")
+            new Up.Text('Killer Bees')
           ], { referenceNumber: 3 })
         ])
       ])
@@ -182,7 +182,7 @@ describe("A footnote's ID (as well as the ID of the footnote reference pointing 
     expect(up.render(document)).to.equal(html)
   })
 
-  it("is properly escaped if the ID prefix contains any ampersands or double quotes", () => {
+  it('is properly escaped if the ID prefix contains any ampersands or double quotes', () => {
     const up = new Up.Up({
       rendering: { idPrefix: '"reply" && "response"' }
     })
@@ -191,10 +191,10 @@ describe("A footnote's ID (as well as the ID of the footnote reference pointing 
       new Up.Document([
         new Up.FootnoteBlock([
           new Up.Footnote([
-            new Up.Text("Arwings")
+            new Up.Text('Arwings')
           ], { referenceNumber: 2 }),
           new Up.Footnote([
-            new Up.Text("Killer Bees")
+            new Up.Text('Killer Bees')
           ], { referenceNumber: 3 })
         ])
       ])
@@ -210,7 +210,7 @@ describe("A footnote's ID (as well as the ID of the footnote reference pointing 
 })
 
 
-describe("The IDs and names of elements rendered for inline revealables", () => {
+describe('The IDs and names of elements rendered for inline revealables', () => {
   const document = new Up.Document([
     new Up.Paragraph([
       new Up.InlineRevealable([
@@ -232,7 +232,7 @@ describe("The IDs and names of elements rendered for inline revealables", () => 
       + '</p>')
   })
 
-  it("are prefixed with the ID prefix, if one was provided", () => {
+  it('are prefixed with the ID prefix, if one was provided', () => {
     expect(Up.render(document, { idPrefix: 'reply-11' })).to.equal(
       '<p>'
       + '<span class="up-revealable">'
@@ -245,7 +245,7 @@ describe("The IDs and names of elements rendered for inline revealables", () => 
       + '</p>')
   })
 
-  it("are not prefixed with a ID prefix if an empty prefix was provided", () => {
+  it('are not prefixed with a ID prefix if an empty prefix was provided', () => {
     expect(Up.render(document, { idPrefix: '' })).to.equal(
       '<p>'
       + '<span class="up-revealable">'
@@ -258,7 +258,7 @@ describe("The IDs and names of elements rendered for inline revealables", () => 
       + '</p>')
   })
 
-  it("are not prefixed with a ID prefix if a blank prefix was provided", () => {
+  it('are not prefixed with a ID prefix if a blank prefix was provided', () => {
     expect(Up.render(document, { idPrefix: '' })).to.equal(
       '<p>'
       + '<span class="up-revealable">'
@@ -271,7 +271,7 @@ describe("The IDs and names of elements rendered for inline revealables", () => 
       + '</p>')
   })
 
-  it("are properly escaped if the ID prefix contains any ampersands or double quotes", () => {
+  it('are properly escaped if the ID prefix contains any ampersands or double quotes', () => {
     expect(Up.render(document, { idPrefix: '"reply" && "response"' })).to.equal(
       '<p>'
       + '<span class="up-revealable">'
@@ -286,7 +286,7 @@ describe("The IDs and names of elements rendered for inline revealables", () => 
 })
 
 
-describe("The IDs and names of elements rendered for revealable blocks", () => {
+describe('The IDs and names of elements rendered for revealable blocks', () => {
   const document = new Up.Document([
     new Up.RevealableBlock([
       new Up.Paragraph([
@@ -306,7 +306,7 @@ describe("The IDs and names of elements rendered for revealable blocks", () => {
       + '</div>')
   })
 
-  it("are prefixed with the ID prefix, if one was provided", () => {
+  it('are prefixed with the ID prefix, if one was provided', () => {
     expect(Up.render(document, { idPrefix: 'reply-11' })).to.equal(
       '<div class="up-revealable">'
       + '<input checked class="up-hide" id="reply-11-hide-button-1" name="reply-11-revealable-1" type="radio">'
@@ -317,7 +317,7 @@ describe("The IDs and names of elements rendered for revealable blocks", () => {
       + '</div>')
   })
 
-  it("are not prefixed with a ID prefix if an empty prefix was provided", () => {
+  it('are not prefixed with a ID prefix if an empty prefix was provided', () => {
     expect(Up.render(document, { idPrefix: '' })).to.equal(
       '<div class="up-revealable">'
       + '<input checked class="up-hide" id="hide-button-1" name="revealable-1" type="radio">'
@@ -328,7 +328,7 @@ describe("The IDs and names of elements rendered for revealable blocks", () => {
       + '</div>')
   })
 
-  it("are not prefixed with a ID prefix if a blank prefix was provided", () => {
+  it('are not prefixed with a ID prefix if a blank prefix was provided', () => {
     expect(Up.render(document, { idPrefix: '' })).to.equal(
       '<div class="up-revealable">'
       + '<input checked class="up-hide" id="hide-button-1" name="revealable-1" type="radio">'
@@ -339,7 +339,7 @@ describe("The IDs and names of elements rendered for revealable blocks", () => {
       + '</div>')
   })
 
-  it("are properly escaped if the ID prefix contains any ampersands or double quotes", () => {
+  it('are properly escaped if the ID prefix contains any ampersands or double quotes', () => {
     expect(Up.render(document, { idPrefix: '"reply" && "response"' })).to.equal(
       '<div class="up-revealable">'
       + '<input checked class="up-hide" id="&quot;reply&quot;-&amp;&amp;-&quot;response&quot;-hide-button-1" name="&quot;reply&quot;-&amp;&amp;-&quot;response&quot;-revealable-1" type="radio">'
@@ -354,7 +354,7 @@ describe("The IDs and names of elements rendered for revealable blocks", () => {
 
 const NOT_USED = cast<string>(null)
 
-describe("The ID of an element referenced by the table of contents", () => {
+describe('The ID of an element referenced by the table of contents', () => {
   it("is prefixed with the default ID prefix 'up' if one wasn't provided", () => {
     const heading = new Up.Heading([], {
       level: 1,
@@ -376,7 +376,7 @@ describe("The ID of an element referenced by the table of contents", () => {
   })
 
 
-  it("is prefixed with the ID prefix, if one was provided", () => {
+  it('is prefixed with the ID prefix, if one was provided', () => {
     const up = new Up.Up({
       rendering: { idPrefix: 'reply-11' }
     })
@@ -400,7 +400,7 @@ describe("The ID of an element referenced by the table of contents", () => {
       '<h1 id="reply-11-topic-1"></h1>')
   })
 
-  it("is not prefixed with a ID prefix if an empty prefix was provided", () => {
+  it('is not prefixed with a ID prefix if an empty prefix was provided', () => {
     const up = new Up.Up({
       rendering: { idPrefix: '' }
     })
@@ -424,7 +424,7 @@ describe("The ID of an element referenced by the table of contents", () => {
       '<h1 id="topic-1"></h1>')
   })
 
-  it("is not prefixed with a ID prefix if a blank prefix was provided", () => {
+  it('is not prefixed with a ID prefix if a blank prefix was provided', () => {
     const up = new Up.Up({
       rendering: { idPrefix: ' \t' }
     })
@@ -448,7 +448,7 @@ describe("The ID of an element referenced by the table of contents", () => {
       '<h1 id="topic-1"></h1>')
   })
 
-  it("is properly escaped if the ID prefix contains any ampersands or double quotes", () => {
+  it('is properly escaped if the ID prefix contains any ampersands or double quotes', () => {
     const up = new Up.Up({
       rendering: { idPrefix: '"reply" && "response"' }
     })
@@ -474,7 +474,7 @@ describe("The ID of an element referenced by the table of contents", () => {
 })
 
 
-describe("The URL of a section link (which is the ID of the actual entry in the document)", () => {
+describe('The URL of a section link (which is the ID of the actual entry in the document)', () => {
   it("is prefixed with the default ID prefix 'up' if one wasn't provided", () => {
     const heading = new Up.Heading([
       new Up.Text('Howdy there')
@@ -501,7 +501,7 @@ describe("The URL of a section link (which is the ID of the actual entry in the 
       + '<h1 id="up-topic-1">Howdy there</h1>')
   })
 
-  it("is prefixed with the ID prefix, if one was provided", () => {
+  it('is prefixed with the ID prefix, if one was provided', () => {
     const up = new Up.Up({
       rendering: { idPrefix: 'reply-11' }
     })
@@ -531,7 +531,7 @@ describe("The URL of a section link (which is the ID of the actual entry in the 
       + '<h1 id="reply-11-topic-1">Howdy there</h1>')
   })
 
-  it("is not prefixed with a ID prefix if an empty prefix was provided", () => {
+  it('is not prefixed with a ID prefix if an empty prefix was provided', () => {
     const up = new Up.Up({
       rendering: { idPrefix: '' }
     })
@@ -561,7 +561,7 @@ describe("The URL of a section link (which is the ID of the actual entry in the 
       + '<h1 id="topic-1">Howdy there</h1>')
   })
 
-  it("is not prefixed with a ID prefix if a blank prefix was provided", () => {
+  it('is not prefixed with a ID prefix if a blank prefix was provided', () => {
     const up = new Up.Up({
       rendering: { idPrefix: ' \t' }
     })
@@ -591,7 +591,7 @@ describe("The URL of a section link (which is the ID of the actual entry in the 
       + '<h1 id="topic-1">Howdy there</h1>')
   })
 
-  it("is properly escaped if the ID prefix contains any ampersands or double quotes", () => {
+  it('is properly escaped if the ID prefix contains any ampersands or double quotes', () => {
     const up = new Up.Up({
       rendering: { idPrefix: '"reply" && "response"' }
     })

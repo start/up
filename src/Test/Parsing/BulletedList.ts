@@ -316,7 +316,7 @@ describe('An indented line immediately following a numbered list item line', () 
     const heading =
       new Up.Heading([new Up.Text('Hello, world!')], {
         level: 1,
-        titleMarkup: "Hello, world!",
+        titleMarkup: 'Hello, world!',
         ordinalInTableOfContents: 1
       })
 
@@ -358,14 +358,14 @@ describe('Multiple indented or blank lines immediately following a numbered list
     const helloHeading =
       new Up.Heading([new Up.Text('Hello, world!')], {
         level: 1,
-        titleMarkup: "Hello, world!",
+        titleMarkup: 'Hello, world!',
         ordinalInTableOfContents: 1
       })
 
     const goodbyeHeading =
       new Up.Heading([new Up.Text('Goodbye, world!')], {
         level: 1,
-        titleMarkup: "Goodbye, world!",
+        titleMarkup: 'Goodbye, world!',
         ordinalInTableOfContents: 2
       })
 
@@ -427,14 +427,14 @@ describe('A numbered list item containing multiple indented lines', () => {
     const helloHeading =
       new Up.Heading([new Up.Text('Hello, world!')], {
         level: 1,
-        titleMarkup: "Hello, world!",
+        titleMarkup: 'Hello, world!',
         ordinalInTableOfContents: 1
       })
 
     const goodbyeHeading =
       new Up.Heading([new Up.Text('Goodbye, world!')], {
         level: 1,
-        titleMarkup: "Goodbye, world!",
+        titleMarkup: 'Goodbye, world!',
         ordinalInTableOfContents: 2
       })
 

@@ -34,7 +34,7 @@ context('Any example user input convention followed immediately by a (second) pa
 })
 
 
-context("As long as there is no whitespace between the example user input and the linkifying URL, there are no restrictions on the linkifying URL.", () => {
+context('As long as there is no whitespace between the example user input and the linkifying URL, there are no restrictions on the linkifying URL.', () => {
   specify('The linkifying URL can start with whitespace', () => {
     expectEveryPermutationOfBrackets({
       precededBy: '{ My Cart }',
@@ -101,8 +101,8 @@ context('An example user input convention is not linkified when it is directly f
       ]))
   })
 
-  specify("Footnotes", () => {
-    const markup = "To view your shopping cart, press { My Cart }[^Then buy me stuff!]."
+  specify('Footnotes', () => {
+    const markup = 'To view your shopping cart, press { My Cart }[^Then buy me stuff!].'
 
     const footnotes = [
       new Up.Footnote([
@@ -113,7 +113,7 @@ context('An example user input convention is not linkified when it is directly f
     expect(Up.parse(markup)).to.deep.equal(
       new Up.Document([
         new Up.Paragraph([
-          new Up.Text("To view your shopping cart, press "),
+          new Up.Text('To view your shopping cart, press '),
           new Up.ExampleUserInput('My Cart'),
           footnotes[0],
           new Up.Text('.')

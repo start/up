@@ -40,10 +40,10 @@ context('Consecutive periods normally produce an ellipsis.', () => {
 
   context('This does not apply within:', () => {
     specify('Link URLs', () => {
-      expect(Up.parse("[American flag emoji] (https://example.com/empojis/US...flag?info)")).to.deep.equal(
+      expect(Up.parse('[American flag emoji] (https://example.com/empojis/US...flag?info)')).to.deep.equal(
         insideDocumentAndParagraph([
           new Up.Link([
-            new Up.Text("American flag emoji")
+            new Up.Text('American flag emoji')
           ], 'https://example.com/empojis/US...flag?info')
         ]))
     })
@@ -76,7 +76,7 @@ context('Consecutive periods normally produce an ellipsis.', () => {
     })
 
     specify('Inline code', () => {
-      expect(Up.parse("`i---;`")).to.deep.equal(
+      expect(Up.parse('`i---;`')).to.deep.equal(
         insideDocumentAndParagraph([
           new Up.InlineCode('i---;')
         ]))
@@ -91,7 +91,7 @@ return distinct('highlight', ...this._highlight)
       expect(Up.parse(markup)).to.deep.equal(
         new Up.Document([
           new Up.CodeBlock(
-            `return distinct('highlight', ...this._highlight)`)
+            "return distinct('highlight', ...this._highlight)")
         ]))
     })
   })
@@ -157,25 +157,25 @@ context('Any number of consecutive periods produces a single ellipsis.', () => {
 })
 
 
-describe("When one of many consecutive periods is escaped, that period is treated as a regular period. The periods around it are unaffected (unless they are also escaped):", () => {
+describe('When one of many consecutive periods is escaped, that period is treated as a regular period. The periods around it are unaffected (unless they are also escaped):', () => {
   specify('Escaping a period in the middle of many periods produces a period sandwiched by elipsis', () => {
-    expect(Up.parse("Just some typical punctuation usage: ...\\....")).to.deep.equal(
+    expect(Up.parse('Just some typical punctuation usage: ...\\....')).to.deep.equal(
       insideDocumentAndParagraph([
-        new Up.Text("Just some typical punctuation usage: ….…")
+        new Up.Text('Just some typical punctuation usage: ….…')
       ]))
   })
 
   specify('Escaping consecutive periods produces consecutive periods', () => {
-    expect(Up.parse("Just some typical punctuation usage: \\.\\.\\.")).to.deep.equal(
+    expect(Up.parse('Just some typical punctuation usage: \\.\\.\\.')).to.deep.equal(
       insideDocumentAndParagraph([
-        new Up.Text("Just some typical punctuation usage: ...")
+        new Up.Text('Just some typical punctuation usage: ...')
       ]))
   })
 
   specify('Escaping the first of 2 periods produces consecutive periods', () => {
-    expect(Up.parse("Just some typical punctuation usage: \\..")).to.deep.equal(
+    expect(Up.parse('Just some typical punctuation usage: \\..')).to.deep.equal(
       insideDocumentAndParagraph([
-        new Up.Text("Just some typical punctuation usage: ..")
+        new Up.Text('Just some typical punctuation usage: ..')
       ]))
   })
 })

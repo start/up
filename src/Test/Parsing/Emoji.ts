@@ -5,10 +5,10 @@ import { insideDocumentAndParagraph } from './Helpers'
 
 context('Emojis are always treated like any other other character. This includes when the emoji is within', () => {
   specify('a link URL', () => {
-    expect(Up.parse("[American flag emoji](https://example.com/empojis/🇺🇸?info)")).to.deep.equal(
+    expect(Up.parse('[American flag emoji](https://example.com/empojis/🇺🇸?info)')).to.deep.equal(
       insideDocumentAndParagraph([
         new Up.Link([
-          new Up.Text("American flag emoji")
+          new Up.Text('American flag emoji')
         ], 'https://example.com/empojis/🇺🇸?info')
       ]))
   })

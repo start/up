@@ -24,14 +24,14 @@ I love all sorts of fancy stuff. For example, see [heading: exotic].`
     const sodaHeading =
       new Up.Heading([new Up.Text('I drink exotic soda')], {
         level: 1,
-        titleMarkup: "I drink exotic soda",
+        titleMarkup: 'I drink exotic soda',
         ordinalInTableOfContents: 1
       })
 
     const interestingHeading =
       new Up.Heading([new Up.Text('I am interesting')], {
         level: 1,
-        titleMarkup: "I am interesting",
+        titleMarkup: 'I am interesting',
         ordinalInTableOfContents: 2
       })
 
@@ -97,14 +97,14 @@ I love all sorts of fancy stuff. For example, see [heading: exotic].`
     const sodaHeading =
       new Up.Heading([new Up.Text('I drink exotic soda')], {
         level: 1,
-        titleMarkup: "I drink exotic soda",
+        titleMarkup: 'I drink exotic soda',
         ordinalInTableOfContents: 1
       })
 
     const interestingHeading =
       new Up.Heading([new Up.Text('I am interesting')], {
         level: 1,
-        titleMarkup: "I am interesting",
+        titleMarkup: 'I am interesting',
         ordinalInTableOfContents: 2
       })
 
@@ -144,14 +144,14 @@ I love all sorts of fancy stuff. For example, see [*heading*: exotic].`
     const sodaHeading =
       new Up.Heading([new Up.Text('I drink exotic soda')], {
         level: 1,
-        titleMarkup: "I drink exotic soda",
+        titleMarkup: 'I drink exotic soda',
         ordinalInTableOfContents: 1
       })
 
     const interestingHeading =
       new Up.Heading([new Up.Text('I am interesting')], {
         level: 1,
-        titleMarkup: "I am interesting",
+        titleMarkup: 'I am interesting',
         ordinalInTableOfContents: 2
       })
 
@@ -191,14 +191,14 @@ I love all sorts of fancy stuff. For example, see [heading: exotic].`
     const sodaHeading =
       new Up.Heading([new Up.Text('I drink exotic soda')], {
         level: 1,
-        titleMarkup: "I drink exotic soda",
+        titleMarkup: 'I drink exotic soda',
         ordinalInTableOfContents: 1
       })
 
     const interestingHeading =
       new Up.Heading([new Up.Text('I am interesting')], {
         level: 1,
-        titleMarkup: "I am interesting",
+        titleMarkup: 'I am interesting',
         ordinalInTableOfContents: 2
       })
 

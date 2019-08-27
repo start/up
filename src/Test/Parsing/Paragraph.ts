@@ -21,7 +21,7 @@ describe('A paragraph', () => {
         new Up.Emphasis([
           new Up.Text('everyone')
         ]),
-        new Up.Text(" like that?")
+        new Up.Text(' like that?')
       ]))
   })
 })
@@ -35,7 +35,7 @@ context('Trailing whitespace in a paragraph is completely inconsequential. This 
         new Up.Emphasis([
           new Up.Text('everyone')
         ]),
-        new Up.Text(" like that?")
+        new Up.Text(' like that?')
       ]))
   })
 
@@ -46,7 +46,7 @@ context('Trailing whitespace in a paragraph is completely inconsequential. This 
         new Up.Emphasis([
           new Up.Text('everyone')
         ]),
-        new Up.Text(" like that?")
+        new Up.Text(' like that?')
       ]))
   })
 
@@ -57,7 +57,7 @@ context('Trailing whitespace in a paragraph is completely inconsequential. This 
         new Up.Emphasis([
           new Up.Text('everyone')
         ]),
-        new Up.Text(" like that?")
+        new Up.Text(' like that?')
       ]))
   })
 
@@ -68,7 +68,7 @@ context('Trailing whitespace in a paragraph is completely inconsequential. This 
         new Up.Emphasis([
           new Up.Text('everyone')
         ]),
-        new Up.Text(" like that?\\")
+        new Up.Text(' like that?\\')
       ]))
   })
 })

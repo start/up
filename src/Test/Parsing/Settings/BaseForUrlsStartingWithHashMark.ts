@@ -68,7 +68,7 @@ describe('The "baseForUrlsStartingWithFragmentIdentifier" setting', () => {
       ]))
   })
 
-  it("is prefixed to linkified footnote URLs that start with a hash mark", () => {
+  it('is prefixed to linkified footnote URLs that start with a hash mark', () => {
     const markup = "I don't eat cereal. (^Well, I eat one.)[#cereals/lucky-charms?show=nutrition] Never have."
 
     const footnote = new Up.Footnote([
@@ -82,7 +82,7 @@ describe('The "baseForUrlsStartingWithFragmentIdentifier" setting', () => {
         new Up.Paragraph([
           new Up.Text("I don't eat cereal."),
           footnote,
-          new Up.Text(" Never have.")
+          new Up.Text(' Never have.')
         ]),
         new Up.FootnoteBlock([footnote])
       ]))
@@ -149,7 +149,7 @@ describe('The "baseForUrlsStartingWithFragmentIdentifier" setting', () => {
       ]))
   })
 
-  it("is prefixed to linkified footnote URLs that start with a hash mark when the footnote part and the URL are separated by whitespace", () => {
+  it('is prefixed to linkified footnote URLs that start with a hash mark when the footnote part and the URL are separated by whitespace', () => {
     const markup = "I don't eat cereal. (^Well, I eat one.) [#cereals/lucky-charms?show=nutrition] Never have."
 
     const footnote = new Up.Footnote([
@@ -163,7 +163,7 @@ describe('The "baseForUrlsStartingWithFragmentIdentifier" setting', () => {
         new Up.Paragraph([
           new Up.Text("I don't eat cereal."),
           footnote,
-          new Up.Text(" Never have.")
+          new Up.Text(' Never have.')
         ]),
         new Up.FootnoteBlock([footnote])
       ]))

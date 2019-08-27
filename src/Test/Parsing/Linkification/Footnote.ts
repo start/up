@@ -4,7 +4,7 @@ import { expectEveryPermutationOfBracketsAroundContentAndUrl } from '../Helpers'
 
 
 describe('A footnote directly followed by a bracketed/parenthesized URL', () => {
-  it("produces a footnote whose entire contents is put inside a link pointing to that URL", () => {
+  it('produces a footnote whose entire contents is put inside a link pointing to that URL', () => {
     const markup = "I don't eat cereal. (^Well, I do, but I pretend not to.)[http://example.com/luckycharms] Never have."
 
     const footnote =
@@ -19,7 +19,7 @@ describe('A footnote directly followed by a bracketed/parenthesized URL', () => 
         new Up.Paragraph([
           new Up.Text("I don't eat cereal."),
           footnote,
-          new Up.Text(" Never have.")
+          new Up.Text(' Never have.')
         ]),
         new Up.FootnoteBlock([footnote])
       ]))
@@ -49,7 +49,7 @@ describe('Any footnote followed by a bracketed/parenthesized URL', () => {
 
 
 describe('A footnote directly followed by another footnote (with no spaces in between)', () => {
-  it("is not linkified", () => {
+  it('is not linkified', () => {
     const markup = "I don't eat cereal. (^Well, I do, but I pretend not to.)(^Everyone does. It isn't a big deal.)"
 
     const footnotes = [
@@ -75,7 +75,7 @@ describe('A footnote directly followed by another footnote (with no spaces in be
 
 
 describe('A footnote directly followed by a media convention', () => {
-  it("is not linkified", () => {
+  it('is not linkified', () => {
     const markup = "I don't eat cereal. (^Well, I do, but I pretend not to.)[video: me not eating cereal](https://example.com/v/123)"
 
     const footnote =
@@ -97,7 +97,7 @@ describe('A footnote directly followed by a media convention', () => {
 
 
 describe('A footnote directly followed by an inline revealable', () => {
-  it("is not linkified", () => {
+  it('is not linkified', () => {
     const markup = "I don't eat cereal. (^Well, I do, but I pretend not to.)[spoiler: None of the Final Four's Pokemon are named 'Cereal']"
 
     const footnote =
@@ -122,7 +122,7 @@ describe('A footnote directly followed by an inline revealable', () => {
 
 describe('An otherwise-valid linkified footnote with its URL escaped', () => {
   it('is not linkified', () => {
-    const markup = "[^He called her.](\\tel:5555555555)"
+    const markup = '[^He called her.](\\tel:5555555555)'
 
     const footnote =
       new Up.Footnote([
@@ -145,7 +145,7 @@ describe('An otherwise-valid linkified footnote with its URL escaped', () => {
 
 describe("When an otherwise-valid linkified revealable convention's URL starts with whitespace, and the first character in the actual URL is escaped,", () => {
   specify('the footnote is not linkified', () => {
-    const markup = "[^He called her.]( \t \\tel:5555555555)"
+    const markup = '[^He called her.]( \t \\tel:5555555555)'
 
     const footnote =
       new Up.Footnote([
@@ -165,7 +165,7 @@ describe("When an otherwise-valid linkified revealable convention's URL starts w
 
 
 context("If there's no whitespace between a footnote and its bracketed URL", () => {
-  specify("the URL can start with whitespace", () => {
+  specify('the URL can start with whitespace', () => {
     const footnote =
       new Up.Footnote([
         new Up.Link([

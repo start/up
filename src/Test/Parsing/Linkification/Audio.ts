@@ -99,8 +99,8 @@ describe('An audio convention directly followed by an inline revealable', () => 
 
 
 describe('An audio convention directly followed by a footnote', () => {
-  it("is not linkified", () => {
-    const markup = "After you beat the Elite Four, [audio: you fight Gary](https://example.com/fight.ogg)(^Or whatever you name him.)"
+  it('is not linkified', () => {
+    const markup = 'After you beat the Elite Four, [audio: you fight Gary](https://example.com/fight.ogg)(^Or whatever you name him.)'
 
     const footnotes = [
       new Up.Footnote([
@@ -111,7 +111,7 @@ describe('An audio convention directly followed by a footnote', () => {
     expect(Up.parse(markup)).to.deep.equal(
       new Up.Document([
         new Up.Paragraph([
-          new Up.Text("After you beat the Elite Four, "),
+          new Up.Text('After you beat the Elite Four, '),
           new Up.Audio('you fight Gary', 'https://example.com/fight.ogg'),
           footnotes[0]
         ]),

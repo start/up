@@ -80,7 +80,7 @@ describe('The "createSourceMap" setting', () => {
   const headingWithSourceMap =
     new Up.Heading([new Up.Text('Very important')], {
       level: 1,
-      titleMarkup: "Very important",
+      titleMarkup: 'Very important',
       ordinalInTableOfContents: 1,
       sourceLineNumber: 2
     })
@@ -88,7 +88,7 @@ describe('The "createSourceMap" setting', () => {
   const headingWithoutSourceMap =
     new Up.Heading([new Up.Text('Very important')], {
       level: 1,
-      titleMarkup: "Very important",
+      titleMarkup: 'Very important',
       ordinalInTableOfContents: 1
     })
 

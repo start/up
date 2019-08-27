@@ -48,7 +48,7 @@ describe('A linkified revealable convention overlapping highlighted text', () =>
 
 
 describe('A footnote that overlaps a linified revealable convention', () => {
-  it("splits the revealable node and its inner link node, not the footnote node", () => {
+  it('splits the revealable node and its inner link node, not the footnote node', () => {
     const markup = 'Eventually, I will think of one (^reasonable [NSFL: and realistic) example of a] [example.com] footnote that overlaps an inline revealable convention.'
 
     const footnote =
@@ -80,7 +80,7 @@ describe('A footnote that overlaps a linified revealable convention', () => {
 
 
 describe('A linified revealable convention that overlaps a footnote', () => {
-  it("splits the revealable node and its inner link node, not the footnote node", () => {
+  it('splits the revealable node and its inner link node, not the footnote node', () => {
     const markup = '[NSFL: Gary loses to Ash (^Ketchum] (example.com) is his last name)'
 
     const footnote =

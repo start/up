@@ -345,7 +345,7 @@ context('When a link overlaps a quote, the link will always be split. This inclu
 
 
 describe('An inline revealable that overlaps a footnote', () => {
-  it("splits the revealable node, not the footnote node", () => {
+  it('splits the revealable node, not the footnote node', () => {
     const markup = '[SPOILER: Gary loses to Ash (^Ketchum] is his last name)'
 
     const footnote =
@@ -371,7 +371,7 @@ describe('An inline revealable that overlaps a footnote', () => {
 
 
 describe('A footnote that overlaps an inline revealable', () => {
-  it("splits the revealable node, not the footnote node", () => {
+  it('splits the revealable node, not the footnote node', () => {
     const markup = 'Eventually, I will think of one (^reasonable [SPOILER: and realistic) example of a] footnote that overlaps an inline revealable.'
 
     const footnote =
@@ -399,7 +399,7 @@ describe('A footnote that overlaps an inline revealable', () => {
 
 
 context('When a link overlaps an inline revealable, the link node will always be split. This includes when:', () => {
-  specify("The link opens first", () => {
+  specify('The link opens first', () => {
     const markup =
       'In Pokémon Red, [Gary Oak (NSFW: loses to Ash Ketchum][http://bulbapedia.bulbagarden.net/wiki/Red_(game)] repeatedly) throughout the game.'
 
@@ -419,7 +419,7 @@ context('When a link overlaps an inline revealable, the link node will always be
       ]))
   })
 
-  specify("The inline revealable opens first", () => {
+  specify('The inline revealable opens first', () => {
     expect(Up.parse('(NSFW: Gary loses to [Ash) Ketchum][http://bulbapedia.bulbagarden.net/wiki/Ash_Ketchum]')).to.deep.equal(
       insideDocumentAndParagraph([
         new Up.InlineRevealable([
@@ -636,7 +636,7 @@ context('When quoted text overlaps a footnote, the inline quote node will always
 
 
 context('When an inline revealable convention overlaps footnote, the revealable node will always be split. This includes when:', () => {
-  specify("The inline revealable opens first", () => {
+  specify('The inline revealable opens first', () => {
     const markup = '[NSFL: Gary loses to Ash (^Ketchum] is his last name)'
 
     const footnote =
@@ -659,7 +659,7 @@ context('When an inline revealable convention overlaps footnote, the revealable 
       ]))
   })
 
-  specify("The footnote opens first", () => {
+  specify('The footnote opens first', () => {
     const markup = 'Eventually, I will think of one (^reasonable [NSFL: and realistic) example of a] footnote that overlaps an inline revealable convention.'
 
     const footnote =

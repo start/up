@@ -3,7 +3,7 @@ import * as Up from '../../../../Main'
 
 
 context('When the header row of a table is indented', () => {
-  specify("the table is given a header column", () => {
+  specify('the table is given a header column', () => {
     const markup = `
 Table: AND operator logic
 
@@ -34,8 +34,8 @@ Table: AND operator logic
 })
 
 
-context("In a table with a header column", () => {
-  specify("the caption is not required", () => {
+context('In a table with a header column', () => {
+  specify('the caption is not required', () => {
     const markup = `
 Table:
 
@@ -169,7 +169,7 @@ Table:
 
 
 context('In a table with a header column, the padding between cells is optional. This naturally assumes the header row is indented:', () => {
-  specify("At least 2 spaces", () => {
+  specify('At least 2 spaces', () => {
     const markup = `
 Table: AND operator logic
   1;0
@@ -197,7 +197,7 @@ Table: AND operator logic
       ]))
   })
 
-  specify("At least 1 tab", () => {
+  specify('At least 1 tab', () => {
     const markup = `
 Table: AND operator logic
 \t1;0
@@ -225,7 +225,7 @@ Table: AND operator logic
       ]))
   })
 
-  specify("At least 1 space and 1 tab", () => {
+  specify('At least 1 space and 1 tab', () => {
     const markup = `
 Table: AND operator logic
  \t1;0

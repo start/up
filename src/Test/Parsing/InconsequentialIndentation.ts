@@ -389,14 +389,14 @@ Hello, world!
     const worldHeading =
       new Up.Heading([new Up.Text('Hello, world!')], {
         level: 1,
-        titleMarkup: "Hello, world!",
+        titleMarkup: 'Hello, world!',
         ordinalInTableOfContents: 1
       })
 
     const coreHeading =
       new Up.Heading([new Up.Text('Hello, core!')], {
         level: 1,
-        titleMarkup: "Hello, core!",
+        titleMarkup: 'Hello, core!',
         ordinalInTableOfContents: 2
       })
 
@@ -422,7 +422,7 @@ Hello, world!
             new Up.Text("I like shorts! They're comfy and easy to wear!")
           ]),
           new Up.Paragraph([
-            new Up.Text("I like blankets, too.")
+            new Up.Text('I like blankets, too.')
           ])
         ])
       ]))
@@ -513,7 +513,7 @@ Hello, world!
               new Up.Text("I like shorts! They're comfy and easy to wear!")
             ]),
             new Up.Paragraph([
-              new Up.Text("I like blankets, too.")
+              new Up.Text('I like blankets, too.')
             ])
           ])
         ]))
@@ -532,7 +532,7 @@ Hello, world!
               new Up.Text("I like shorts! They're comfy and easy to wear!")
             ]),
             new Up.Paragraph([
-              new Up.Text("I like blankets, too.")
+              new Up.Text('I like blankets, too.')
             ])
           ])
         ]))
@@ -572,7 +572,7 @@ Hello, world!
               new Up.Text("I like shorts! They're comfy and easy to wear!")
             ]),
             new Up.Paragraph([
-              new Up.Text("I like blankets, too.")
+              new Up.Text('I like blankets, too.')
             ])
           ])
         ]))
@@ -581,7 +581,7 @@ Hello, world!
 })
 
 
-context("Within list items, extra indentation for outline conventions is ignored, just as it would be at the top-level of the document", () => {
+context('Within list items, extra indentation for outline conventions is ignored, just as it would be at the top-level of the document', () => {
   specify('Numbered list items', () => {
     const markup = `
 1)  \t Hello, Lavender Town!

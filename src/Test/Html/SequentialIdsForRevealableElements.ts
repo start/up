@@ -2,8 +2,8 @@ import { expect } from 'chai'
 import * as Up from '../../Main'
 
 
-describe("Both inline revealables and revealable blocks", () => {
-  it("have sequential IDs", () => {
+describe('Both inline revealables and revealable blocks', () => {
+  it('have sequential IDs', () => {
     const node =
       new Up.Document([
         new Up.RevealableBlock([
@@ -84,7 +84,7 @@ describe("Both inline revealables and revealable blocks", () => {
 
 
 describe("The ID of an inline revealable's checkbox (on both the checkbox and the label)", () => {
-  it("is reset each time a new document is written", () => {
+  it('is reset each time a new document is written', () => {
     const up = new Up.Up()
 
     const node =
@@ -118,7 +118,7 @@ describe("The ID of an inline revealable's checkbox (on both the checkbox and th
 
 
 describe("The ID of a revealable block's checkbox (on both the checkbox and the label)", () => {
-  it("is reset each time a new document is written", () => {
+  it('is reset each time a new document is written', () => {
     const up = new Up.Up()
 
     const node =

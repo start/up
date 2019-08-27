@@ -3,7 +3,7 @@ import * as Up from '../../../Main'
 
 
 context('The "reveal" term is used on the reveal button of revealable content:', () => {
-  specify("Inline revealables", () => {
+  specify('Inline revealables', () => {
     const up = new Up.Up({
       rendering: {
         terms: { reveal: 'expand' }
@@ -32,7 +32,7 @@ context('The "reveal" term is used on the reveal button of revealable content:',
     expect(up.render(node)).to.equal(html)
   })
 
-  specify("Revealable blocks", () => {
+  specify('Revealable blocks', () => {
     const up = new Up.Up({
       rendering: {
         terms: { reveal: 'show' }

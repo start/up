@@ -15,10 +15,10 @@ describe("A footnote's ID", () => {
     const node = new Up.Document([
       new Up.FootnoteBlock([
         new Up.Footnote([
-          new Up.Text("Arwings")
+          new Up.Text('Arwings')
         ], { referenceNumber: 2 }),
         new Up.Footnote([
-          new Up.Text("Killer Bees")
+          new Up.Text('Killer Bees')
         ], { referenceNumber: 3 })
       ])
     ])
@@ -34,7 +34,7 @@ describe("A footnote's ID", () => {
 })
 
 
-describe("The ID of the footnote referenced by a footnote reference", () => {
+describe('The ID of the footnote referenced by a footnote reference', () => {
   it('uses the provided term for "footnote"', () => {
     const up = new Up.Up({
       rendering: {

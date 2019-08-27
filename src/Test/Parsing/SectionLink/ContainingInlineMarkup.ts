@@ -19,14 +19,14 @@ Not quite true. For example, see [section: I drink soda--exclusively].`
       const sodaHeading =
         new Up.Heading([new Up.Text('I drink soda–exclusively')], {
           level: 1,
-          titleMarkup: "I drink soda--exclusively",
+          titleMarkup: 'I drink soda--exclusively',
           ordinalInTableOfContents: 1
         })
 
       const neverLieHeading =
         new Up.Heading([new Up.Text('I never lie')], {
           level: 1,
-          titleMarkup: "I never lie",
+          titleMarkup: 'I never lie',
           ordinalInTableOfContents: 2
         })
 
@@ -60,14 +60,14 @@ Not quite true. For example, see [section: I drink soda---exclusively].`
       const sodaHeading =
         new Up.Heading([new Up.Text('I drink soda—exclusively')], {
           level: 1,
-          titleMarkup: "I drink soda---exclusively",
+          titleMarkup: 'I drink soda---exclusively',
           ordinalInTableOfContents: 1
         })
 
       const neverLieHeading =
         new Up.Heading([new Up.Text('I never lie')], {
           level: 1,
-          titleMarkup: "I never lie",
+          titleMarkup: 'I never lie',
           ordinalInTableOfContents: 2
         })
 
@@ -101,14 +101,14 @@ Not quite true. For example, see [section: I drink 9 cans of soda +-2].`
       const sodaHeading =
         new Up.Heading([new Up.Text('Daily, I drink 9 cans of soda ±2')], {
           level: 1,
-          titleMarkup: "Daily, I drink 9 cans of soda +-2",
+          titleMarkup: 'Daily, I drink 9 cans of soda +-2',
           ordinalInTableOfContents: 1
         })
 
       const neverLieHeading =
         new Up.Heading([new Up.Text('I never lie')], {
           level: 1,
-          titleMarkup: "I never lie",
+          titleMarkup: 'I never lie',
           ordinalInTableOfContents: 2
         })
 
@@ -142,14 +142,14 @@ Not quite true. For example, see [section: I drink 9 cans of soda... hourly].`
       const sodaHeading =
         new Up.Heading([new Up.Text('Daily, I drink 9 cans of soda… hourly')], {
           level: 1,
-          titleMarkup: "Daily, I drink 9 cans of soda... hourly",
+          titleMarkup: 'Daily, I drink 9 cans of soda... hourly',
           ordinalInTableOfContents: 1
         })
 
       const neverLieHeading =
         new Up.Heading([new Up.Text('I never lie')], {
           level: 1,
-          titleMarkup: "I never lie",
+          titleMarkup: 'I never lie',
           ordinalInTableOfContents: 2
         })
 
@@ -188,7 +188,7 @@ Not quite true.`
       const sodaHeading =
         new Up.Heading([new Up.Text('I drink soda')], {
           level: 1,
-          titleMarkup: "I drink soda",
+          titleMarkup: 'I drink soda',
           ordinalInTableOfContents: 1
         })
 
@@ -199,7 +199,7 @@ Not quite true.`
           new Up.Text(' lie')
         ], {
             level: 1,
-            titleMarkup: "I *never* lie",
+            titleMarkup: 'I *never* lie',
             ordinalInTableOfContents: 2
           })
 
@@ -238,7 +238,7 @@ Not quite true.`
       const sodaHeading =
         new Up.Heading([new Up.Text('I drink soda')], {
           level: 1,
-          titleMarkup: "I drink soda",
+          titleMarkup: 'I drink soda',
           ordinalInTableOfContents: 1
         })
 
@@ -249,7 +249,7 @@ Not quite true.`
           new Up.Text(' lie')
         ], {
             level: 1,
-            titleMarkup: "I *never* lie",
+            titleMarkup: 'I *never* lie',
             ordinalInTableOfContents: 2
           })
 
@@ -297,24 +297,24 @@ Uhhh...`
     const sodaHeading =
       new Up.Heading([new Up.Text('I drink soda')], {
         level: 1,
-        titleMarkup: "I drink soda",
+        titleMarkup: 'I drink soda',
         ordinalInTableOfContents: 1
       })
 
     const transcriptHeading =
       new Up.Heading([new Up.Text('Full transcript of my greatness')], {
         level: 2,
-        titleMarkup: "Full transcript of my greatness",
+        titleMarkup: 'Full transcript of my greatness',
         ordinalInTableOfContents: 3
       })
 
     const greatnessHeading =
       new Up.Heading([
-        new Up.Text("I am great. Read the "),
-        new Up.SectionLink("full transcript of my greatness", transcriptHeading)
+        new Up.Text('I am great. Read the '),
+        new Up.SectionLink('full transcript of my greatness', transcriptHeading)
       ], {
           level: 1,
-          titleMarkup: "I am great. Read the [topic: full transcript of my greatness]",
+          titleMarkup: 'I am great. Read the [topic: full transcript of my greatness]',
           ordinalInTableOfContents: 2
         })
 

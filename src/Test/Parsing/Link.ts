@@ -18,7 +18,7 @@ describe('Bracketed (square bracketed or parenthesized) text, followed immediate
 
 
 describe("The brackets enclosing a link's description and URL", () => {
-  it("can be different from each other (as long as each pair of brackets is matching)", () => {
+  it('can be different from each other (as long as each pair of brackets is matching)', () => {
     expectEveryPermutationOfBracketsAroundContentAndUrl({
       content: 'this site',
       url: 'http://stackoverflow.com',
@@ -33,7 +33,7 @@ describe("The brackets enclosing a link's description and URL", () => {
 
 
 context("If there's no whitespace between a link's bracketed content and its bracketed URL", () => {
-  specify("the URL can start with whitespace (and that whitespace is trimmed away)", () => {
+  specify('the URL can start with whitespace (and that whitespace is trimmed away)', () => {
     expectEveryPermutationOfBracketsAroundContentAndUrl({
       content: 'this site',
       url: ' \t http://stackoverflow.com',
@@ -45,7 +45,7 @@ context("If there's no whitespace between a link's bracketed content and its bra
     })
   })
 
-  specify("the URL can end with whitespace (and that whitespace is trimmed away)", () => {
+  specify('the URL can end with whitespace (and that whitespace is trimmed away)', () => {
     expectEveryPermutationOfBracketsAroundContentAndUrl({
       content: 'this site',
       url: 'http://stackoverflow.com \t ',
@@ -189,7 +189,7 @@ describe('A link produced by parentheses', () => {
 })
 
 
-describe("The URL of a link produced by square brackets", () => {
+describe('The URL of a link produced by square brackets', () => {
   it('can contain matching unescaped brackets', () => {
     expect(Up.parse('Here is a [strange URL][https://google.com/search?q=[hi]].')).to.deep.equal(
       insideDocumentAndParagraph([

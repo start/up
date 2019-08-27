@@ -4,7 +4,7 @@ import { cast } from '../../Helpers'
 
 
 context('Within any attribute value, all instances of " and & are escaped. Specifically, within the', () => {
-  specify("src attribute of links", () => {
+  specify('src attribute of links', () => {
     const document = new Up.Document([
       new Up.Paragraph([
         new Up.Link([], 'https://example.com/?x&y&z="hi"')
@@ -15,7 +15,7 @@ context('Within any attribute value, all instances of " and & are escaped. Speci
       '<p><a href="https://example.com/?x&amp;y&amp;z=&quot;hi&quot;"></a></p>')
   })
 
-  specify("src attribute of audio elements (and of their fallback links)", () => {
+  specify('src attribute of audio elements (and of their fallback links)', () => {
     const document = new Up.Document([
       new Up.Audio('Weird', 'https://example.com/?x&y&z="hi"')
     ])
@@ -26,7 +26,7 @@ context('Within any attribute value, all instances of " and & are escaped. Speci
       + '</audio>')
   })
 
-  specify("src attribute of videos (and of their fallback links)", () => {
+  specify('src attribute of videos (and of their fallback links)', () => {
     const document = new Up.Document([
       new Up.Video('Weird', 'https://example.com/?x&y&z="hi"')
     ])
@@ -37,7 +37,7 @@ context('Within any attribute value, all instances of " and & are escaped. Speci
       + '</video>')
   })
 
-  specify("src attribute of images", () => {
+  specify('src attribute of images', () => {
     const document = new Up.Document([
       new Up.Image('Weird', 'https://example.com/?x&y&z="hi"')
     ])
@@ -46,7 +46,7 @@ context('Within any attribute value, all instances of " and & are escaped. Speci
       '<img alt="Weird" src="https://example.com/?x&amp;y&amp;z=&quot;hi&quot;" title="Weird">')
   })
 
-  specify("title attribute of audio elements", () => {
+  specify('title attribute of audio elements', () => {
     const document = new Up.Document([
       new Up.Audio('John said, "1 and 2 > 0. I can\'t believe it."', 'https://example.com/m')
     ])
@@ -57,7 +57,7 @@ context('Within any attribute value, all instances of " and & are escaped. Speci
       + '</audio>')
   })
 
-  specify("title attribute of videos", () => {
+  specify('title attribute of videos', () => {
     const document = new Up.Document([
       new Up.Video('John said, "1 and 2 > 0. I can\'t believe it."', 'https://example.com/m')
     ])
@@ -68,7 +68,7 @@ context('Within any attribute value, all instances of " and & are escaped. Speci
       + '</video>')
   })
 
-  specify("alt and title attributes of images", () => {
+  specify('alt and title attributes of images', () => {
     const document = new Up.Document([
       new Up.Image('John said, "1 and 2 > 0. I can\'t believe it."', 'https://example.com/m')
     ])
@@ -211,7 +211,7 @@ context('Within any attribute value, all instances of " and & are escaped. Speci
 
 
 describe("Within a link's href attribute, <, ', and >", () => {
-  it("are not escaped", () => {
+  it('are not escaped', () => {
     const document = new Up.Document([
       new Up.Paragraph([
         new Up.Link([], "https://example.com/?z='<span>'")

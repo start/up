@@ -83,7 +83,7 @@ context('The keyword for table', () => {
 
 
 context('A block of would-be subjects in a description list terminates the list if:', () => {
-  specify("A blank line separates any of the would-be subjects", () => {
+  specify('A blank line separates any of the would-be subjects', () => {
     const markup = `
 Bulbasaur
   A strange seed was planted on its back at birth. The plant sprouts and grows with this Pokémon.
@@ -113,7 +113,7 @@ Night Shade
             new Up.Text("Charmanders're red")
           ]),
           new Up.LineBlock.Line([
-            new Up.Text("Squirtles are blue")
+            new Up.Text('Squirtles are blue')
           ])
         ]),
 
@@ -134,7 +134,7 @@ Night Shade
 
 
   context('Multiple blank lines separate the would-be subjects from the would-be description:', () => {
-    specify("2 blank lines", () => {
+    specify('2 blank lines', () => {
       const markup = `
 Bulbasaur
   A strange seed was planted on its back at birth. The plant sprouts and grows with this Pokémon.
@@ -167,7 +167,7 @@ Night Shade
               new Up.Text("Charmanders're red")
             ]),
             new Up.LineBlock.Line([
-              new Up.Text("Squirtles are blue")
+              new Up.Text('Squirtles are blue')
             ])
           ]),
 
@@ -190,7 +190,7 @@ Night Shade
         ]))
     })
 
-    specify("3 or more blank lines", () => {
+    specify('3 or more blank lines', () => {
       const markup = `
 Bulbasaur
   A strange seed was planted on its back at birth. The plant sprouts and grows with this Pokémon.
@@ -224,7 +224,7 @@ Night Shade
               new Up.Text("Charmanders're red")
             ]),
             new Up.LineBlock.Line([
-              new Up.Text("Squirtles are blue")
+              new Up.Text('Squirtles are blue')
             ])
           ]),
 

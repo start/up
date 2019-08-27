@@ -2,7 +2,7 @@ import { expect } from 'chai'
 import * as Up from '../../Main'
 
 
-context("You can render HTML directly from markup.", () => {
+context('You can render HTML directly from markup.', () => {
   context('The parseAndRender method', () => {
     specify('can be used with parsing settings', () => {
       const markup = `
@@ -286,7 +286,7 @@ SPOILER
 
   context('The parseAndRenderInline method', () => {
     specify('can be used with parsing settings', () => {
-      const markup = `After beating the Elite Four, [LOOK AWAY: Blue steals a Red Delicious from Red.]`
+      const markup = 'After beating the Elite Four, [LOOK AWAY: Blue steals a Red Delicious from Red.]'
 
       const html = Up.parseAndRenderInline(markup, {
         parsing: {
@@ -306,7 +306,7 @@ SPOILER
     })
 
     specify('can be used with rendering settings', () => {
-      const markup = `After beating the Elite Four, [SPOILER: Blue steals a Red Delicious from Red.]`
+      const markup = 'After beating the Elite Four, [SPOILER: Blue steals a Red Delicious from Red.]'
 
       const html = Up.parseAndRenderInline(markup, {
         rendering: {
@@ -326,7 +326,7 @@ SPOILER
     })
 
     specify('can be used with both parsing and rendering settings together', () => {
-      const markup = `After beating the Elite Four, [LOOK AWAY: Blue steals a Red Delicious from Red.]`
+      const markup = 'After beating the Elite Four, [LOOK AWAY: Blue steals a Red Delicious from Red.]'
 
       const html = Up.parseAndRenderInline(markup, {
         parsing: {
@@ -349,7 +349,7 @@ SPOILER
     })
 
     specify('can be used without settings', () => {
-      const markup = `After beating the Elite Four, [SPOILER: Blue steals a Red Delicious from Red.]`
+      const markup = 'After beating the Elite Four, [SPOILER: Blue steals a Red Delicious from Red.]'
 
       expect(Up.parseAndRenderInline(markup)).to.equal(
         'After beating the Elite Four, '
@@ -363,7 +363,7 @@ SPOILER
     })
 
     specify('can be used with empty settings', () => {
-      const markup = `After beating the Elite Four, [SPOILER: Blue steals a Red Delicious from Red.]`
+      const markup = 'After beating the Elite Four, [SPOILER: Blue steals a Red Delicious from Red.]'
 
       const withoutSettings = Up.parseAndRenderInline(markup)
       const withEmptySettings = Up.parseAndRenderInline(markup, {})

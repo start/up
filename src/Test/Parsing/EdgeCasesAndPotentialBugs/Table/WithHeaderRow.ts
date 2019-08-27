@@ -59,7 +59,7 @@ Chrono Cross;   1999`
 })
 
 
-describe("A table header cell", () => {
+describe('A table header cell', () => {
   it('can end with an escaped semicolon', () => {
     const markup = `
 Table
@@ -116,7 +116,7 @@ Chrono Cross;     1999`
 })
 
 
-describe("A table row cell", () => {
+describe('A table row cell', () => {
   it('can end with an escaped semicolon', () => {
     const markup = `
 Table
@@ -173,7 +173,7 @@ Chrono Cross;           1999`
 })
 
 
-context("A table", () => {
+context('A table', () => {
   specify('is terminated if its caption line is followed by two or more blank lines', () => {
     const markup = `
 Table: my favorite outline convention.

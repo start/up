@@ -60,7 +60,7 @@ context('A video that is the only convention on its line is not placed inside a 
 
 
 describe("The brackets enclosing a video convention's description and URL", () => {
-  it("can be different from each other (as long as each pair of brackets is matching)", () => {
+  it('can be different from each other (as long as each pair of brackets is matching)', () => {
     expectEveryPermutationOfBracketsAroundContentAndUrl({
       content: 'video: ghostly howling',
       url: 'http://example.com/ghosts.webm',
@@ -85,8 +85,8 @@ describe('The keyword "vid"', () => {
 })
 
 
-context("When a video has whitespace before its bracketed URL, there are no additional restrictions on the URL.", () => {
-  specify("The URL can contain whitespace", () => {
+context('When a video has whitespace before its bracketed URL, there are no additional restrictions on the URL.', () => {
+  specify('The URL can contain whitespace', () => {
     expectEveryPermutationOfBracketsAroundContentAndUrl({
       content: 'video: ghostly howling',
       partsBetweenContentAndUrl: [' ', '\t', '  \t '],
@@ -97,7 +97,7 @@ context("When a video has whitespace before its bracketed URL, there are no addi
     })
   })
 
-  specify("The URL can start with whitespace", () => {
+  specify('The URL can start with whitespace', () => {
     expectEveryPermutationOfBracketsAroundContentAndUrl({
       content: 'video: ghostly howling',
       partsBetweenContentAndUrl: [' ', '\t', '  \t '],
@@ -152,7 +152,7 @@ describe('A video URL starting with a hash mark ("#")', () => {
 
 
 describe("A video convention's URL", () => {
-  it("can contain spaces", () => {
+  it('can contain spaces', () => {
     expectEveryPermutationOfBracketsAroundContentAndUrl({
       content: 'video: ghostly howling',
       partsBetweenContentAndUrl: [' ', '\t', '  \t '],
@@ -163,7 +163,7 @@ describe("A video convention's URL", () => {
     })
   })
 
-  it("does not need to have an extension", () => {
+  it('does not need to have an extension', () => {
     expectEveryPermutationOfBracketsAroundContentAndUrl({
       content: 'video: ghostly howling',
       partsBetweenContentAndUrl: [' ', '\t', '  \t '],
@@ -210,7 +210,7 @@ describe('A video description (enclosed by parentheses)', () => {
 })
 
 
-describe("A video URL (enclosed by square brackets)", () => {
+describe('A video URL (enclosed by square brackets)', () => {
   it('can contain matching square brackets', () => {
     expect(Up.parse('(video: ghosts eating luggage)[http://example.com/?state=[NE]]')).to.deep.equal(
       new Up.Document([
@@ -227,7 +227,7 @@ describe("A video URL (enclosed by square brackets)", () => {
 })
 
 
-describe("A video URL (enclosed by parentheses)", () => {
+describe('A video URL (enclosed by parentheses)', () => {
   it('can contain matching parentheses', () => {
     expect(Up.parse('[video: ghosts eating luggage](http://example.com/?state=(NE))')).to.deep.equal(
       new Up.Document([

@@ -40,10 +40,10 @@ context('2 consecutive hyphens normally produce an en dash.', () => {
 
   context('This does not apply within:', () => {
     specify('Link URLs', () => {
-      expect(Up.parse("[American flag emoji] (https://example.com/empojis/US--flag?info)")).to.deep.equal(
+      expect(Up.parse('[American flag emoji] (https://example.com/empojis/US--flag?info)')).to.deep.equal(
         insideDocumentAndParagraph([
           new Up.Link([
-            new Up.Text("American flag emoji")
+            new Up.Text('American flag emoji')
           ], 'https://example.com/empojis/US--flag?info')
         ]))
     })
@@ -76,7 +76,7 @@ context('2 consecutive hyphens normally produce an en dash.', () => {
     })
 
     specify('Inline code', () => {
-      expect(Up.parse("`i--;`")).to.deep.equal(
+      expect(Up.parse('`i--;`')).to.deep.equal(
         insideDocumentAndParagraph([
           new Up.InlineCode('i--;')
         ]))
@@ -91,7 +91,7 @@ for (let i = items.length - 1; i >= 0; i--) { }
       expect(Up.parse(markup)).to.deep.equal(
         new Up.Document([
           new Up.CodeBlock(
-            `for (let i = items.length - 1; i >= 0; i--) { }`)
+            'for (let i = items.length - 1; i >= 0; i--) { }')
         ]))
     })
   })

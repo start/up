@@ -108,7 +108,7 @@ context('The opening bracket for parenthetical conventions cannot be followed by
 })
 
 
-context("Due to syntax for forgiving conventions, they cannot be empty or blank.", () => {
+context('Due to syntax for forgiving conventions, they cannot be empty or blank.', () => {
   context('With asterisks:', () => {
     specify('Emphasis', () => {
       // If the asterisks were alone on a line, they would be interpreted as a nested bulleted list.
@@ -140,7 +140,7 @@ context("Due to syntax for forgiving conventions, they cannot be empty or blank.
     })
 
 
-    context("Umatched delimiters are preserved as plain text. This includes delimiters with a length of...", () => {
+    context('Umatched delimiters are preserved as plain text. This includes delimiters with a length of...', () => {
       specify('1 character', () => {
         expect(Up.parse('*')).to.deep.equal(
           insideDocumentAndParagraph([
@@ -203,7 +203,7 @@ context("Due to syntax for forgiving conventions, they cannot be empty or blank.
     })
 
 
-    context("Umatched delimiters are preserved as plain text. This includes delimiters with a length of...", () => {
+    context('Umatched delimiters are preserved as plain text. This includes delimiters with a length of...', () => {
       specify('1 character', () => {
         expect(Up.parse('_')).to.deep.equal(
           insideDocumentAndParagraph([
@@ -265,7 +265,7 @@ context("Due to syntax for forgiving conventions, they cannot be empty or blank.
     })
 
 
-    context("Umatched delimiters are preserved as plain text. This includes delimiters with a length of...", () => {
+    context('Umatched delimiters are preserved as plain text. This includes delimiters with a length of...', () => {
       specify('1 character', () => {
         expect(Up.parse('"')).to.deep.equal(
           insideDocumentAndParagraph([
@@ -364,7 +364,7 @@ context("Due to syntax for forgiving conventions, they cannot be empty or blank.
 
 
 context('When a link has empty or blank content, its URL serves as its content:', () => {
-  specify("Empty content", () => {
+  specify('Empty content', () => {
     expect(Up.parse('()[https://google.com]')).to.deep.equal(
       insideDocumentAndParagraph([
         new Up.Link([
@@ -373,7 +373,7 @@ context('When a link has empty or blank content, its URL serves as its content:'
       ]))
   })
 
-  it("Blank content", () => {
+  it('Blank content', () => {
     expect(Up.parse('[ \t ](ftp://google.com)')).to.deep.equal(
       insideDocumentAndParagraph([
         new Up.Link([
@@ -386,7 +386,7 @@ context('When a link has empty or blank content, its URL serves as its content:'
 
 context('An otherwise-valid link:', () => {
   describe('With an empty URL', () => {
-    it("does not produce a link", () => {
+    it('does not produce a link', () => {
       expect(Up.parse('[*Yggdra Union*][]')).to.deep.equal(
         insideDocumentAndParagraph([
           new Up.SquareParenthetical([
@@ -405,7 +405,7 @@ context('An otherwise-valid link:', () => {
 
 
   describe('With a blank URL', () => {
-    it("does not produce a link", () => {
+    it('does not produce a link', () => {
       expect(Up.parse('[*Yggdra Union*]( \t )')).to.deep.equal(
         insideDocumentAndParagraph([
           new Up.SquareParenthetical([
@@ -461,7 +461,7 @@ context('An otherwise-valid link:', () => {
 
 
   describe('with an escaped blank URL', () => {
-    it("does not produce a link", () => {
+    it('does not produce a link', () => {
       expect(Up.parse('[*Yggdra Union*](\\ )')).to.deep.equal(
         insideDocumentAndParagraph([
           new Up.SquareParenthetical([
@@ -498,7 +498,7 @@ context("When an image's description is empty or blank, its URL serves as its de
 
 
 describe('An otherwise-valid image with an empty URL', () => {
-  it("does not produce an image", () => {
+  it('does not produce an image', () => {
     expect(Up.parse('[image: Yggdra Union]()')).to.deep.equal(
       insideDocumentAndParagraph([
         new Up.SquareParenthetical([
@@ -513,7 +513,7 @@ describe('An otherwise-valid image with an empty URL', () => {
 
 
 describe('An otherwise-valid image with a blank URL', () => {
-  it("does not produce an image", () => {
+  it('does not produce an image', () => {
     expect(Up.parse('[image: Yggdra Union]( \t \t)')).to.deep.equal(
       insideDocumentAndParagraph([
         new Up.SquareParenthetical([
@@ -525,7 +525,7 @@ describe('An otherwise-valid image with a blank URL', () => {
 })
 
 
-describe("An otherwise-valid image missing its bracketed URL is treated as bracketed text. This applies when the bracketed description is followed by:", () => {
+describe('An otherwise-valid image missing its bracketed URL is treated as bracketed text. This applies when the bracketed description is followed by:', () => {
   specify('Nothing', () => {
     expect(Up.parse('[image: haunted house]')).to.deep.equal(
       insideDocumentAndParagraph([
@@ -578,7 +578,7 @@ context("When an audio convention's description is empty or blank, its URL serve
 
 
 describe('An audio convention with an empty URL', () => {
-  it("does not produce an audio convention", () => {
+  it('does not produce an audio convention', () => {
     expect(Up.parse('(audio: Yggdra Union)[]')).to.deep.equal(
       insideDocumentAndParagraph([
         new Up.NormalParenthetical([
@@ -593,7 +593,7 @@ describe('An audio convention with an empty URL', () => {
 
 
 describe('An otherwise-valid audio convention with an empty URL', () => {
-  it("does not produce an audio node", () => {
+  it('does not produce an audio node', () => {
     expect(Up.parse('[audio: Yggdra Union][ \t \t]')).to.deep.equal(
       insideDocumentAndParagraph([
         new Up.SquareParenthetical([
@@ -605,7 +605,7 @@ describe('An otherwise-valid audio convention with an empty URL', () => {
 })
 
 
-describe("An otherwise-valid audio convention missing its bracketed URL is treated as bracketed text. This applies when the bracketed description is followed by:", () => {
+describe('An otherwise-valid audio convention missing its bracketed URL is treated as bracketed text. This applies when the bracketed description is followed by:', () => {
   specify('Nothing', () => {
     expect(Up.parse('[audio: haunted house]')).to.deep.equal(
       insideDocumentAndParagraph([
@@ -658,7 +658,7 @@ context("When a video's description is empty or blank, its URL serves as its des
 
 
 describe('An otherwise-valid video with an empty URL', () => {
-  it("does not produce a video", () => {
+  it('does not produce a video', () => {
     expect(Up.parse('(video: Yggdra Union)[]')).to.deep.equal(
       insideDocumentAndParagraph([
         new Up.NormalParenthetical([
@@ -673,7 +673,7 @@ describe('An otherwise-valid video with an empty URL', () => {
 
 
 describe('An otherwise-valid video with a blank URL', () => {
-  it("does not produce a video", () => {
+  it('does not produce a video', () => {
     expect(Up.parse('[video: Yggdra Union][ \t \t]')).to.deep.equal(
       insideDocumentAndParagraph([
         new Up.SquareParenthetical([
@@ -685,7 +685,7 @@ describe('An otherwise-valid video with a blank URL', () => {
 })
 
 
-context("An otherwise-valid video missing its bracketed URL is treated as bracketed text. This applies when the bracketed description is followed by:", () => {
+context('An otherwise-valid video missing its bracketed URL is treated as bracketed text. This applies when the bracketed description is followed by:', () => {
   specify('Nothing', () => {
     expect(Up.parse('[video: haunted house]')).to.deep.equal(
       insideDocumentAndParagraph([
@@ -851,7 +851,7 @@ describe('An inline revealable convention with escaped blank content', () => {
 
 
 describe('An otherwise-linified revealable convention with escaped blank content', () => {
-  it("is not linkified. Instead, the bracketed URL is treated as the appropriate bracketed convention", () => {
+  it('is not linkified. Instead, the bracketed URL is treated as the appropriate bracketed convention', () => {
     expect(Up.parse("On Professor Oak's right arm is a tattoo of [NSFW: a naked Mr. Mime](\\ )")).to.deep.equal(
       insideDocumentAndParagraph([
         new Up.Text("On Professor Oak's right arm is a tattoo of "),

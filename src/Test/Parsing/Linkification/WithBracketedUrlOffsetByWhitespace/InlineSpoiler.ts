@@ -475,7 +475,7 @@ describe('If there is nothing but whitspace between an inline revealable and a b
 })
 
 
-describe("When a linkified revealable convention has whitespace between itself and its URL", () => {
+describe('When a linkified revealable convention has whitespace between itself and its URL', () => {
   it('its URL can contain escaped whitespace', () => {
     expectEveryPermutationOfBracketsAroundContentAndUrl({
       content: 'SPOILER: something terrible',

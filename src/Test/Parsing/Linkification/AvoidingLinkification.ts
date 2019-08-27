@@ -25,7 +25,7 @@ context('Once a convention has been linkified, it cannot be linkified again. Thi
       ]))
   })
 
-  specify("Footnotes", () => {
+  specify('Footnotes', () => {
     const markup = "I don't eat cereal (^Well, I do, but I pretend not to.)[http://example.com/luckycharms] (https://example.com/cereal-problems) and I never have."
 
     const footnote =
@@ -48,7 +48,7 @@ context('Once a convention has been linkified, it cannot be linkified again. Thi
             ], 'https://example.com/cereal-problems'),
             new Up.Text(')')
           ]),
-          new Up.Text(" and I never have.")
+          new Up.Text(' and I never have.')
         ]),
         new Up.FootnoteBlock([footnote])
       ]))

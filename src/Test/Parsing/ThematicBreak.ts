@@ -168,7 +168,7 @@ describe('Consecutive thematic break streaks', () => {
 
 context('Outline conventions are evaluated before inline conventions. Therefore, thematic break streaks can be comprised of characters that have special role inline. This includes:', () => {
   context("3 hyphens (em dash). Just like any other thematic break streak, '---' can be:", () => {
-    specify("Alone on a line", () => {
+    specify('Alone on a line', () => {
       const markup = `
 ---
 
@@ -183,7 +183,7 @@ And that's my story.`
         ]))
     })
 
-    specify("Alone on a line but surrounded by whitespace", () => {
+    specify('Alone on a line but surrounded by whitespace', () => {
       const markup = `
   \t --- \t
 
@@ -201,7 +201,7 @@ And that's my story.`
 
 
   context("A plus sign followed by a hyphen (plus-minus sign). Like any other thematic break streak, a streak containing '+-' can be:", () => {
-    specify("Alone on a line", () => {
+    specify('Alone on a line', () => {
       const markup = `
 +-+-+-+-
 
@@ -216,7 +216,7 @@ And that's my story.`
         ]))
     })
 
-    specify("Alone on a line but surrounded by whitespace", () => {
+    specify('Alone on a line but surrounded by whitespace', () => {
       const markup = `
   \t +-+-+-+- \t
 

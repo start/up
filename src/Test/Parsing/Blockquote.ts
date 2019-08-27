@@ -24,8 +24,8 @@ describe('Consecutive lines starting with "> "', () => {
 })
 
 
-describe("Blockquote delimeters", () => {
-  specify("can have their trailing space omitted", () => {
+describe('Blockquote delimeters', () => {
+  specify('can have their trailing space omitted', () => {
     const markup = `
 >Hello, world!
 >
@@ -46,7 +46,7 @@ describe("Blockquote delimeters", () => {
 })
 
 
-context("Within a blockquote", () => {
+context('Within a blockquote', () => {
   specify('some delimiters can have a trailing space while other delimiters do not', () => {
     const markup = `
 >Hello, world!
@@ -66,7 +66,7 @@ context("Within a blockquote", () => {
       ]))
   })
 
-  context("A space directly following greater than sign is considered part of the delimiter", () => {
+  context('A space directly following greater than sign is considered part of the delimiter', () => {
     specify('So it takes 3 spaces from the ">" to provide indention', () => {
       const markup = `
 > Charmander
@@ -151,7 +151,7 @@ describe('A blockquote', () => {
         new Up.Text('Hello, world!')
       ], {
           level: 1,
-          titleMarkup: "Hello, world!",
+          titleMarkup: 'Hello, world!',
           ordinalInTableOfContents: 1
         })
 
@@ -325,7 +325,7 @@ describe('A single line blockquote', () => {
 
 describe('Multiple blockquote delimiters, each without their trailing space, followed by a final blockquote delimiter with its trailing space,', () => {
   it('produce nested blockquote nodes, one for each delimiter', () => {
-    expect(Up.parse(`>>> Hello, world!`)).to.deep.equal(
+    expect(Up.parse('>>> Hello, world!')).to.deep.equal(
       new Up.Document([
         new Up.Blockquote([
           new Up.Blockquote([
@@ -343,7 +343,7 @@ describe('Multiple blockquote delimiters, each without their trailing space, fol
 
 describe('Multiple blockquote delimiters, each with their trailing space, followed by a final blockquote delimiter without its trailing space,', () => {
   it('produce nested blockquote nodes, one for each delimiter', () => {
-    expect(Up.parse(`> > >Hello, world!`)).to.deep.equal(
+    expect(Up.parse('> > >Hello, world!')).to.deep.equal(
       new Up.Document([
         new Up.Blockquote([
           new Up.Blockquote([

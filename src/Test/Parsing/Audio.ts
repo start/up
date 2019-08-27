@@ -60,7 +60,7 @@ context('An audio convention that is the only convention on its line is not plac
 
 
 describe("The brackets enclosing an audio convention's description and URL", () => {
-  it("can be different from each other (as long as each pair of brackets is matching)", () => {
+  it('can be different from each other (as long as each pair of brackets is matching)', () => {
     expectEveryPermutationOfBracketsAroundContentAndUrl({
       content: 'audio: ghostly howling',
       url: 'http://example.com/ghosts.ogg',
@@ -72,8 +72,8 @@ describe("The brackets enclosing an audio convention's description and URL", () 
 })
 
 
-context("When an audio convention has whitespace before its bracketed URL, there are no additional restrictions on the URL.", () => {
-  specify("The URL can contain whitespace", () => {
+context('When an audio convention has whitespace before its bracketed URL, there are no additional restrictions on the URL.', () => {
+  specify('The URL can contain whitespace', () => {
     expectEveryPermutationOfBracketsAroundContentAndUrl({
       content: 'audio: ghostly howling',
       partsBetweenContentAndUrl: [' ', '\t', '  \t '],
@@ -84,7 +84,7 @@ context("When an audio convention has whitespace before its bracketed URL, there
     })
   })
 
-  specify("The URL can start with whitespace", () => {
+  specify('The URL can start with whitespace', () => {
     expectEveryPermutationOfBracketsAroundContentAndUrl({
       content: 'audio: ghostly howling',
       partsBetweenContentAndUrl: [' ', '\t', '  \t '],
@@ -153,7 +153,7 @@ describe('An audio URL starting with a hash mark ("#")', () => {
 
 
 describe("An audio convention's URL", () => {
-  it("can contain spaces", () => {
+  it('can contain spaces', () => {
     expectEveryPermutationOfBracketsAroundContentAndUrl({
       content: 'audio: ghostly howling',
       partsBetweenContentAndUrl: [' ', '\t', '  \t '],
@@ -164,7 +164,7 @@ describe("An audio convention's URL", () => {
     })
   })
 
-  it("does not need to have an extension", () => {
+  it('does not need to have an extension', () => {
     expectEveryPermutationOfBracketsAroundContentAndUrl({
       content: 'audio: ghostly howling',
       partsBetweenContentAndUrl: [' ', '\t', '  \t '],

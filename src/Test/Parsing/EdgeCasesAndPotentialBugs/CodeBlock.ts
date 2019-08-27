@@ -88,7 +88,7 @@ context('A code block with containing zero lines of code produces an empty code 
 
 
 describe('An unmatched streak of backticks, following a normal "enclosed" code block whose streaks are the same length as the unmatched streak,', () => {
-  it("produces a code block node containing the rest of the document", () => {
+  it('produces a code block node containing the rest of the document', () => {
     const markup = `
 Check out the code below!
 

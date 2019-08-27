@@ -9,37 +9,37 @@ context('When the "createSourceMap" setting is enabled, outline nodes are given 
     }
   })
 
-  specify("The source line numbers start at 1", () => {
+  specify('The source line numbers start at 1', () => {
     expect(up.parse('Hi!')).to.deep.equal(
       new Up.Document([
-        new Up.Paragraph([new Up.Text("Hi!")], { sourceLineNumber: 1 })
+        new Up.Paragraph([new Up.Text('Hi!')], { sourceLineNumber: 1 })
       ]))
   })
 
 
   context('Leading blank lines are accounted for (i.e. not ignored). For example:', () => {
-    specify("1 leading blank line", () => {
+    specify('1 leading blank line', () => {
       const markup = `
 I actually start on the second line.`
 
       expect(up.parse(markup)).to.deep.equal(
         new Up.Document([
-          new Up.Paragraph([new Up.Text("I actually start on the second line.")], { sourceLineNumber: 2 })
+          new Up.Paragraph([new Up.Text('I actually start on the second line.')], { sourceLineNumber: 2 })
         ]))
     })
 
-    specify("2 leading blank lines", () => {
+    specify('2 leading blank lines', () => {
       const markup = `
 
 I actually start on the third line.`
 
       expect(up.parse(markup)).to.deep.equal(
         new Up.Document([
-          new Up.Paragraph([new Up.Text("I actually start on the third line.")], { sourceLineNumber: 3 })
+          new Up.Paragraph([new Up.Text('I actually start on the third line.')], { sourceLineNumber: 3 })
         ]))
     })
 
-    specify("6 leading blank lines", () => {
+    specify('6 leading blank lines', () => {
       const markup = `
 
 
@@ -50,7 +50,7 @@ I actually start on the seventh line.`
 
       expect(up.parse(markup)).to.deep.equal(
         new Up.Document([
-          new Up.Paragraph([new Up.Text("I actually start on the seventh line.")], { sourceLineNumber: 7 })
+          new Up.Paragraph([new Up.Text('I actually start on the seventh line.')], { sourceLineNumber: 7 })
         ]))
     })
   })
@@ -66,7 +66,7 @@ I enjoy apples
         const heading =
           new Up.Heading([new Up.Text('I enjoy apples')], {
             level: 1,
-            titleMarkup: "I enjoy apples",
+            titleMarkup: 'I enjoy apples',
             ordinalInTableOfContents: 1,
             sourceLineNumber: 2
           })
@@ -86,7 +86,7 @@ I enjoy apples
         const heading =
           new Up.Heading([new Up.Text('I enjoy apples')], {
             level: 1,
-            titleMarkup: "I enjoy apples",
+            titleMarkup: 'I enjoy apples',
             ordinalInTableOfContents: 1,
             sourceLineNumber: 2
           })
@@ -237,10 +237,10 @@ Apples are blue`
         new Up.Document([
           new Up.LineBlock([
             new Up.LineBlock.Line([
-              new Up.Text("Roses are read")
+              new Up.Text('Roses are read')
             ]),
             new Up.LineBlock.Line([
-              new Up.Text("Apples are blue")
+              new Up.Text('Apples are blue')
             ])
           ], { sourceLineNumber: 2 })
         ]))
@@ -272,7 +272,7 @@ SPOILER:
 
     context('Thematic breaks indicated by:', () => {
       specify('A streak', () => {
-        const markup = `~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-`
+        const markup = '~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-'
 
         expect(up.parse(markup)).to.deep.equal(
           new Up.Document([
@@ -280,7 +280,7 @@ SPOILER:
           ]))
       })
 
-      specify("3 blank lines", () => {
+      specify('3 blank lines', () => {
         const markup = `
 The end.
 
@@ -290,13 +290,13 @@ No, really. That was it.`
 
         expect(up.parse(markup)).to.deep.equal(
           new Up.Document([
-            new Up.Paragraph([new Up.Text("The end.")], { sourceLineNumber: 2 }),
+            new Up.Paragraph([new Up.Text('The end.')], { sourceLineNumber: 2 }),
             new Up.ThematicBreak({ sourceLineNumber: 3 }),
-            new Up.Paragraph([new Up.Text("No, really. That was it.")], { sourceLineNumber: 6 })
+            new Up.Paragraph([new Up.Text('No, really. That was it.')], { sourceLineNumber: 6 })
           ]))
       })
 
-      specify("More than 3 blank lines", () => {
+      specify('More than 3 blank lines', () => {
         const markup = `
 The end.
 
@@ -311,13 +311,13 @@ No, really. That was it.`
 
         expect(up.parse(markup)).to.deep.equal(
           new Up.Document([
-            new Up.Paragraph([new Up.Text("The end.")], { sourceLineNumber: 2 }),
+            new Up.Paragraph([new Up.Text('The end.')], { sourceLineNumber: 2 }),
             new Up.ThematicBreak({ sourceLineNumber: 3 }),
-            new Up.Paragraph([new Up.Text("No, really. That was it.")], { sourceLineNumber: 11 })
+            new Up.Paragraph([new Up.Text('No, really. That was it.')], { sourceLineNumber: 11 })
           ]))
       })
 
-      specify("Multiple streaks and instances of 3+ blank lines (all of which are condensed into one thematic break node)", () => {
+      specify('Multiple streaks and instances of 3+ blank lines (all of which are condensed into one thematic break node)', () => {
         const markup = `
 The end.
 
@@ -336,9 +336,9 @@ No, really. That was it.`
 
         expect(up.parse(markup)).to.deep.equal(
           new Up.Document([
-            new Up.Paragraph([new Up.Text("The end.")], { sourceLineNumber: 2 }),
+            new Up.Paragraph([new Up.Text('The end.')], { sourceLineNumber: 2 }),
             new Up.ThematicBreak({ sourceLineNumber: 3 }),
-            new Up.Paragraph([new Up.Text("No, really. That was it.")], { sourceLineNumber: 15 })
+            new Up.Paragraph([new Up.Text('No, really. That was it.')], { sourceLineNumber: 15 })
           ]))
       })
     })
@@ -358,7 +358,7 @@ const reason = "They are cheap and delicious."
         ]))
     })
 
-    specify("Tables without captions", () => {
+    specify('Tables without captions', () => {
       const markup = `
 Table:
 
@@ -385,7 +385,7 @@ Chrono Cross;     1999`
         ]))
     })
 
-    specify("Tables with a header column and without a caption", () => {
+    specify('Tables with a header column and without a caption', () => {
       const markup = `
 Table:
 
@@ -483,7 +483,7 @@ I do eat apples, though.`
         new Up.Paragraph([
           new Up.Text("I don't eat cereal."),
           footnote,
-          new Up.Text(" Never have.")
+          new Up.Text(' Never have.')
         ], { sourceLineNumber: 2 }),
         new Up.FootnoteBlock([footnote]),
         new Up.Paragraph([new Up.Text('I do eat apples, though.')], { sourceLineNumber: 4 })
@@ -519,23 +519,23 @@ Pink lady.`
     const enjoyApplesHeading =
       new Up.Heading([new Up.Text('I enjoy apples')], {
         level: 1,
-        titleMarkup: "I enjoy apples",
+        titleMarkup: 'I enjoy apples',
         ordinalInTableOfContents: 1,
         sourceLineNumber: 2
       })
 
     const bestFruitHeading =
-      new Up.Heading([new Up.Text("The best fruit")], {
+      new Up.Heading([new Up.Text('The best fruit')], {
         level: 2,
-        titleMarkup: "The best fruit",
+        titleMarkup: 'The best fruit',
         ordinalInTableOfContents: 2,
         sourceLineNumber: 12
       })
 
     const bestAppleHeading =
-      new Up.Heading([new Up.Text("The best apple")], {
+      new Up.Heading([new Up.Text('The best apple')], {
         level: 2,
-        titleMarkup: "The best apple",
+        titleMarkup: 'The best apple',
         ordinalInTableOfContents: 3,
         sourceLineNumber: 18
       })
@@ -583,23 +583,23 @@ Pink lady
     const enjoyApplesHeading =
       new Up.Heading([new Up.Text('I enjoy apples')], {
         level: 1,
-        titleMarkup: "I enjoy apples",
+        titleMarkup: 'I enjoy apples',
         ordinalInTableOfContents: 1,
         sourceLineNumber: 2
       })
 
     const bestFruitHeading =
-      new Up.Heading([new Up.Text("The best fruit")], {
+      new Up.Heading([new Up.Text('The best fruit')], {
         level: 2,
-        titleMarkup: "The best fruit",
+        titleMarkup: 'The best fruit',
         ordinalInTableOfContents: 2,
         sourceLineNumber: 9
       })
 
     const bestAppleHeading =
-      new Up.Heading([new Up.Text("The best apple")], {
+      new Up.Heading([new Up.Text('The best apple')], {
         level: 2,
-        titleMarkup: "The best apple",
+        titleMarkup: 'The best apple',
         ordinalInTableOfContents: 3,
         sourceLineNumber: 16
       })

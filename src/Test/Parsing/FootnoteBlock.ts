@@ -4,7 +4,7 @@ import * as Up from '../../Main'
 
 context('Within most top-level outline conventions, footnotes produce a footnote block appearing after that convention. Specifically:', () => {
   context('Paragraphs:', () => {
-    specify("With one footnote", () => {
+    specify('With one footnote', () => {
       const markup = `
 I don't eat cereal. (^Well, I do, but I pretend not to.) Never have.
 
@@ -19,7 +19,7 @@ Anyway, none of that matters.`
           new Up.Paragraph([
             new Up.Text("I don't eat cereal."),
             footnote,
-            new Up.Text(" Never have.")
+            new Up.Text(' Never have.')
           ]),
           new Up.FootnoteBlock([footnote]),
           new Up.Paragraph([
@@ -28,7 +28,7 @@ Anyway, none of that matters.`
         ]))
     })
 
-    specify("With multiple footnotes", () => {
+    specify('With multiple footnotes', () => {
       const markup = `
 I don't eat cereal. (^Well, I do, but I pretend not to.) Never have. (^Except for Mondays.)
 
@@ -48,7 +48,7 @@ Anyway, none of that matters.`
           new Up.Paragraph([
             new Up.Text("I don't eat cereal."),
             footnotes[0],
-            new Up.Text(" Never have."),
+            new Up.Text(' Never have.'),
             footnotes[1]
           ]),
           new Up.FootnoteBlock(footnotes),
@@ -61,7 +61,7 @@ Anyway, none of that matters.`
 
 
   context('Headings:', () => {
-    specify("With one footnote", () => {
+    specify('With one footnote', () => {
       const markup = `
 I don't eat cereal. (^Well, I do, but I pretend not to.) Never have.
 ================
@@ -75,7 +75,7 @@ Anyway, none of that matters.`
       const heading = new Up.Heading([
         new Up.Text("I don't eat cereal."),
         footnote,
-        new Up.Text(" Never have.")
+        new Up.Text(' Never have.')
       ], {
           level: 1,
           titleMarkup: "I don't eat cereal. (^Well, I do, but I pretend not to.) Never have.",
@@ -92,7 +92,7 @@ Anyway, none of that matters.`
         ], new Up.Document.TableOfContents([heading])))
     })
 
-    specify("With multiple footnotes", () => {
+    specify('With multiple footnotes', () => {
       const markup = `
 I don't eat cereal. (^Well, I do, but I pretend not to.) Never have. (^Except for Mondays.)
 ================
@@ -111,7 +111,7 @@ Anyway, none of that matters.`
       const heading = new Up.Heading([
         new Up.Text("I don't eat cereal."),
         footnotes[0],
-        new Up.Text(" Never have."),
+        new Up.Text(' Never have.'),
         footnotes[1]
       ], {
           level: 1,
@@ -151,11 +151,11 @@ Anyway, none of that matters.`
       new Up.Document([
         new Up.LineBlock([
           new Up.LineBlock.Line([
-            new Up.Text("Roses are red"),
+            new Up.Text('Roses are red'),
             footnotes[0]
           ]),
           new Up.LineBlock.Line([
-            new Up.Text("Violets are blue"),
+            new Up.Text('Violets are blue'),
             footnotes[1]
           ])
         ]),
@@ -181,10 +181,10 @@ Anyway, none of that matters.`
 
     const footnotes = [
       new Up.Footnote([
-        new Up.Text("Well, I do, but I pretend not to.")
+        new Up.Text('Well, I do, but I pretend not to.')
       ], { referenceNumber: 1 }),
       new Up.Footnote([
-        new Up.Text("Or touch.")
+        new Up.Text('Or touch.')
       ], { referenceNumber: 2 }),
       new Up.Footnote([
         new Up.Text('This is not my line.')
@@ -202,7 +202,7 @@ Anyway, none of that matters.`
             new Up.Paragraph([
               new Up.Text("I don't eat cereal."),
               footnotes[0],
-              new Up.Text(" Never have.")
+              new Up.Text(' Never have.')
             ]),
             new Up.Paragraph([
               new Up.Text("It's too expensive.")
@@ -213,18 +213,18 @@ Anyway, none of that matters.`
             new Up.Paragraph([
               new Up.Text("I don't eat"),
               footnotes[1],
-              new Up.Text(" pumpkins.")
+              new Up.Text(' pumpkins.')
             ])
           ]),
 
           new Up.BulletedList.Item([
             new Up.LineBlock([
               new Up.LineBlock.Line([
-                new Up.Text("Roses are red"),
+                new Up.Text('Roses are red'),
                 footnotes[2]
               ]),
               new Up.LineBlock.Line([
-                new Up.Text("Violets are blue"),
+                new Up.Text('Violets are blue'),
                 footnotes[3]
               ])
             ])
@@ -251,10 +251,10 @@ Anyway, none of that matters.`
 
     const footnotes = [
       new Up.Footnote([
-        new Up.Text("Well, I do, but I pretend not to.")
+        new Up.Text('Well, I do, but I pretend not to.')
       ], { referenceNumber: 1 }),
       new Up.Footnote([
-        new Up.Text("Or touch.")
+        new Up.Text('Or touch.')
       ], { referenceNumber: 2 })
     ]
 
@@ -265,7 +265,7 @@ Anyway, none of that matters.`
             new Up.Paragraph([
               new Up.Text("I don't eat cereal."),
               footnotes[0],
-              new Up.Text(" Never have.")
+              new Up.Text(' Never have.')
             ]),
             new Up.Paragraph([
               new Up.Text("It's too expensive.")
@@ -275,7 +275,7 @@ Anyway, none of that matters.`
             new Up.Paragraph([
               new Up.Text("I don't eat"),
               footnotes[1],
-              new Up.Text(" pumpkins.")
+              new Up.Text(' pumpkins.')
             ])
           ], { ordinal: 2 })
         ]),
@@ -316,16 +316,16 @@ Anyway, none of that matters.`
           new Up.Paragraph([
             new Up.Text("I don't eat cereal."),
             footnotes[0],
-            new Up.Text(" Never have."),
+            new Up.Text(' Never have.'),
             footnotes[1]
           ]),
           new Up.LineBlock([
             new Up.LineBlock.Line([
-              new Up.Text("Roses are red"),
+              new Up.Text('Roses are red'),
               footnotes[2]
             ]),
             new Up.LineBlock.Line([
-              new Up.Text("Violets are blue"),
+              new Up.Text('Violets are blue'),
               footnotes[3]
             ])
           ])
@@ -354,13 +354,13 @@ Anyway, none of that matters.`
 
     const footnotes = [
       new Up.Footnote([
-        new Up.Text("What happens to the creature if the seed is never planted?")
+        new Up.Text('What happens to the creature if the seed is never planted?')
       ], { referenceNumber: 1 }),
       new Up.Footnote([
         new Up.Text("This probably wasn't a reference to the family of plants.")
       ], { referenceNumber: 2 }),
       new Up.Footnote([
-        new Up.Text("Or maybe Ash simply smelled really good.")
+        new Up.Text('Or maybe Ash simply smelled really good.')
       ], { referenceNumber: 3 })
     ]
 
@@ -453,7 +453,7 @@ Anyway, none of that matters.`
         ]))
     })
 
-    specify("Their content rows", () => {
+    specify('Their content rows', () => {
       const markup = `
 Table:
 
@@ -510,7 +510,7 @@ Anyway, none of that matters.`
         ]))
     })
 
-    specify("Their captions", () => {
+    specify('Their captions', () => {
       const markup = `
 Table: Final Fantasy [^ ファイナルファンタジ in Japan] in the 1980s [^ An old series!]
 
@@ -583,7 +583,7 @@ Anyway, none of that matters.`
         ]))
     })
 
-    specify("Their header column cells", () => {
+    specify('Their header column cells', () => {
       const markup = `
 Table: Final Fantasy [^ ファイナルファンタジ in Japan] in the 1980s
 
@@ -686,17 +686,17 @@ SPOILER:
           new Up.Paragraph([
             new Up.Text("I don't eat cereal."),
             paragraphFootnotes[0],
-            new Up.Text(" Never have."),
+            new Up.Text(' Never have.'),
             paragraphFootnotes[1]
           ]),
           new Up.FootnoteBlock(paragraphFootnotes),
           new Up.LineBlock([
             new Up.LineBlock.Line([
-              new Up.Text("Roses are red"),
+              new Up.Text('Roses are red'),
               lineBlockFootnotes[0]
             ]),
             new Up.LineBlock.Line([
-              new Up.Text("Violets are blue"),
+              new Up.Text('Violets are blue'),
               lineBlockFootnotes[1]
             ])
           ]),
@@ -710,7 +710,7 @@ SPOILER:
 
 
   context('Within revealable blocks, when footnotes are nested inside 2 or more (inner) outline conventions', () => {
-    specify("they get placed into footnote blocks after the outermost (inner) outline conventions", () => {
+    specify('they get placed into footnote blocks after the outermost (inner) outline conventions', () => {
       const markup = `
 SPOILER:
 
@@ -724,10 +724,10 @@ SPOILER:
 
       const footnotes = [
         new Up.Footnote([
-          new Up.Text("Well, I do, but I pretend not to.")
+          new Up.Text('Well, I do, but I pretend not to.')
         ], { referenceNumber: 1 }),
         new Up.Footnote([
-          new Up.Text("Or touch.")
+          new Up.Text('Or touch.')
         ], { referenceNumber: 2 })
       ]
 
@@ -740,7 +740,7 @@ SPOILER:
                 new Up.Paragraph([
                   new Up.Text("I don't eat cereal."),
                   footnotes[0],
-                  new Up.Text(" Never have.")
+                  new Up.Text(' Never have.')
                 ]),
                 new Up.Paragraph([
                   new Up.Text("It's too expensive.")
@@ -750,7 +750,7 @@ SPOILER:
                 new Up.Paragraph([
                   new Up.Text("I don't eat"),
                   footnotes[1],
-                  new Up.Text(" pumpkins.")
+                  new Up.Text(' pumpkins.')
                 ])
               ])
             ]),
@@ -782,10 +782,10 @@ I wear glasses (^It's actually been a dream of mine ever since I was young.) eve
 
     const footnotesInBulletedList = [
       new Up.Footnote([
-        new Up.Text("Well, I do, but I pretend not to.")
+        new Up.Text('Well, I do, but I pretend not to.')
       ], { referenceNumber: 1 }),
       new Up.Footnote([
-        new Up.Text("Or touch.")
+        new Up.Text('Or touch.')
       ], { referenceNumber: 2 })
     ]
 
@@ -801,7 +801,7 @@ I wear glasses (^It's actually been a dream of mine ever since I was young.) eve
             new Up.Paragraph([
               new Up.Text("I don't eat cereal."),
               footnotesInBulletedList[0],
-              new Up.Text(" Never have.")
+              new Up.Text(' Never have.')
             ]),
             new Up.Paragraph([
               new Up.Text("It's too expensive.")
@@ -811,16 +811,16 @@ I wear glasses (^It's actually been a dream of mine ever since I was young.) eve
             new Up.Paragraph([
               new Up.Text("I don't eat"),
               footnotesInBulletedList[1],
-              new Up.Text(" pumpkins.")
+              new Up.Text(' pumpkins.')
             ])
           ])
         ]),
         new Up.FootnoteBlock(footnotesInBulletedList),
         new Up.ThematicBreak(),
         new Up.Paragraph([
-          new Up.Text("I wear glasses"),
+          new Up.Text('I wear glasses'),
           footnoteInParagraph,
-          new Up.Text(" even while working out.")
+          new Up.Text(' even while working out.')
         ]),
         new Up.FootnoteBlock([footnoteInParagraph])
       ]))
@@ -828,7 +828,7 @@ I wear glasses (^It's actually been a dream of mine ever since I was young.) eve
 })
 
 
-describe("Within an outline convention, a footnote within an (inner) revealable outline convention which follows a footnote before the (inner) revealable outline convention", () => {
+describe('Within an outline convention, a footnote within an (inner) revealable outline convention which follows a footnote before the (inner) revealable outline convention', () => {
   it("has a reference number greater than that of the preceding footnote, but it produces footnote block that appears before the preceding footnote's block", () => {
     const markup = `
 * I don't eat cereal. (^ Well, I do, but I pretend not to.) Never have.
@@ -843,11 +843,11 @@ describe("Within an outline convention, a footnote within an (inner) revealable 
 I wear glasses (^ It's actually been a dream of mine ever since I was young.) even while working out.`
 
     const footnoteInBulletedList = new Up.Footnote([
-      new Up.Text("Well, I do, but I pretend not to.")
+      new Up.Text('Well, I do, but I pretend not to.')
     ], { referenceNumber: 1 })
 
     const footnoteInSpoilerBlock = new Up.Footnote([
-      new Up.Text("Or touch.")
+      new Up.Text('Or touch.')
     ], { referenceNumber: 2 })
 
     const footnoteAfterBulletedList = new Up.Footnote([
@@ -861,7 +861,7 @@ I wear glasses (^ It's actually been a dream of mine ever since I was young.) ev
             new Up.Paragraph([
               new Up.Text("I don't eat cereal."),
               footnoteInBulletedList,
-              new Up.Text(" Never have.")
+              new Up.Text(' Never have.')
             ]),
             new Up.Paragraph([
               new Up.Text("It's too expensive.")
@@ -872,7 +872,7 @@ I wear glasses (^ It's actually been a dream of mine ever since I was young.) ev
               new Up.Paragraph([
                 new Up.Text("I don't eat"),
                 footnoteInSpoilerBlock,
-                new Up.Text(" pumpkins.")
+                new Up.Text(' pumpkins.')
               ]),
               new Up.FootnoteBlock([footnoteInSpoilerBlock])
             ])
@@ -881,9 +881,9 @@ I wear glasses (^ It's actually been a dream of mine ever since I was young.) ev
         new Up.FootnoteBlock([footnoteInBulletedList]),
         new Up.ThematicBreak(),
         new Up.Paragraph([
-          new Up.Text("I wear glasses"),
+          new Up.Text('I wear glasses'),
           footnoteAfterBulletedList,
-          new Up.Text(" even while working out.")
+          new Up.Text(' even while working out.')
         ]),
         new Up.FootnoteBlock([footnoteAfterBulletedList])
       ]))
@@ -906,11 +906,11 @@ describe('Nesed footnotes (footnotes referenced by other footnotes)', () => {
     const firstFootnote = new Up.Footnote([
       new Up.Text("That said, I don't eat cereal."),
       footnoteInsideFirstFootnote,
-      new Up.Text(" Never have.")
+      new Up.Text(' Never have.')
     ], { referenceNumber: 1 })
 
     const secondFootnote = new Up.Footnote([
-      new Up.Text("Probably.")
+      new Up.Text('Probably.')
     ], { referenceNumber: 2 })
 
     expect(Up.parse(markup)).to.deep.equal(
@@ -918,7 +918,7 @@ describe('Nesed footnotes (footnotes referenced by other footnotes)', () => {
         new Up.Paragraph([
           new Up.Text("Me? I'm totally normal."),
           firstFootnote,
-          new Up.Text(" Really."),
+          new Up.Text(' Really.'),
           secondFootnote
         ]),
         new Up.FootnoteBlock([
@@ -935,7 +935,7 @@ describe('Nesed footnotes (footnotes referenced by other footnotes)', () => {
 
     const footnoteInsideFirstInnerFootnote =
       new Up.Footnote([
-        new Up.Text("Only on Mondays…")
+        new Up.Text('Only on Mondays…')
       ], { referenceNumber: 5 })
 
     const secondInnerFootnote = new Up.Footnote([
@@ -954,12 +954,12 @@ describe('Nesed footnotes (footnotes referenced by other footnotes)', () => {
     const firstFootnote = new Up.Footnote([
       new Up.Text("That said, I don't eat cereal."),
       firstInnerFootnote,
-      new Up.Text(" Never have."),
+      new Up.Text(' Never have.'),
       secondInnerFootnote
     ], { referenceNumber: 1 })
 
     const secondFootnote = new Up.Footnote([
-      new Up.Text("Probably.")
+      new Up.Text('Probably.')
     ], { referenceNumber: 2 })
 
     expect(Up.parse(markup)).to.deep.equal(
@@ -967,7 +967,7 @@ describe('Nesed footnotes (footnotes referenced by other footnotes)', () => {
         new Up.Paragraph([
           new Up.Text("Me? I'm totally normal."),
           firstFootnote,
-          new Up.Text(" Really."),
+          new Up.Text(' Really.'),
           secondFootnote
         ]),
         new Up.FootnoteBlock([
@@ -997,15 +997,15 @@ I don't eat (^Or touch.) pumpkins.`
     const firstFootnoteInFirstParagraph = new Up.Footnote([
       new Up.Text("That said, I don't eat cereal."),
       footnoteInsideFirstFootnote,
-      new Up.Text(" Never have.")
+      new Up.Text(' Never have.')
     ], { referenceNumber: 1 })
 
     const secondFootnoteInFirstParagraph = new Up.Footnote([
-      new Up.Text("Probably.")
+      new Up.Text('Probably.')
     ], { referenceNumber: 2 })
 
     const footnoteInSecondParagraph = new Up.Footnote([
-      new Up.Text("Or touch.")
+      new Up.Text('Or touch.')
     ], { referenceNumber: 4 })
 
     expect(Up.parse(markup)).to.deep.equal(
@@ -1013,7 +1013,7 @@ I don't eat (^Or touch.) pumpkins.`
         new Up.Paragraph([
           new Up.Text("Me? I'm totally normal."),
           firstFootnoteInFirstParagraph,
-          new Up.Text(" Really."),
+          new Up.Text(' Really.'),
           secondFootnoteInFirstParagraph
         ]),
         new Up.FootnoteBlock([
@@ -1034,7 +1034,7 @@ I don't eat (^Or touch.) pumpkins.`
 })
 
 
-describe("Within an outline convention, a nested footnote within an (inner) revealable block which follows a nested footnote before the (inner) revealable block", () => {
+describe('Within an outline convention, a nested footnote within an (inner) revealable block which follows a nested footnote before the (inner) revealable block', () => {
   it('has a reference number lower than that of the preceding nested footnote because it gets referenced in an earlier footnote block', () => {
     const markup = `
 > I don't eat cereal. (^Well, I do, but I pretend [^On Mondays.] not to.) Never have.
@@ -1049,21 +1049,21 @@ describe("Within an outline convention, a nested footnote within an (inner) reve
 I wear glasses (^It's actually been a dream of mine ever since I was young.) even while working out.`
 
     const nestedFootnoteInBlockquote = new Up.Footnote([
-      new Up.Text("On Mondays.")
+      new Up.Text('On Mondays.')
     ], { referenceNumber: 4 })
 
     const footnoteInBlockquote = new Up.Footnote([
-      new Up.Text("Well, I do, but I pretend"),
+      new Up.Text('Well, I do, but I pretend'),
       nestedFootnoteInBlockquote,
       new Up.Text(' not to.')
     ], { referenceNumber: 1 })
 
     const nestedFootnoteInRevealableBlock = new Up.Footnote([
-      new Up.Text("Or smell.")
+      new Up.Text('Or smell.')
     ], { referenceNumber: 3 })
 
     const footnoteInRevealableBlock = new Up.Footnote([
-      new Up.Text("Or touch."),
+      new Up.Text('Or touch.'),
       nestedFootnoteInRevealableBlock
     ], { referenceNumber: 2 })
 
@@ -1077,7 +1077,7 @@ I wear glasses (^It's actually been a dream of mine ever since I was young.) eve
           new Up.Paragraph([
             new Up.Text("I don't eat cereal."),
             footnoteInBlockquote,
-            new Up.Text(" Never have.")
+            new Up.Text(' Never have.')
           ]),
           new Up.Paragraph([
             new Up.Text("It's too expensive.")
@@ -1086,7 +1086,7 @@ I wear glasses (^It's actually been a dream of mine ever since I was young.) eve
             new Up.Paragraph([
               new Up.Text("I don't eat"),
               footnoteInRevealableBlock,
-              new Up.Text(" pumpkins.")
+              new Up.Text(' pumpkins.')
             ]),
             new Up.FootnoteBlock([
               footnoteInRevealableBlock,
@@ -1100,9 +1100,9 @@ I wear glasses (^It's actually been a dream of mine ever since I was young.) eve
         ]),
         new Up.ThematicBreak(),
         new Up.Paragraph([
-          new Up.Text("I wear glasses"),
+          new Up.Text('I wear glasses'),
           footnoteAfterBlockquote,
-          new Up.Text(" even while working out.")
+          new Up.Text(' even while working out.')
         ]),
         new Up.FootnoteBlock([footnoteAfterBlockquote])
       ]))

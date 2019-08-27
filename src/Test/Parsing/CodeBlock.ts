@@ -123,7 +123,7 @@ function factorial(n: number): number {
         ]))
     })
 
-    specify("that are unmatched", () => {
+    specify('that are unmatched', () => {
       const markup = `
 \`\`\`
 \`\`\`\`\`\`

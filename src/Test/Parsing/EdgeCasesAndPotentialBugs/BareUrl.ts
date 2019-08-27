@@ -16,7 +16,7 @@ describe('A bare URL containing another URL', () => {
 
 
 context('When a bare URL hostname follows an open square bracket', () => {
-  specify("it will not include a trailing escaped closing square bracket", () => {
+  specify('it will not include a trailing escaped closing square bracket', () => {
     expect(Up.parse('[https://nintendo.com\\]')).to.deep.equal(
       insideDocumentAndParagraph([
         new Up.Text('['),
@@ -30,7 +30,7 @@ context('When a bare URL hostname follows an open square bracket', () => {
 
 
 context('When a bare URL hostname follows an open parenthesis', () => {
-  specify("it will not include a trailing escaped closing parentheses", () => {
+  specify('it will not include a trailing escaped closing parentheses', () => {
     expect(Up.parse('(https://nintendo.com\\)')).to.deep.equal(
       insideDocumentAndParagraph([
         new Up.Text('('),
@@ -43,7 +43,7 @@ context('When a bare URL hostname follows an open parenthesis', () => {
 })
 
 
-describe("Unmatched opening parentheses in a bare URL", () => {
+describe('Unmatched opening parentheses in a bare URL', () => {
   it('do not affect any markup that follows the URL', () => {
     const markup = '(^Well, https://www.example.com/a(normal(url is my favorite site)'
 
@@ -68,7 +68,7 @@ describe("Unmatched opening parentheses in a bare URL", () => {
 })
 
 
-describe("Unmatched opening parentheses in a bare URL", () => {
+describe('Unmatched opening parentheses in a bare URL', () => {
   it('do not prevent parenthesis from closing a subsequent bare URL', () => {
     const markup = '(^Well, https://www.example.com/a(normal(url is better than https://w3.org)'
 
@@ -96,7 +96,7 @@ describe("Unmatched opening parentheses in a bare URL", () => {
 })
 
 
-describe("Unmatched opening parentheses in a bare URL closed by another convention closing", () => {
+describe('Unmatched opening parentheses in a bare URL closed by another convention closing', () => {
   it('do not prevent parenthesis from closing a subsequent bare URL', () => {
     const markup = "(^Well, *https://www.example.com/a(normal(url*'s better than https://w3.org)"
 
@@ -127,7 +127,7 @@ describe("Unmatched opening parentheses in a bare URL closed by another conventi
 
 
 describe('A paragraph ending with a bare URL scheme (without the rest of the URL)', () => {
-  it("is preserved as plain text", () => {
+  it('is preserved as plain text', () => {
     expect(Up.parse('This is a URL scheme: http://')).to.deep.equal(
       insideDocumentAndParagraph([
         new Up.Text('This is a URL scheme: http://')
@@ -137,7 +137,7 @@ describe('A paragraph ending with a bare URL scheme (without the rest of the URL
 
 
 describe('A bare URL scheme followed by a space', () => {
-  it("is preserved as plain text", () => {
+  it('is preserved as plain text', () => {
     expect(Up.parse('http:// is my favorite URL scheme.')).to.deep.equal(
       insideDocumentAndParagraph([
         new Up.Text('http:// is my favorite URL scheme.')
@@ -147,7 +147,7 @@ describe('A bare URL scheme followed by a space', () => {
 
 
 describe('A bare URL scheme (only) immediately followed by another convention closing', () => {
-  it("is preserved as plain text", () => {
+  it('is preserved as plain text', () => {
     expect(Up.parse('*A URL scheme: http://*')).to.deep.equal(
       insideDocumentAndParagraph([
         new Up.Emphasis([
@@ -160,7 +160,7 @@ describe('A bare URL scheme (only) immediately followed by another convention cl
 
 describe('A bare URL followed by a space then a footnote', () => {
   it('produces a link node immediately followed by a footnote node. The space is not put into a text node', () => {
-    const markup = "https://google.com (^An old search engine.)"
+    const markup = 'https://google.com (^An old search engine.)'
 
     const footnote = new Up.Footnote([
       new Up.Text('An old search engine.')
@@ -181,7 +181,7 @@ describe('A bare URL followed by a space then a footnote', () => {
 
 
 describe('A bare URL inside a link', () => {
-  it("does not need a space between itself and the closing bracket that follows", () => {
+  it('does not need a space between itself and the closing bracket that follows', () => {
     expect(Up.parse('[Trust me: https://inner.example.com/fake](https://outer.example.com/real)')).to.deep.equal(
       insideDocumentAndParagraph([
         new Up.Link([
@@ -218,7 +218,7 @@ describe('A bare URL terminated by another convention closing, followed by a non
 
 
 context('When a bare URL consisting only of a hostname is followed by a space then a valid URL path', () => {
-  specify("the path is not included in the bare URL", () => {
+  specify('the path is not included in the bare URL', () => {
     expect(Up.parse('ahhhh oh my goodness help me i went to http://4chan.org /rk9/ is the saddest place ever')).to.deep.equal(
       insideDocumentAndParagraph([
         new Up.Text('ahhhh oh my goodness help me i went to '),

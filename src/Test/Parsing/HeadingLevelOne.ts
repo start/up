@@ -2,7 +2,7 @@ import { expect } from 'chai'
 import * as Up from '../../Main'
 
 
-describe("The first line in a document underlined by any combination or arrangement of: # = - + ~ * @ :", () => {
+describe('The first line in a document underlined by any combination or arrangement of: # = - + ~ * @ :', () => {
   it('always produces a level-1 heading node', () => {
     const markup = `
 Hello, world!
@@ -62,7 +62,7 @@ Hello, world!
 })
 
 
-describe("A heading", () => {
+describe('A heading', () => {
   it('does not need to be the first convention in the document', () => {
     const markup = `
 Hello, world!

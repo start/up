@@ -36,7 +36,7 @@ describe('Parenthesized text', () => {
 
 
 describe('Nested parentheses (starting at the same time)', () => {
-  it("produce nested normal parenthetical nodes with first opening parenthesis outside of the inner node", () => {
+  it('produce nested normal parenthetical nodes with first opening parenthesis outside of the inner node', () => {
     expect(Up.parse('I like ((certain) types of) pizza')).to.deep.equal(
       insideDocumentAndParagraph([
         new Up.Text('I like '),
@@ -54,7 +54,7 @@ describe('Nested parentheses (starting at the same time)', () => {
 
 
 describe('Nested parentheses (ending at the same time)', () => {
-  it("produce nested normal parenthetical nodes with last closing parenthesis outside of the inner node", () => {
+  it('produce nested normal parenthetical nodes with last closing parenthesis outside of the inner node', () => {
     expect(Up.parse('I like (certain (types of)) pizza')).to.deep.equal(
       insideDocumentAndParagraph([
         new Up.Text('I like '),

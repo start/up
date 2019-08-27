@@ -287,7 +287,7 @@ function sanitizeVariations(variations: Settings.Parsing.Keyword | undefined): N
 
   const normalizedVariations =
     // First of all, if the user provided a string, let's convert it to an array.
-    ((typeof variations === "string") ? [variations] : variations)
+    ((typeof variations === 'string') ? [variations] : variations)
       // Let's ignore any term variations that are null or empty.
       .filter(variation => !!variation)
       // Let's trim the remaining term variations...

@@ -68,7 +68,7 @@ describe('The "defaultUrlScheme" setting', () => {
       ]))
   })
 
-  it("is prefixed to schemeless linkified footnote URLs", () => {
+  it('is prefixed to schemeless linkified footnote URLs', () => {
     const markup = "I don't eat cereal. (^Well, I eat one.)(cereals/lucky-charms?show=nutrition) Never have."
 
     const footnote = new Up.Footnote([
@@ -82,7 +82,7 @@ describe('The "defaultUrlScheme" setting', () => {
         new Up.Paragraph([
           new Up.Text("I don't eat cereal."),
           footnote,
-          new Up.Text(" Never have.")
+          new Up.Text(' Never have.')
         ]),
         new Up.FootnoteBlock([footnote])
       ]))
@@ -149,7 +149,7 @@ describe('The "defaultUrlScheme" setting', () => {
       ]))
   })
 
-  it("is prefixed to schemeless linkified footnote URLs when the footnote part and the URL are separated by whitespace", () => {
+  it('is prefixed to schemeless linkified footnote URLs when the footnote part and the URL are separated by whitespace', () => {
     const markup = "I don't eat cereal. (^Well, I eat one.) [cereals.com/lucky-charms?show=nutrition] Never have."
 
     const footnote = new Up.Footnote([
@@ -163,7 +163,7 @@ describe('The "defaultUrlScheme" setting', () => {
         new Up.Paragraph([
           new Up.Text("I don't eat cereal."),
           footnote,
-          new Up.Text(" Never have.")
+          new Up.Text(' Never have.')
         ]),
         new Up.FootnoteBlock([footnote])
       ]))

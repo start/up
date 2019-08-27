@@ -77,7 +77,7 @@ context('Unmatched opening parentheses in an audio description have no affect on
 })
 
 
-describe("Unmatched opening parentheses in an audio URL", () => {
+describe('Unmatched opening parentheses in an audio URL', () => {
   it('do not affect any markup that follows the link', () => {
     const markup = '(^[audio: West Virginia exit polling][https://example.com/a(normal(url])'
 

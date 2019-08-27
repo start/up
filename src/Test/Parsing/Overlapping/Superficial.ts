@@ -36,21 +36,21 @@ context('When most otherwise-nested conventions overlap by only their start deli
       ]))
   })
 
-  specify("Emphasis overlapping a link", () => {
-    expect(Up.parse("*[Yes*, I watched it live](example.com/replay).")).to.deep.equal(
+  specify('Emphasis overlapping a link', () => {
+    expect(Up.parse('*[Yes*, I watched it live](example.com/replay).')).to.deep.equal(
       insideDocumentAndParagraph([
         new Up.Link([
           new Up.Emphasis([
             new Up.Text('Yes')
           ]),
-          new Up.Text(", I watched it live")
+          new Up.Text(', I watched it live')
         ], 'https://example.com/replay'),
         new Up.Text('.')
       ]))
   })
 
-  specify("A link overlapping epmhasis", () => {
-    expect(Up.parse("[*Yes, I watched it live](example.com/replay) yesterday*.")).to.deep.equal(
+  specify('A link overlapping epmhasis', () => {
+    expect(Up.parse('[*Yes, I watched it live](example.com/replay) yesterday*.')).to.deep.equal(
       insideDocumentAndParagraph([
         new Up.Emphasis([
           new Up.Link([
@@ -288,7 +288,7 @@ context('When most otherwise-nested conventions overlap by only their end delimi
         ]))
     })
 
-    specify("An inline revealable overlapping a link", () => {
+    specify('An inline revealable overlapping a link', () => {
       expect(Up.parse('[SPOILER: Mario fell off the platform. (splat])(example.com)')).to.deep.equal(
         insideDocumentAndParagraph([
           new Up.InlineRevealable([
@@ -300,7 +300,7 @@ context('When most otherwise-nested conventions overlap by only their end delimi
         ]))
     })
 
-    specify("A link overlapping an inline revealable", () => {
+    specify('A link overlapping an inline revealable', () => {
       expect(Up.parse("(loudly sings [SPOILER: Jigglypuff's Lullaby)(example.com)]")).to.deep.equal(
         insideDocumentAndParagraph([
           new Up.Link([
@@ -312,19 +312,19 @@ context('When most otherwise-nested conventions overlap by only their end delimi
         ]))
     })
 
-    specify("Emphasis overlapping a link", () => {
-      expect(Up.parse("*I watched it [live*](example.com/replay)")).to.deep.equal(
+    specify('Emphasis overlapping a link', () => {
+      expect(Up.parse('*I watched it [live*](example.com/replay)')).to.deep.equal(
         insideDocumentAndParagraph([
           new Up.Emphasis([
             new Up.Text('I watched it '),
             new Up.Link([
-              new Up.Text("live")
+              new Up.Text('live')
             ], 'https://example.com/replay')
           ])
         ]))
     })
 
-    specify("A link overlapping highlighted text", () => {
+    specify('A link overlapping highlighted text', () => {
       expect(Up.parse('[Mario fell off the platform. ==splat][example.com/game-over]==')).to.deep.equal(
         insideDocumentAndParagraph([
           new Up.Link([
@@ -336,7 +336,7 @@ context('When most otherwise-nested conventions overlap by only their end delimi
         ]))
     })
 
-    specify("Highlighted text overlapping a link", () => {
+    specify('Highlighted text overlapping a link', () => {
       expect(Up.parse('==loud [thwomp==](example.com/thwomp)')).to.deep.equal(
         insideDocumentAndParagraph([
           new Up.Highlight([
@@ -384,7 +384,7 @@ context('When most otherwise-nested conventions overlap by only their end delimi
 
 
   context('When the convention closing last is linkified, and when the convention overlapping the linkified convention is linkifiable,', () => {
-    specify("the convention closing last remains linkified despite being nested inside the linkifiable convention", () => {
+    specify('the convention closing last remains linkified despite being nested inside the linkifiable convention', () => {
       const footnote =
         new Up.Footnote([
           new Up.Link([

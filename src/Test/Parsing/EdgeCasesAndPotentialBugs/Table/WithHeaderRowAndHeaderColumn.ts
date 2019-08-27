@@ -3,7 +3,7 @@ import * as Up from '../../../../Main'
 
 
 context('Within a table with a header column:', () => {
-  describe("A cell in the header row", () => {
+  describe('A cell in the header row', () => {
     it('can end with an escaped semicolon', () => {
       const markup = `
 Table
@@ -56,7 +56,7 @@ Chrono Cross;         1999`
   })
 
 
-  describe("A content cell", () => {
+  describe('A content cell', () => {
     it('can end with an escaped semicolon', () => {
       const markup = `
 Table
@@ -109,7 +109,7 @@ Chrono Cross;         1999 :\\\\`
   })
 
 
-  describe("A cell in the header column", () => {
+  describe('A cell in the header column', () => {
     it('can end with an escaped semicolon', () => {
       const markup = `
 Table
@@ -164,7 +164,7 @@ Chrono Cross;         1999`
 
 
 
-describe("A table with a header column", () => {
+describe('A table with a header column', () => {
   it('is terminated if its caption line is followed by two or more blank lines', () => {
     const markup = `
 Table: Good games on the Sega Genesis
@@ -229,7 +229,7 @@ Table: Most common underlines for top-level headings (from most to least common)
 })
 
 
-context("Just like with regular tables, the delimiters of cells in a table with a header column are evaluated before any inline conventions.", () => {
+context('Just like with regular tables, the delimiters of cells in a table with a header column are evaluated before any inline conventions.', () => {
   context('Inline code delimiters do not interfere with delimiters for', () => {
     specify('Header cells', () => {
       const markup = `

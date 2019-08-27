@@ -68,8 +68,8 @@ describe('An inline revealable directly followed by a media convention', () => {
 
 
 describe('An inline revealable directly followed by a footnote', () => {
-  it("is not linkified", () => {
-    const markup = "After you beat the Elite Four, [SPOILER: you fight Gary](^Or whatever you name him.)"
+  it('is not linkified', () => {
+    const markup = 'After you beat the Elite Four, [SPOILER: you fight Gary](^Or whatever you name him.)'
 
     const footnotes = [
       new Up.Footnote([
@@ -80,7 +80,7 @@ describe('An inline revealable directly followed by a footnote', () => {
     expect(Up.parse(markup)).to.deep.equal(
       new Up.Document([
         new Up.Paragraph([
-          new Up.Text("After you beat the Elite Four, "),
+          new Up.Text('After you beat the Elite Four, '),
           new Up.InlineRevealable([
             new Up.Text('you fight Gary')
           ]),
@@ -121,7 +121,7 @@ context("When an otherwise-valid linkified revealable's URL starts with whitespa
 
 
 context("If there's no whitespace between an inline revealable and its bracketed URL", () => {
-  specify("the URL can start with whitespace", () => {
+  specify('the URL can start with whitespace', () => {
     expectEveryPermutationOfBracketsAroundContentAndUrl({
       content: 'SPOILER: you fight Gary',
       url: ' \t \thttp://example.com/finalbattle',

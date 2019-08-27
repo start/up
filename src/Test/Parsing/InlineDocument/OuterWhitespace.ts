@@ -3,7 +3,7 @@ import * as Up from '../../../Main'
 
 
 context("In inline documents, all outer whitespace is considered meaningless, even when it's escaped. This includes:", () => {
-  context("Trailing whitespace:", () => {
+  context('Trailing whitespace:', () => {
     specify('Not escaped', () => {
       expect(Up.parseInline("I'm just a normal guy who only eats when it's raining. Isn't everyone like that?  \t  \t ")).to.deep.equal(
         new Up.InlineDocument([
@@ -34,7 +34,7 @@ context("In inline documents, all outer whitespace is considered meaningless, ev
   })
 
 
-  context("Leading whitespace:", () => {
+  context('Leading whitespace:', () => {
     specify('Not escaped', () => {
       expect(Up.parseInline("  \t  \t I'm just a normal guy who only eats when it's raining. Isn't everyone like that?")).to.deep.equal(
         new Up.InlineDocument([
@@ -65,7 +65,7 @@ context("In inline documents, all outer whitespace is considered meaningless, ev
   })
 
 
-  specify("Both trailing and leading whitespace together, in the most absurd arrangement possible", () => {
+  specify('Both trailing and leading whitespace together, in the most absurd arrangement possible', () => {
     expect(Up.parseInline("  \t  \\\t  \\  \\\\I'm just a normal guy who only eats when it's raining. Isn't everyone like that?\\\\\\  \t \\ \\\t  \t ")).to.deep.equal(
       new Up.InlineDocument([
         new Up.Text("\\I'm just a normal guy who only eats when it's raining. Isn't everyone like that?\\")

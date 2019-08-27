@@ -14,12 +14,12 @@ Goodbye, world!
     const headings = [
       new Up.Heading([new Up.Text('Hello, world!')], {
         level: 1,
-        titleMarkup: "Hello, world!",
+        titleMarkup: 'Hello, world!',
         ordinalInTableOfContents: 1
       }),
       new Up.Heading([new Up.Text('Goodbye, world!')], {
         level: 2,
-        titleMarkup: "Goodbye, world!",
+        titleMarkup: 'Goodbye, world!',
         ordinalInTableOfContents: 2
       })
     ]
@@ -48,17 +48,17 @@ Goodbye again, world!
     const headings = [
       new Up.Heading([new Up.Text('Hello, world!')], {
         level: 1,
-        titleMarkup: "Hello, world!",
+        titleMarkup: 'Hello, world!',
         ordinalInTableOfContents: 1
       }),
       new Up.Heading([new Up.Text('Goodbye, world!')], {
         level: 1,
-        titleMarkup: "Goodbye, world!",
+        titleMarkup: 'Goodbye, world!',
         ordinalInTableOfContents: 2
       }),
       new Up.Heading([new Up.Text('Goodbye again, world!')], {
         level: 2,
-        titleMarkup: "Goodbye again, world!",
+        titleMarkup: 'Goodbye again, world!',
         ordinalInTableOfContents: 3
       })
     ]
@@ -85,12 +85,12 @@ Goodbye, world!
     const headings = [
       new Up.Heading([new Up.Text('Hello, world!')], {
         level: 1,
-        titleMarkup: "Hello, world!",
+        titleMarkup: 'Hello, world!',
         ordinalInTableOfContents: 1
       }),
       new Up.Heading([new Up.Text('Goodbye, world!')], {
         level: 2,
-        titleMarkup: "Goodbye, world!",
+        titleMarkup: 'Goodbye, world!',
         ordinalInTableOfContents: 2
       })
     ]
@@ -114,12 +114,12 @@ Goodbye, world!
     const headings = [
       new Up.Heading([new Up.Text('Hello, world!')], {
         level: 1,
-        titleMarkup: "Hello, world!",
+        titleMarkup: 'Hello, world!',
         ordinalInTableOfContents: 1
       }),
       new Up.Heading([new Up.Text('Goodbye, world!')], {
         level: 2,
-        titleMarkup: "Goodbye, world!",
+        titleMarkup: 'Goodbye, world!',
         ordinalInTableOfContents: 2
       })
     ]
@@ -169,37 +169,37 @@ Warlocked
     const headings = [
       new Up.Heading([new Up.Text('Interactive Software')], {
         level: 1,
-        titleMarkup: "Interactive Software",
+        titleMarkup: 'Interactive Software',
         ordinalInTableOfContents: 1
       }),
       new Up.Heading([new Up.Text('Video Games')], {
         level: 2,
-        titleMarkup: "Video Games",
+        titleMarkup: 'Video Games',
         ordinalInTableOfContents: 2
       }),
       new Up.Heading([new Up.Text('Handheld Video Games')], {
         level: 3,
-        titleMarkup: "Handheld Video Games",
+        titleMarkup: 'Handheld Video Games',
         ordinalInTableOfContents: 3
       }),
       new Up.Heading([new Up.Text('Game Boy Games')], {
         level: 4,
-        titleMarkup: "Game Boy Games",
+        titleMarkup: 'Game Boy Games',
         ordinalInTableOfContents: 4
       }),
       new Up.Heading([new Up.Text('Real-Time Strategy Game Boy Games')], {
         level: 5,
-        titleMarkup: "Real-Time Strategy Game Boy Games",
+        titleMarkup: 'Real-Time Strategy Game Boy Games',
         ordinalInTableOfContents: 5
       }),
       new Up.Heading([new Up.Text('Real-Time Strategy Game Boy Games Published By Nintendo')], {
         level: 6,
-        titleMarkup: "Real-Time Strategy Game Boy Games Published By Nintendo",
+        titleMarkup: 'Real-Time Strategy Game Boy Games Published By Nintendo',
         ordinalInTableOfContents: 6
       }),
       new Up.Heading([new Up.Text('Warlocked')], {
         level: 7,
-        titleMarkup: "Warlocked",
+        titleMarkup: 'Warlocked',
         ordinalInTableOfContents: 7
       })
     ]
@@ -212,7 +212,7 @@ Warlocked
 })
 
 
-describe("A level-2 heading underline defined outside of a bulleted list", () => {
+describe('A level-2 heading underline defined outside of a bulleted list', () => {
   it('produces a level-2 heading node inside the bulleted list', () => {
     const markup = `
 Hello, world!
@@ -227,21 +227,21 @@ Goodbye, world!
     const helloHeading =
       new Up.Heading([new Up.Text('Hello, world!')], {
         level: 1,
-        titleMarkup: "Hello, world!",
+        titleMarkup: 'Hello, world!',
         ordinalInTableOfContents: 1
       })
 
     const goodbyeHeading =
       new Up.Heading([new Up.Text('Goodbye, world!')], {
         level: 2,
-        titleMarkup: "Goodbye, world!",
+        titleMarkup: 'Goodbye, world!',
         ordinalInTableOfContents: 2
       })
 
     const keysHeading =
       new Up.Heading([new Up.Text('Umm, I forgot my keys.')], {
         level: 2,
-        titleMarkup: "Umm, I forgot my keys.",
+        titleMarkup: 'Umm, I forgot my keys.',
         ordinalInTableOfContents: 3
       })
 
@@ -263,7 +263,7 @@ Goodbye, world!
 })
 
 
-describe("A level-2 heading underline defined outside of a numbered list", () => {
+describe('A level-2 heading underline defined outside of a numbered list', () => {
   it('produces a level-2 heading node inside the numbered list', () => {
     const markup = `
 Hello, world!
@@ -278,21 +278,21 @@ Goodbye, world!
     const helloHeading =
       new Up.Heading([new Up.Text('Hello, world!')], {
         level: 1,
-        titleMarkup: "Hello, world!",
+        titleMarkup: 'Hello, world!',
         ordinalInTableOfContents: 1
       })
 
     const goodbyeHeading =
       new Up.Heading([new Up.Text('Goodbye, world!')], {
         level: 2,
-        titleMarkup: "Goodbye, world!",
+        titleMarkup: 'Goodbye, world!',
         ordinalInTableOfContents: 2
       })
 
     const keysHeading =
       new Up.Heading([new Up.Text('Umm, I forgot my keys.')], {
         level: 2,
-        titleMarkup: "Umm, I forgot my keys.",
+        titleMarkup: 'Umm, I forgot my keys.',
         ordinalInTableOfContents: 3
       })
 
@@ -314,7 +314,7 @@ Goodbye, world!
 })
 
 
-describe("A level-2 heading underline defined outside of a description list", () => {
+describe('A level-2 heading underline defined outside of a description list', () => {
   it('produces a level-2 heading node inside the description list', () => {
     const markup = `
 Hello, world!
@@ -330,21 +330,21 @@ Awkward
     const helloHeading =
       new Up.Heading([new Up.Text('Hello, world!')], {
         level: 1,
-        titleMarkup: "Hello, world!",
+        titleMarkup: 'Hello, world!',
         ordinalInTableOfContents: 1
       })
 
     const goodbyeHeading =
       new Up.Heading([new Up.Text('Goodbye, world!')], {
         level: 2,
-        titleMarkup: "Goodbye, world!",
+        titleMarkup: 'Goodbye, world!',
         ordinalInTableOfContents: 2
       })
 
     const keysHeading =
       new Up.Heading([new Up.Text('Umm, I forgot my keys.')], {
         level: 2,
-        titleMarkup: "Umm, I forgot my keys.",
+        titleMarkup: 'Umm, I forgot my keys.',
         ordinalInTableOfContents: 3
       })
 
@@ -368,7 +368,7 @@ Awkward
 })
 
 
-describe("A level-2 heading underline defined outside of a blockquote", () => {
+describe('A level-2 heading underline defined outside of a blockquote', () => {
   it('produces a level-2 heading node inside the blockquote', () => {
     const markup = `
 Hello, world!
@@ -383,21 +383,21 @@ Goodbye, world!
     const helloHeading =
       new Up.Heading([new Up.Text('Hello, world!')], {
         level: 1,
-        titleMarkup: "Hello, world!",
+        titleMarkup: 'Hello, world!',
         ordinalInTableOfContents: 1
       })
 
     const goodbyeHeading =
       new Up.Heading([new Up.Text('Goodbye, world!')], {
         level: 2,
-        titleMarkup: "Goodbye, world!",
+        titleMarkup: 'Goodbye, world!',
         ordinalInTableOfContents: 2
       })
 
     const keysHeading =
       new Up.Heading([new Up.Text('Umm, I forgot my keys.')], {
         level: 2,
-        titleMarkup: "Umm, I forgot my keys.",
+        titleMarkup: 'Umm, I forgot my keys.',
         ordinalInTableOfContents: 3
       })
 
@@ -417,7 +417,7 @@ Goodbye, world!
 })
 
 
-describe("A level-2 heading underline defined inside a blockquote but outside a bulleted list in the same blockquote", () => {
+describe('A level-2 heading underline defined inside a blockquote but outside a bulleted list in the same blockquote', () => {
   it('produces a level-2 heading node inside the numbered list', () => {
     const markup = `
 > Hello, world!
@@ -432,21 +432,21 @@ describe("A level-2 heading underline defined inside a blockquote but outside a 
     const helloHeading =
       new Up.Heading([new Up.Text('Hello, world!')], {
         level: 1,
-        titleMarkup: "Hello, world!",
+        titleMarkup: 'Hello, world!',
         ordinalInTableOfContents: 1
       })
 
     const goodbyeHeading =
       new Up.Heading([new Up.Text('Goodbye, world!')], {
         level: 2,
-        titleMarkup: "Goodbye, world!",
+        titleMarkup: 'Goodbye, world!',
         ordinalInTableOfContents: 2
       })
 
     const keysHeading =
       new Up.Heading([new Up.Text('Umm, I forgot my keys.')], {
         level: 2,
-        titleMarkup: "Umm, I forgot my keys.",
+        titleMarkup: 'Umm, I forgot my keys.',
         ordinalInTableOfContents: 3
       })
 
@@ -470,7 +470,7 @@ describe("A level-2 heading underline defined inside a blockquote but outside a 
 })
 
 
-describe("A level-2 heading underline defined inside a blockquote", () => {
+describe('A level-2 heading underline defined inside a blockquote', () => {
   it('produces a level-2 heading node inside nested blockquote', () => {
     const markup = `
 > Hello, world!
@@ -485,21 +485,21 @@ describe("A level-2 heading underline defined inside a blockquote", () => {
     const helloHeading =
       new Up.Heading([new Up.Text('Hello, world!')], {
         level: 1,
-        titleMarkup: "Hello, world!",
+        titleMarkup: 'Hello, world!',
         ordinalInTableOfContents: 1
       })
 
     const goodbyeHeading =
       new Up.Heading([new Up.Text('Goodbye, world!')], {
         level: 2,
-        titleMarkup: "Goodbye, world!",
+        titleMarkup: 'Goodbye, world!',
         ordinalInTableOfContents: 2
       })
 
     const keysHeading =
       new Up.Heading([new Up.Text('Umm, I forgot my keys.')], {
         level: 2,
-        titleMarkup: "Umm, I forgot my keys.",
+        titleMarkup: 'Umm, I forgot my keys.',
         ordinalInTableOfContents: 3
       })
 
@@ -521,7 +521,7 @@ describe("A level-2 heading underline defined inside a blockquote", () => {
 })
 
 
-describe("A level-2 heading underline defined inside a blockquote", () => {
+describe('A level-2 heading underline defined inside a blockquote', () => {
   it('produces a level-2 heading node inside a different blockquote', () => {
     const markup = `
 > Hello, world!
@@ -537,21 +537,21 @@ describe("A level-2 heading underline defined inside a blockquote", () => {
     const helloHeading =
       new Up.Heading([new Up.Text('Hello, world!')], {
         level: 1,
-        titleMarkup: "Hello, world!",
+        titleMarkup: 'Hello, world!',
         ordinalInTableOfContents: 1
       })
 
     const goodbyeHeading =
       new Up.Heading([new Up.Text('Goodbye, world!')], {
         level: 2,
-        titleMarkup: "Goodbye, world!",
+        titleMarkup: 'Goodbye, world!',
         ordinalInTableOfContents: 2
       })
 
     const keysHeading =
       new Up.Heading([new Up.Text('Umm, I forgot my keys.')], {
         level: 2,
-        titleMarkup: "Umm, I forgot my keys.",
+        titleMarkup: 'Umm, I forgot my keys.',
         ordinalInTableOfContents: 3
       })
 

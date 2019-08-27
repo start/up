@@ -99,8 +99,8 @@ describe('An image convention directly followed by an inline revealable', () => 
 
 
 describe('An image directly followed by a footnote', () => {
-  it("is not linkified", () => {
-    const markup = "After you beat the Elite Four, [image: you fight Gary](https://example.com/fight.svg)(^Or whatever you name him.)"
+  it('is not linkified', () => {
+    const markup = 'After you beat the Elite Four, [image: you fight Gary](https://example.com/fight.svg)(^Or whatever you name him.)'
 
     const footnotes = [
       new Up.Footnote([
@@ -111,7 +111,7 @@ describe('An image directly followed by a footnote', () => {
     expect(Up.parse(markup)).to.deep.equal(
       new Up.Document([
         new Up.Paragraph([
-          new Up.Text("After you beat the Elite Four, "),
+          new Up.Text('After you beat the Elite Four, '),
           new Up.Image('you fight Gary', 'https://example.com/fight.svg'),
           footnotes[0]
         ]),

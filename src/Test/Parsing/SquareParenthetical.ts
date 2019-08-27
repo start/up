@@ -36,7 +36,7 @@ describe('Square bracketed text', () => {
 
 
 describe('Nested square brackets (starting at the same time)', () => {
-  it("produce nested square parenthetical nodes with first opening bracket outside of the inner node", () => {
+  it('produce nested square parenthetical nodes with first opening bracket outside of the inner node', () => {
     expect(Up.parse('I like [[certain] types of] pizza')).to.deep.equal(
       insideDocumentAndParagraph([
         new Up.Text('I like '),
@@ -54,7 +54,7 @@ describe('Nested square brackets (starting at the same time)', () => {
 
 
 describe('Nested square brackets (ending at the same time)', () => {
-  it("produce nested square parenthetical nodes with last closing square bracket outside of the inner node", () => {
+  it('produce nested square parenthetical nodes with last closing square bracket outside of the inner node', () => {
     expect(Up.parse('I like [certain [types of]] pizza')).to.deep.equal(
       insideDocumentAndParagraph([
         new Up.Text('I like '),

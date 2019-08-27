@@ -36,7 +36,7 @@ Chrono Cross;   1999`
 })
 
 
-describe("A table caption", () => {
+describe('A table caption', () => {
   it('is evaluated for inline conventions', () => {
     const markup = `
 Table: Games in the *Chrono* series
@@ -109,7 +109,7 @@ Chrono Cross;   1999`
 })
 
 
-describe("A table with a caption (just like a table without a caption)", () => {
+describe('A table with a caption (just like a table without a caption)', () => {
   it('does not need to have a blank line before the header row', () => {
     const markup = `
 Table: Games in the Chrono series

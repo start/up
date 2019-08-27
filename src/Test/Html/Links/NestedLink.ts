@@ -89,7 +89,7 @@ context('A link within a table of contents entry does not produce an <a> element
 
 
 context("When a link is nested deeply within another link, it doesn't produce an <a> element. This is true for:", () => {
-  specify("A footnote nested deeply within a link", () => {
+  specify('A footnote nested deeply within a link', () => {
     const document = new Up.Document([
       new Up.Paragraph([
         new Up.Link([
@@ -107,7 +107,7 @@ context("When a link is nested deeply within another link, it doesn't produce an
       + '</p>')
   })
 
-  specify("A link nested deeply within another a link", () => {
+  specify('A link nested deeply within another a link', () => {
     const document = new Up.Document([
       new Up.Paragraph([
         new Up.Link([
@@ -208,7 +208,7 @@ context('When severeal links are nested within each other', () => {
 
 
 context('When a link contains 2 or more inner links', () => {
-  specify("neither inner link produces an <a> element", () => {
+  specify('neither inner link produces an <a> element', () => {
     const document = new Up.Document([
       new Up.Paragraph([
         new Up.Link([

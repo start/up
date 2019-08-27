@@ -13,14 +13,14 @@ I enjoy milk
     const appleHeading =
       new Up.Heading([new Up.Text('I enjoy apples')], {
         level: 1,
-        titleMarkup: "I enjoy apples",
+        titleMarkup: 'I enjoy apples',
         ordinalInTableOfContents: 1
       })
 
     const milkHeading =
       new Up.Heading([new Up.Text('I enjoy milk')], {
         level: 2,
-        titleMarkup: "I enjoy milk",
+        titleMarkup: 'I enjoy milk',
         ordinalInTableOfContents: 2
       })
 
@@ -49,7 +49,7 @@ Who doesn't?`
     const heading =
       new Up.Heading([new Up.Text('I enjoy apples')], {
         level: 1,
-        titleMarkup: "I enjoy apples",
+        titleMarkup: 'I enjoy apples',
         ordinalInTableOfContents: 1
       })
 
@@ -75,7 +75,7 @@ I enjoy apples
     const heading =
       new Up.Heading([new Up.Text('I enjoy apples')], {
         level: 1,
-        titleMarkup: "I enjoy apples",
+        titleMarkup: 'I enjoy apples',
         ordinalInTableOfContents: 1
       })
 
@@ -107,7 +107,7 @@ I enjoy apples
     const heading =
       new Up.Heading([new Up.Text('I enjoy apples')], {
         level: 1,
-        titleMarkup: "I enjoy apples",
+        titleMarkup: 'I enjoy apples',
         ordinalInTableOfContents: 1
       })
 
@@ -139,7 +139,7 @@ Apples
     const heading =
       new Up.Heading([new Up.Text('I enjoy apples')], {
         level: 1,
-        titleMarkup: "I enjoy apples",
+        titleMarkup: 'I enjoy apples',
         ordinalInTableOfContents: 1
       })
 
@@ -171,7 +171,7 @@ Apples are blue`
     const heading =
       new Up.Heading([new Up.Text('I enjoy apples')], {
         level: 1,
-        titleMarkup: "I enjoy apples",
+        titleMarkup: 'I enjoy apples',
         ordinalInTableOfContents: 1
       })
 
@@ -183,10 +183,10 @@ Apples are blue`
         heading,
         new Up.LineBlock([
           new Up.LineBlock.Line([
-            new Up.Text("Roses are read")
+            new Up.Text('Roses are read')
           ]),
           new Up.LineBlock.Line([
-            new Up.Text("Apples are blue")
+            new Up.Text('Apples are blue')
           ])
         ])
       ], tableOfContents))
@@ -205,7 +205,7 @@ SPOILER:
     const heading =
       new Up.Heading([new Up.Text('I enjoy apples')], {
         level: 1,
-        titleMarkup: "I enjoy apples",
+        titleMarkup: 'I enjoy apples',
         ordinalInTableOfContents: 1
       })
 
@@ -234,7 +234,7 @@ I enjoy apples
     const heading =
       new Up.Heading([new Up.Text('I enjoy apples')], {
         level: 1,
-        titleMarkup: "I enjoy apples",
+        titleMarkup: 'I enjoy apples',
         ordinalInTableOfContents: 1
       })
 
@@ -267,7 +267,7 @@ No one!`
     const heading =
       new Up.Heading([new Up.Text('I enjoy apples')], {
         level: 1,
-        titleMarkup: "I enjoy apples",
+        titleMarkup: 'I enjoy apples',
         ordinalInTableOfContents: 1
       })
 
@@ -280,7 +280,7 @@ No one!`
         heading,
         new Up.Paragraph([new Up.Text("Who doesn't?")]),
         new Up.ThematicBreak(),
-        new Up.Paragraph([new Up.Text("No one!")])
+        new Up.Paragraph([new Up.Text('No one!')])
       ], tableOfContents))
   })
 
@@ -296,7 +296,7 @@ const reason = "They are cheap and delicious."
     const heading =
       new Up.Heading([new Up.Text('I enjoy apples')], {
         level: 1,
-        titleMarkup: "I enjoy apples",
+        titleMarkup: 'I enjoy apples',
         ordinalInTableOfContents: 1
       })
 
@@ -320,7 +320,7 @@ I don't eat cereal. (^Well, I do, but I pretend not to.) Never have.`
     const heading =
       new Up.Heading([new Up.Text('I enjoy apples')], {
         level: 1,
-        titleMarkup: "I enjoy apples",
+        titleMarkup: 'I enjoy apples',
         ordinalInTableOfContents: 1
       })
 
@@ -337,13 +337,13 @@ I don't eat cereal. (^Well, I do, but I pretend not to.) Never have.`
         new Up.Paragraph([
           new Up.Text("I don't eat cereal."),
           footnote,
-          new Up.Text(" Never have.")
+          new Up.Text(' Never have.')
         ]),
         new Up.FootnoteBlock([footnote])
       ], tableOfContents))
   })
 
-  specify("Tables", () => {
+  specify('Tables', () => {
     const markup = `
 The Chrono series
 =================
@@ -356,7 +356,7 @@ Chrono Cross;     1999`
     const heading =
       new Up.Heading([new Up.Text('The Chrono series')], {
         level: 1,
-        titleMarkup: "The Chrono series",
+        titleMarkup: 'The Chrono series',
         ordinalInTableOfContents: 1
       })
 
@@ -387,7 +387,7 @@ Chrono Cross;     1999`
   })
 
 
-  context("Outlined media:", () => {
+  context('Outlined media:', () => {
     specify('Audio', () => {
       const markup = `
 Haunted houses
@@ -398,7 +398,7 @@ Haunted houses
       const heading =
         new Up.Heading([new Up.Text('Haunted houses')], {
           level: 1,
-          titleMarkup: "Haunted houses",
+          titleMarkup: 'Haunted houses',
           ordinalInTableOfContents: 1
         })
 
@@ -422,7 +422,7 @@ Haunted houses
       const heading =
         new Up.Heading([new Up.Text('Haunted houses')], {
           level: 1,
-          titleMarkup: "Haunted houses",
+          titleMarkup: 'Haunted houses',
           ordinalInTableOfContents: 1
         })
 
@@ -446,7 +446,7 @@ Haunted houses
       const heading =
         new Up.Heading([new Up.Text('Haunted houses')], {
           level: 1,
-          titleMarkup: "Haunted houses",
+          titleMarkup: 'Haunted houses',
           ordinalInTableOfContents: 1
         })
 
@@ -471,7 +471,7 @@ Haunted houses
       const heading =
         new Up.Heading([new Up.Text('Haunted houses')], {
           level: 1,
-          titleMarkup: "Haunted houses",
+          titleMarkup: 'Haunted houses',
           ordinalInTableOfContents: 1
         })
 
@@ -511,7 +511,7 @@ I enjoy apples
       const applesHeading =
         new Up.Heading([new Up.Text('I enjoy apples')], {
           level: 1,
-          titleMarkup: "I enjoy apples",
+          titleMarkup: 'I enjoy apples',
           ordinalInTableOfContents: 1
         })
 
@@ -538,11 +538,11 @@ I enjoy apples
           new Up.NumberedList([
             new Up.NumberedList.Item([
               cheapHeading,
-              new Up.Paragraph([new Up.Text("Very cheap.")])
+              new Up.Paragraph([new Up.Text('Very cheap.')])
             ], { ordinal: 1 }),
             new Up.NumberedList.Item([
               deliciousHeading,
-              new Up.Paragraph([new Up.Text("Very delicious.")])
+              new Up.Paragraph([new Up.Text('Very delicious.')])
             ], { ordinal: 2 })
           ])
         ], tableOfContents))
@@ -566,7 +566,7 @@ I enjoy apples
       const applesHeading =
         new Up.Heading([new Up.Text('I enjoy apples')], {
           level: 1,
-          titleMarkup: "I enjoy apples",
+          titleMarkup: 'I enjoy apples',
           ordinalInTableOfContents: 1
         })
 
@@ -578,9 +578,9 @@ I enjoy apples
         })
 
       const costHeading =
-        new Up.Heading([new Up.Text("Cost")], {
+        new Up.Heading([new Up.Text('Cost')], {
           level: 2,
-          titleMarkup: "Cost",
+          titleMarkup: 'Cost',
           ordinalInTableOfContents: 3
         })
 
@@ -593,11 +593,11 @@ I enjoy apples
           new Up.NumberedList([
             new Up.NumberedList.Item([
               cheapHeading,
-              new Up.Paragraph([new Up.Text("Very cheap.")]),
+              new Up.Paragraph([new Up.Text('Very cheap.')]),
               new Up.NumberedList([
                 new Up.NumberedList.Item([
                   costHeading,
-                  new Up.Paragraph([new Up.Text("Typically, apples cost twenty dolloars per pound.")])
+                  new Up.Paragraph([new Up.Text('Typically, apples cost twenty dolloars per pound.')])
                 ])
               ])
             ])
@@ -623,7 +623,7 @@ I enjoy apples
       const applesHeading =
         new Up.Heading([new Up.Text('I enjoy apples')], {
           level: 1,
-          titleMarkup: "I enjoy apples",
+          titleMarkup: 'I enjoy apples',
           ordinalInTableOfContents: 1
         })
 
@@ -650,11 +650,11 @@ I enjoy apples
           new Up.BulletedList([
             new Up.BulletedList.Item([
               cheapHeading,
-              new Up.Paragraph([new Up.Text("Very cheap.")])
+              new Up.Paragraph([new Up.Text('Very cheap.')])
             ]),
             new Up.BulletedList.Item([
               deliciousHeading,
-              new Up.Paragraph([new Up.Text("Very delicious.")])
+              new Up.Paragraph([new Up.Text('Very delicious.')])
             ])
           ])
         ], tableOfContents))
@@ -678,7 +678,7 @@ I enjoy apples
       const applesHeading =
         new Up.Heading([new Up.Text('I enjoy apples')], {
           level: 1,
-          titleMarkup: "I enjoy apples",
+          titleMarkup: 'I enjoy apples',
           ordinalInTableOfContents: 1
         })
 
@@ -690,9 +690,9 @@ I enjoy apples
         })
 
       const costHeading =
-        new Up.Heading([new Up.Text("Cost")], {
+        new Up.Heading([new Up.Text('Cost')], {
           level: 2,
-          titleMarkup: "Cost",
+          titleMarkup: 'Cost',
           ordinalInTableOfContents: 3
         })
 
@@ -705,11 +705,11 @@ I enjoy apples
           new Up.BulletedList([
             new Up.BulletedList.Item([
               cheapHeading,
-              new Up.Paragraph([new Up.Text("Very cheap.")]),
+              new Up.Paragraph([new Up.Text('Very cheap.')]),
               new Up.BulletedList([
                 new Up.BulletedList.Item([
                   costHeading,
-                  new Up.Paragraph([new Up.Text("Typically, apples cost twenty dolloars per pound.")])
+                  new Up.Paragraph([new Up.Text('Typically, apples cost twenty dolloars per pound.')])
                 ])
               ])
             ])
@@ -730,7 +730,7 @@ I enjoy apples
       const applesHeading =
         new Up.Heading([new Up.Text('I enjoy apples')], {
           level: 1,
-          titleMarkup: "I enjoy apples",
+          titleMarkup: 'I enjoy apples',
           ordinalInTableOfContents: 1
         })
 
@@ -749,7 +749,7 @@ I enjoy apples
           applesHeading,
           new Up.Blockquote([
             cheapHeading,
-            new Up.Paragraph([new Up.Text("Very cheap.")])
+            new Up.Paragraph([new Up.Text('Very cheap.')])
           ])
         ], tableOfContents))
     })
@@ -772,7 +772,7 @@ I enjoy apples
       const applesHeading =
         new Up.Heading([new Up.Text('I enjoy apples')], {
           level: 1,
-          titleMarkup: "I enjoy apples",
+          titleMarkup: 'I enjoy apples',
           ordinalInTableOfContents: 1
         })
 
@@ -784,9 +784,9 @@ I enjoy apples
         })
 
       const costHeading =
-        new Up.Heading([new Up.Text("Cost")], {
+        new Up.Heading([new Up.Text('Cost')], {
           level: 2,
-        titleMarkup: "Cost",
+        titleMarkup: 'Cost',
           ordinalInTableOfContents: 3
         })
 
@@ -798,10 +798,10 @@ I enjoy apples
           applesHeading,
           new Up.Blockquote([
             cheapHeading,
-            new Up.Paragraph([new Up.Text("Very cheap.")]),
+            new Up.Paragraph([new Up.Text('Very cheap.')]),
             new Up.Blockquote([
               costHeading,
-              new Up.Paragraph([new Up.Text("Typically, apples cost twenty dolloars per pound.")])
+              new Up.Paragraph([new Up.Text('Typically, apples cost twenty dolloars per pound.')])
             ])
           ])
         ], tableOfContents))
@@ -827,21 +827,21 @@ Pink lady
       const applesHeading =
         new Up.Heading([new Up.Text('I enjoy apples')], {
           level: 1,
-          titleMarkup: "I enjoy apples",
+          titleMarkup: 'I enjoy apples',
           ordinalInTableOfContents: 1
         })
 
       const bestFruitHeading =
-        new Up.Heading([new Up.Text("The best fruit")], {
+        new Up.Heading([new Up.Text('The best fruit')], {
           level: 2,
-          titleMarkup: "The best fruit",
+          titleMarkup: 'The best fruit',
           ordinalInTableOfContents: 2
         })
 
       const pinkLadyHeading =
-        new Up.Heading([new Up.Text("The best apple")], {
+        new Up.Heading([new Up.Text('The best apple')], {
           level: 2,
-          titleMarkup: "The best apple",
+          titleMarkup: 'The best apple',
           ordinalInTableOfContents: 3
         })
 
@@ -888,21 +888,21 @@ Apple
       const applesHeading =
         new Up.Heading([new Up.Text('I enjoy apples')], {
           level: 1,
-          titleMarkup: "I enjoy apples",
+          titleMarkup: 'I enjoy apples',
           ordinalInTableOfContents: 1
         })
 
       const bestFruitHeading =
-        new Up.Heading([new Up.Text("The best fruit")], {
+        new Up.Heading([new Up.Text('The best fruit')], {
           level: 2,
-          titleMarkup: "The best fruit",
+          titleMarkup: 'The best fruit',
           ordinalInTableOfContents: 2
         })
 
       const pinkLadyHeading =
-        new Up.Heading([new Up.Text("The best apple")], {
+        new Up.Heading([new Up.Text('The best apple')], {
           level: 2,
-          titleMarkup: "The best apple",
+          titleMarkup: 'The best apple',
           ordinalInTableOfContents: 3
         })
 
@@ -948,14 +948,14 @@ Apple
     const bestFruitHeading =
       new Up.Heading([new Up.Text('The best fruit')], {
         level: 1,
-        titleMarkup: "The best fruit",
+        titleMarkup: 'The best fruit',
         ordinalInTableOfContents: 1
       })
 
     const purchasingHeading =
       new Up.Heading([new Up.Text('Purchasing')], {
         level: 2,
-        titleMarkup: "Purchasing",
+        titleMarkup: 'Purchasing',
         ordinalInTableOfContents: 2
       })
 
@@ -1008,7 +1008,7 @@ SPOILER:
 
 
 describe("The entries in a table of contents reference the same syntax node objects that are in the document's syntax tree. This is true for entries", () => {
-  specify("coming from the top level of the document", () => {
+  specify('coming from the top level of the document', () => {
     const markup = `
 The best fruit
 ==============
@@ -1025,7 +1025,7 @@ Purchasing
     expect(entries[1] === purchasingHeading).to.be.true
   })
 
-  specify("nested deep within other conventions", () => {
+  specify('nested deep within other conventions', () => {
     const markup = `
 * I like apples.
 

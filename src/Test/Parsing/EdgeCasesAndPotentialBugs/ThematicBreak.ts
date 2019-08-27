@@ -12,7 +12,7 @@ Not me. Us!
     const heading =
       new Up.Heading([new Up.Text('Not me. Us!')], {
         level: 1,
-        titleMarkup: "Not me. Us!",
+        titleMarkup: 'Not me. Us!',
         ordinalInTableOfContents: 1
       })
 
@@ -33,7 +33,7 @@ Not me. Us!
     const heading =
       new Up.Heading([new Up.Text('Not me. Us!')], {
         level: 1,
-        titleMarkup: "Not me. Us!",
+        titleMarkup: 'Not me. Us!',
         ordinalInTableOfContents: 1
       })
 

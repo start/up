@@ -77,7 +77,7 @@ context('Unmatched opening parentheses in a video description have no affect on'
 })
 
 
-describe("Unmatched opening parentheses in a video URL", () => {
+describe('Unmatched opening parentheses in a video URL', () => {
   it('do not affect any markup that follows the link', () => {
     const markup = '(^[video: West Virginia exit polling][https://example.com/a(normal(url])'
 

@@ -56,7 +56,7 @@ describe('A numbered list with a single item can be sandwched by identical thema
       const heading =
         new Up.Heading([new Up.Text('1783. Not a good year for Great Britain.')], {
           level: 1,
-          titleMarkup: "1783. Not a good year for Great Britain.",
+          titleMarkup: '1783. Not a good year for Great Britain.',
           ordinalInTableOfContents: 1
         })
 
@@ -223,7 +223,7 @@ context('A numbered list item ordinal can have leading 0 digits without affectin
 })
 
 
-context("When a numbered list has just one item, that item can start with an integer followed by a period. The single item can be bulleted by:", () => {
+context('When a numbered list has just one item, that item can start with an integer followed by a period. The single item can be bulleted by:', () => {
   specify('An integer followed by a closing parenthesis', () => {
     expect(Up.parse('1) 1783. Not a good year for Great Britain.')).to.deep.equal(
       new Up.Document([
@@ -321,11 +321,11 @@ I enjoy apples
         new Up.NumberedList([
           new Up.NumberedList.Item([
             cheapHeading,
-            new Up.Paragraph([new Up.Text("Very cheap.")])
+            new Up.Paragraph([new Up.Text('Very cheap.')])
           ], { ordinal: 1 }),
           new Up.NumberedList.Item([
             deliciousHeading,
-            new Up.Paragraph([new Up.Text("Very delicious.")])
+            new Up.Paragraph([new Up.Text('Very delicious.')])
           ], { ordinal: 2 })
         ])
       ], new Up.Document.TableOfContents([enjoyHeading, cheapHeading, deliciousHeading])))
