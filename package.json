@@ -9,7 +9,9 @@
     "compiled/Implementation"
   ],
   "scripts": {
-    "test": "make test"
+    "prepare": "rm -rf ./compiled && tsc",
+    "test": "npm run prepare && mocha --recursive ./compiled/Test && mocha ./verify-package-settings.js",
+    "lint": "npm run prepare && tslint --out lint-warnings.txt --project ."
   },
   "keywords": [
     "formatting",
