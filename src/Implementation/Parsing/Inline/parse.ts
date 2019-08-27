@@ -40,7 +40,7 @@ function parseAndGetResult(
     return tokenIndex + 1
   }
 
-  function getChildren(args: { fromHereUntil: TokenRole }): InlineSyntaxNode[] {
+  function consumeChildren(args: { fromHereUntil: TokenRole }): InlineSyntaxNode[] {
     const result = parseAndGetResult({
       tokens: tokens.slice(countTokensParsed()),
       until: args.fromHereUntil
@@ -98,7 +98,7 @@ function parseAndGetResult(
       }
 
       case LINK.startTokenRole: {
-        let children = getChildren({
+        let children = consumeChildren({
           fromHereUntil: TokenRole.LinkEndAndUrl
         })
 
@@ -142,7 +142,7 @@ function parseAndGetResult(
       INLINE_QUOTE
     ]) {
       if (token.role === richConvention.startTokenRole) {
-        const children = getChildren({
+        const children = consumeChildren({
           fromHereUntil: richConvention.endTokenRole
         })
 

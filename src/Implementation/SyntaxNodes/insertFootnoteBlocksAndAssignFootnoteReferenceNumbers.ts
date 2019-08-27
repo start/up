@@ -198,9 +198,7 @@ class FootnoteBlockInserter {
   getFootnoteBlock(footnotes: Footnote[]): FootnoteBlock {
     const footnoteBlock = new FootnoteBlock(footnotes)
 
-    for (let i = 0; i < footnoteBlock.footnotes.length; i++) {
-      const footnote = footnoteBlock.footnotes[i]
-
+    for (const footnote of footnoteBlock.footnotes) {
       const nestedFootnotes =
         this.getOutermostFootnotesAndAssignTheirReferenceNumbers(footnote.children)
 
