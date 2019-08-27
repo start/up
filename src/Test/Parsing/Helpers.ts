@@ -67,7 +67,8 @@ export function expectEveryPermutationOfBrackets(
 }
 
 
-// Returns every permutation of the different values for each segment, each prefixed by `prefix`.
+// Returns every permutation of the different values for each segment (i.e. position), with each
+// permutation prefixed by `prefix`.
 //
 // If `prefix` is '(image: puppy)', and if `valuesBySegment` is:
 //
