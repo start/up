@@ -2,10 +2,11 @@
   "name": "up-lang",
   "version": "38.0.1",
   "description": "A markup language for writing structured documents in plain text",
-  "main": "dist/Main.js",
-  "typings": "dist/Main.d.ts",
+  "main": "compiled/Main.js",
+  "typings": "compiled/Main.d.ts",
   "files": [
-    "dist"
+    "compiled/Main.js",
+    "compiled/Implementation"
   ],
   "scripts": {
     "test": "make test"

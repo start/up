@@ -1,6 +1,6 @@
 import { expect } from 'chai'
-import * as Up from '../../../Main'
 import { repeat } from '../../../Implementation/StringHelpers'
+import * as Up from '../../../Main'
 import { insideDocumentAndParagraph } from '../Helpers'
 
 
