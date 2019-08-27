@@ -1,8 +1,5 @@
 import { expect } from 'chai'
 import * as Up from '../../Main'
-import { BulletedList } from '../../SyntaxNodes/BulletedList'
-import { DescriptionList } from '../../SyntaxNodes/DescriptionList'
-import { NumberedList } from '../../SyntaxNodes/NumberedList'
 
 
 describe('The table of contents', () => {
@@ -1043,9 +1040,9 @@ Purchasing
 
     const document = Up.parse(markup)
 
-    const bulletedList = document.children[0] as BulletedList
-    const numberedList = bulletedList.items[0].children[1] as NumberedList
-    const descriptionList = numberedList.items[0].children[1] as DescriptionList
+    const bulletedList = document.children[0] as Up.BulletedList
+    const numberedList = bulletedList.items[0].children[1] as Up.NumberedList
+    const descriptionList = numberedList.items[0].children[1] as Up.DescriptionList
 
     const [bestFruitHeading, purchasingHeading] = descriptionList.items[0].description.children as any[]
     const entries = document.tableOfContents.entries as any[]

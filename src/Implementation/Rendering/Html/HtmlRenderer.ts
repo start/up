@@ -1,4 +1,4 @@
-import * as Up from '../../Main'
+import * as Up from '../../../Main'
 import { either, patternIgnoringCapitalizationAndStartingWith } from '../../PatternHelpers'
 import { Renderer } from '.././Renderer'
 import { EMPTY_ATTRBUTE_VALUE, htmlElement, htmlElementWithAlreadyEscapedChildren, singleTagHtmlElement } from './HtmlElementHelpers'

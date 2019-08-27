@@ -1,5 +1,5 @@
 import { expect } from 'chai'
-import { concat } from '../../CollectionHelpers'
+import { concat } from '../../Implementation/CollectionHelpers'
 import * as Up from '../../Main'
 
 

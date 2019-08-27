@@ -1,5 +1,5 @@
 import { expect } from 'chai'
-import { distinct } from '../../../CollectionHelpers'
+import { distinct } from '../../../Implementation/CollectionHelpers'
 import * as Up from '../../../Main'
 import { cast } from '../../Helpers'
 import { settingsFor } from './Helpers'
