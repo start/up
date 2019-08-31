@@ -11,9 +11,11 @@
     "removeComments": true,
     "outDir": "compiled",
     "rootDir": "src",
-    "declaration": true
+    "declaration": true,
+    "noEmitOnError": true
   },
   "exclude": [
-    "node_modules"
+    "node_modules",
+    "compiled"
   ]
 }
