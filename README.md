@@ -15,4 +15,4 @@ Up supports:
 
 This is the repository for [up-lang](https://www.npmjs.com/package/up-lang), a Node.js package for converting Up markup into HTML.
 
-If you're looking for tryup.org's GitHub repository, [it's over this way.](https://github.com/unplannedcompany/tryup.org)
+If you're looking for tryup.org's GitHub repository, [it's over this way.](https://github.com/start/tryup.org)
