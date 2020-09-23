@@ -7,12 +7,13 @@ import { OutlineSyntaxNode } from './OutlineSyntaxNode'
 
 
 export class LineBlock implements OutlineSyntaxNode {
-  sourceLineNumber: number | undefined = undefined
+  sourceLineNumber?: number
 
-  constructor(public lines: LineBlock.Line[], options?: { sourceLineNumber: number }) {
-    if (options) {
-      this.sourceLineNumber = options.sourceLineNumber
-    }
+  constructor(
+    public lines: LineBlock.Line[],
+    options?: { sourceLineNumber: number }
+  ) {
+    this.sourceLineNumber = options?.sourceLineNumber
   }
 
   descendantsToIncludeInTableOfContents(): Heading[] {

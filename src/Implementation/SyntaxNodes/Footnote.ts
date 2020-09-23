@@ -16,10 +16,7 @@ export class Footnote extends RichInlineSyntaxNode {
     options?: { referenceNumber: number }
   ) {
     super(children)
-
-    if (options) {
-      this.referenceNumber = options.referenceNumber
-    }
+    this.referenceNumber = options?.referenceNumber
   }
 
   // Footnotes are written inline, but they aren't meant to appear inline in the final document.

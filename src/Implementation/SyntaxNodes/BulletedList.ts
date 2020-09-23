@@ -7,13 +7,13 @@ import { OutlineSyntaxNodeContainer } from './OutlineSyntaxNodeContainer'
 
 
 export class BulletedList implements OutlineSyntaxNode {
-  sourceLineNumber: number | undefined = undefined
+  sourceLineNumber?: number
 
   constructor(
-    public items: BulletedList.Item[], options?: { sourceLineNumber: number }) {
-    if (options) {
-      this.sourceLineNumber = options.sourceLineNumber
-    }
+    public items: BulletedList.Item[],
+    options?: { sourceLineNumber: number }
+  ) {
+    this.sourceLineNumber = options?.sourceLineNumber
   }
 
   descendantsToIncludeInTableOfContents(): Heading[] {

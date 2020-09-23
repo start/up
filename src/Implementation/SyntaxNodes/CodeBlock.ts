@@ -5,12 +5,10 @@ import { OutlineSyntaxNode } from './OutlineSyntaxNode'
 
 
 export class CodeBlock implements OutlineSyntaxNode {
-  sourceLineNumber: number | undefined = undefined
+  sourceLineNumber?: number
 
   constructor(public code: string, options?: { sourceLineNumber: number }) {
-    if (options) {
-      this.sourceLineNumber = options.sourceLineNumber
-    }
+    this.sourceLineNumber = options?.sourceLineNumber
   }
 
   descendantsToIncludeInTableOfContents(): Heading[] {

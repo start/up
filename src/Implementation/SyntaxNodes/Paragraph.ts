@@ -6,14 +6,14 @@ import { OutlineSyntaxNode } from './OutlineSyntaxNode'
 
 
 export class Paragraph extends InlineSyntaxNodeContainer implements OutlineSyntaxNode {
-  sourceLineNumber: number | undefined = undefined
+  sourceLineNumber?: number
 
-  constructor(children: InlineSyntaxNode[], options?: { sourceLineNumber: number }) {
+  constructor(
+    children: InlineSyntaxNode[],
+    options?: { sourceLineNumber: number }
+  ) {
     super(children)
-
-    if (options) {
-      this.sourceLineNumber = options.sourceLineNumber
-    }
+    this.sourceLineNumber = options?.sourceLineNumber
   }
 
   descendantsToIncludeInTableOfContents(): Heading[] {

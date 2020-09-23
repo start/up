@@ -7,8 +7,8 @@ import { OutlineSyntaxNode } from './OutlineSyntaxNode'
 export class Heading extends InlineSyntaxNodeContainer implements OutlineSyntaxNode {
   level: number
   titleMarkup: string
-  ordinalInTableOfContents: number | undefined = undefined
-  sourceLineNumber: number | undefined = undefined
+  ordinalInTableOfContents?: number
+  sourceLineNumber?: number
 
   constructor(
     children: InlineSyntaxNode[],

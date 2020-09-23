@@ -8,12 +8,13 @@ import { OutlineSyntaxNodeContainer } from './OutlineSyntaxNodeContainer'
 
 
 export class DescriptionList implements OutlineSyntaxNode {
-  sourceLineNumber: number | undefined = undefined
+  sourceLineNumber?: number
 
-  constructor(public items: DescriptionList.Item[], options?: { sourceLineNumber: number }) {
-    if (options) {
-      this.sourceLineNumber = options.sourceLineNumber
-    }
+  constructor(
+    public items: DescriptionList.Item[],
+    options?: { sourceLineNumber: number }
+  ) {
+    this.sourceLineNumber = options?.sourceLineNumber
   }
 
   descendantsToIncludeInTableOfContents(): Heading[] {

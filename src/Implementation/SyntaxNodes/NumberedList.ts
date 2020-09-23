@@ -7,12 +7,13 @@ import { OutlineSyntaxNodeContainer } from './OutlineSyntaxNodeContainer'
 
 
 export class NumberedList implements OutlineSyntaxNode {
-  sourceLineNumber: number | undefined = undefined
+  sourceLineNumber?: number
 
-  constructor(public items: NumberedList.Item[], options?: { sourceLineNumber: number }) {
-    if (options) {
-      this.sourceLineNumber = options.sourceLineNumber
-    }
+  constructor(
+    public items: NumberedList.Item[],
+    options?: { sourceLineNumber: number }
+  ) {
+    this.sourceLineNumber = options?.sourceLineNumber
   }
 
   start(): number | undefined {
@@ -53,14 +54,14 @@ export class NumberedList implements OutlineSyntaxNode {
 
 export namespace NumberedList {
   export class Item extends OutlineSyntaxNodeContainer {
-    ordinal: number | undefined = undefined
+    ordinal?: number
 
-    constructor(public children: OutlineSyntaxNode[], options?: { ordinal?: number }) {
+    constructor(
+      public children: OutlineSyntaxNode[],
+      options?: { ordinal?: number }
+    ) {
       super(children)
-
-      if (options) {
-        this.ordinal = options.ordinal
-      }
+      this.ordinal = options?.ordinal
     }
 
     protected NUMBERED_LIST_ITEM(): void { }

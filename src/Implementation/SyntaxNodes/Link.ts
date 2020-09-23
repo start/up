@@ -8,7 +8,7 @@ import { RichInlineSyntaxNode } from './RichInlineSyntaxNode'
 // If a line consists solely of media conventions *or media conventions within links*,
 // those media conventions are placed directly into the outline.
 export class Link extends RichInlineSyntaxNode implements OutlineSyntaxNode {
-  sourceLineNumber: number | undefined = undefined
+  sourceLineNumber?: number
 
   constructor(
     children: InlineSyntaxNode[],
@@ -16,10 +16,7 @@ export class Link extends RichInlineSyntaxNode implements OutlineSyntaxNode {
     options?: { sourceLineNumber: number }
   ) {
     super(children)
-
-    if (options) {
-      this.sourceLineNumber = options.sourceLineNumber
-    }
+    this.sourceLineNumber = options?.sourceLineNumber
   }
 
   descendantsToIncludeInTableOfContents(): Heading[] {

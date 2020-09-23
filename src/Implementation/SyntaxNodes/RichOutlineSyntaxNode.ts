@@ -4,14 +4,14 @@ import { OutlineSyntaxNodeContainer } from './OutlineSyntaxNodeContainer'
 
 
 export abstract class RichOutlineSyntaxNode extends OutlineSyntaxNodeContainer implements OutlineSyntaxNode {
-  sourceLineNumber: number | undefined = undefined
+  sourceLineNumber?: number
 
-  constructor(children: OutlineSyntaxNode[], options?: { sourceLineNumber: number }) {
+  constructor(
+    children: OutlineSyntaxNode[],
+    options?: { sourceLineNumber: number }
+  ) {
     super(children)
-
-    if (options) {
-      this.sourceLineNumber = options.sourceLineNumber
-    }
+    this.sourceLineNumber = options?.sourceLineNumber
   }
 
   abstract render(renderer: Renderer): string

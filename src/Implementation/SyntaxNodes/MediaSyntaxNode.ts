@@ -7,16 +7,14 @@ import { OutlineSyntaxNode } from './OutlineSyntaxNode'
 // If a line consists solely of media conventions (or media conventions within links),
 // those media conventions are placed directly into the outline.
 export abstract class MediaSyntaxNode implements InlineSyntaxNode, OutlineSyntaxNode {
-  sourceLineNumber: number | undefined = undefined
+  sourceLineNumber?: number
 
   constructor(
     public description: string,
     public url: string,
     options?: { sourceLineNumber: number }
   ) {
-    if (options) {
-      this.sourceLineNumber = options.sourceLineNumber
-    }
+      this.sourceLineNumber = options?.sourceLineNumber
   }
 
   textAppearingInline(): string {
