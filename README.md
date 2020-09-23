@@ -1,5 +1,3 @@
-[![Build Status](https://travis-ci.org/start/up.svg?branch=master)](https://travis-ci.org/start/up)
-
 What's Up?
 ==========
 
