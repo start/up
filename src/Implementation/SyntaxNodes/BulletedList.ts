@@ -1,6 +1,6 @@
 import { concat } from '../CollectionHelpers'
 import { Renderer } from '../Rendering/Renderer'
-import { Document } from './Document'
+import { Heading } from './Heading'
 import { InlineSyntaxNode } from './InlineSyntaxNode'
 import { OutlineSyntaxNode } from './OutlineSyntaxNode'
 import { OutlineSyntaxNodeContainer } from './OutlineSyntaxNodeContainer'
@@ -16,7 +16,7 @@ export class BulletedList implements OutlineSyntaxNode {
     }
   }
 
-  descendantsToIncludeInTableOfContents(): Document.TableOfContents.Entry[] {
+  descendantsToIncludeInTableOfContents(): Heading[] {
     return concat(
       this.items.map(item => item.descendantsToIncludeInTableOfContents()))
   }

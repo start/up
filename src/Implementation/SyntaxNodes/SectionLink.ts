@@ -1,6 +1,7 @@
 import { Renderer } from '../Rendering/Renderer'
 import { containsStringIgnoringCapitalization, isEqualIgnoringCapitalization } from '../StringHelpers'
 import { Document } from './Document'
+import { Heading } from './Heading'
 import { getInlineDescendants } from './getInlineDescendants'
 import { getTextAppearingInline } from './getTextAppearingInline'
 import { InlineSyntaxNode } from './InlineSyntaxNode'
@@ -10,7 +11,7 @@ import { InlineSyntaxNode } from './InlineSyntaxNode'
 export class SectionLink implements InlineSyntaxNode {
   constructor(
     public markupSnippetFromSectionTitle: string,
-    public entry?: Document.TableOfContents.Entry) { }
+    public entry?: Heading) { }
 
   referenceMostAppropriateTableOfContentsEntry(tableOfContents: Document.TableOfContents): void {
     // We'll use try to match our `markupSnippetFromSectionTitle` with the `titleMarkup` of the
@@ -75,7 +76,7 @@ export class SectionLink implements InlineSyntaxNode {
     return renderer.sectionLink(this)
   }
 
-  private canMatch(entry: Document.TableOfContents.Entry): boolean {
+  private canMatch(entry: Heading): boolean {
     // We won't match a table of contents entry if it contains this section link.
     return getInlineDescendants(entry.children).indexOf(this) === -1
   }

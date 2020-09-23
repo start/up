@@ -1,15 +1,13 @@
 import * as Up from '../../../Main'
 import { either, patternIgnoringCapitalizationAndStartingWith } from '../../PatternHelpers'
 import { Renderer } from '.././Renderer'
-import { EMPTY_ATTRBUTE_VALUE, htmlElement, htmlElementWithAlreadyEscapedChildren, singleTagHtmlElement } from './HtmlElementHelpers'
+import { Attrs, EMPTY_ATTRBUTE_VALUE, htmlElement, htmlElementWithAlreadyEscapedChildren, singleTagHtmlElement } from './HtmlElementHelpers'
 import { escapeHtmlContent } from './HtmlEscapingHelpers'
 
 
 export class HtmlRenderer extends Renderer {
   // Our HTML for revealable content doesn't require JavaScript (just CSS), and it works perfectly well for
-  // screen-readers.
-  //
-  // For example, here's our HTML for inline revealable content:
+  // screen-readers. Here's how it looks:
   //
   // <span class="up-revealable">
   //   <input checked class="up-hide" id="up-hide-button-1" name="up-revealable-1" type="radio">
@@ -20,7 +18,7 @@ export class HtmlRenderer extends Renderer {
   // </span>
   //
   // This solution requires generating unique IDs to associate each label with its radio button (and a unique
-  // name to group the two radio buttons together). To fascilitate this, we increment a counter each time we
+  // name to group the two radio buttons together). To facilitate this, we increment a counter each time we
   // render revealable content, appending the counter's value to the radio buttons' IDs/names.
   private revealableContentCount = 0
 
@@ -287,7 +285,7 @@ export class HtmlRenderer extends Renderer {
     return this.renderAll(document.children)
   }
 
-  private tableOfContentsEntry(entry: Up.Document.TableOfContents.Entry): Up.Heading {
+  private tableOfContentsEntry(entry: Up.Heading): Up.Heading {
     return new Up.Heading(
       [this.linkToActualEntryInDocument(entry)], {
         level: entry.level,
@@ -296,7 +294,7 @@ export class HtmlRenderer extends Renderer {
       })
   }
 
-  private linkToActualEntryInDocument(entry: Up.Document.TableOfContents.Entry): Up.Link {
+  private linkToActualEntryInDocument(entry: Up.Heading): Up.Link {
     return new Up.Link(
       entry.children,
       fragmentUrl(this.htmlIdOfActualEntryInDocument(entry)))
@@ -507,7 +505,7 @@ export class HtmlRenderer extends Renderer {
     return this.tableCell('td', cell)
   }
 
-  private tableCell(tagName: string, cell: Up.Table.Cell, attrs: any = {}): string {
+  private tableCell(tagName: string, cell: Up.Table.Cell, attrs: Attrs = {}): string {
     if (cell.isNumeric()) {
       attrs.class = cssClassAttrValue('numeric')
     }
@@ -523,11 +521,11 @@ export class HtmlRenderer extends Renderer {
     )
   }
 
-  private htmlElement(tagName: string, children: Up.SyntaxNode[], attrs: any = {}): string {
+  private htmlElement(tagName: string, children: Up.SyntaxNode[], attrs: Attrs = {}): string {
     return htmlElementWithAlreadyEscapedChildren(tagName, this.renderEach(children), attrs)
   }
 
-  private htmlIdOfActualEntryInDocument(entry: Up.Document.TableOfContents.Entry): string {
+  private htmlIdOfActualEntryInDocument(entry: Up.Heading): string {
     return this.idFor(
       this.settings.terms.sectionReferencedByTableOfContents,
       entry.ordinalInTableOfContents)
@@ -553,7 +551,7 @@ export class HtmlRenderer extends Renderer {
 }
 
 
-function htmlAttrsFor(node: Up.OutlineSyntaxNode, attrs: any = {}): any {
+function htmlAttrsFor(node: Up.OutlineSyntaxNode, attrs: Attrs = {}): Attrs {
   if (node.sourceLineNumber) {
     attrs['data-up-source-line'] = node.sourceLineNumber
   }

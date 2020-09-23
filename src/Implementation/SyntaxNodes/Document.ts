@@ -1,6 +1,5 @@
 import { concat } from '../CollectionHelpers'
 import { Heading } from './Heading'
-import { InlineSyntaxNode } from './InlineSyntaxNode'
 import { insertFootnoteBlocksAndAssignFootnoteReferenceNumbers } from './insertFootnoteBlocksAndAssignFootnoteReferenceNumbers'
 import { OutlineSyntaxNode } from './OutlineSyntaxNode'
 import { OutlineSyntaxNodeContainer } from './OutlineSyntaxNodeContainer'
@@ -73,39 +72,13 @@ export namespace Document {
       return tableOfContents
     }
 
-    static getEntries(nodes: OutlineSyntaxNode[]): TableOfContents.Entry[] {
-      // Right now, only headings can be table of contents entries.
-      // TODO: Revisit
+    static getEntries(nodes: OutlineSyntaxNode[]): Heading[] {
+      // Only headings can be table of contents entries.
       return concat(
         nodes.map(node =>
           node instanceof Heading ? [node] : node.descendantsToIncludeInTableOfContents()))
     }
 
-    constructor(public entries: TableOfContents.Entry[] = []) { }
-  }
-
-
-  export namespace TableOfContents {
-    // Document.TableOfContents.Entry
-    export interface Entry {
-      // The ordinal of this entry in the table of contents. Starts at `1`, not `0`.
-      ordinalInTableOfContents: number | undefined
-
-      // Semantically equivalent to a heading level. A level of 1 is most significant.
-      level: number
-
-      // The inline syntax nodes representing this entry in the table of contents.
-      children: InlineSyntaxNode[]
-
-      // Section links compare their `markupSnippetFromSectionTitle` against this field.
-      //
-      // Currently, headings are the only outline writing conventions that produce table of contents
-      // entries, so `titleMarkup` will always represent the line of markup containing the heading's
-      // actual content.
-      titleMarkup: string
-
-      // This represents the source line number of the item (i.e. heading) this entry points to.
-      sourceLineNumber: number | undefined
-    }
+    constructor(public entries: Heading[] = []) { }
   }
 }

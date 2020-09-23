@@ -1,28 +1,27 @@
 import { escapeHtmlAttrValue, escapeHtmlContent } from './HtmlEscapingHelpers'
 
 
-export function htmlElement(tagName: string, unescapedContent: string, attrs: any = {}): string {
+export function htmlElement(tagName: string, unescapedContent: string, attrs: Attrs = {}): string {
   return htmlElementWithAlreadyEscapedChildren(
     tagName,
     [escapeHtmlContent(unescapedContent)],
     attrs)
 }
 
-export function htmlElementWithAlreadyEscapedChildren(tagName: string, escapedChildren: string[], attrs: any = {}): string {
+export function htmlElementWithAlreadyEscapedChildren(tagName: string, escapedChildren: string[], attrs: Attrs = {}): string {
   return (
     htmlStartTag(tagName, attrs)
     + escapedChildren.join('')
     + `</${tagName}>`)
 }
 
-export function singleTagHtmlElement(tagName: string, attrs: any = {}): string {
+export function singleTagHtmlElement(tagName: string, attrs: Attrs = {}): string {
   return htmlStartTag(tagName, attrs)
 }
 
-// When an attribute value is `null`, `undefined`, or an empty string, its value
-// isn't rendered.
+// If an attribute's value is `undefined`, we render only its name without any value.
 //
-// For example, the `reversed` attribute of numbered lists doesn't render a value:
+// For example, we don't render a value for the `reversed` attribute of numbered lists:
 //
 //   <ol reversed start="2">
 //     <li value="2">
@@ -34,27 +33,31 @@ export function singleTagHtmlElement(tagName: string, attrs: any = {}): string {
 //   </ol>
 //
 // The purpose of this constant is to make that behavior a bit clearer.
-export const EMPTY_ATTRBUTE_VALUE: string = ''
+export const EMPTY_ATTRBUTE_VALUE = undefined
+
+export type Attrs = {
+  [name: string]: string | number | typeof EMPTY_ATTRBUTE_VALUE
+}
 
 
-function htmlStartTag(tagName: string, attrs: any): string {
+function htmlStartTag(tagName: string, attrs: Attrs): string {
   const tagNameWithAttrs =
     [tagName, ...htmlAttrs(attrs)].join(' ')
 
   return `<${tagNameWithAttrs}>`
 }
 
-function htmlAttrs(attrs: any): string[] {
+function htmlAttrs(attrs: Attrs): string[] {
   const alphabetizedAttrNames =
     Object.keys(attrs).sort()
 
   return alphabetizedAttrNames.map(attrName => htmlAttr(attrs, attrName))
 }
 
-function htmlAttr(attrs: any, attrName: string): string {
+function htmlAttr(attrs: Attrs, attrName: string): string {
   const value = attrs[attrName]
 
-  return (value === EMPTY_ATTRBUTE_VALUE) || (value == null)
+  return (value === EMPTY_ATTRBUTE_VALUE)
     ? attrName
     : `${attrName}="${escapeHtmlAttrValue(value)}"`
 }

@@ -276,11 +276,11 @@ Chrono Cross;       Sony\`s Playstation;      1990\`s`
               new Up.Table.Header.Cell([new Up.Text('Release Decade')])
             ]), [
               new Up.Table.Row([
-                new Up.Table.Row.Cell([new Up.Text('Nintendo\`s Super NES')]),
+                new Up.Table.Row.Cell([new Up.Text('Nintendo`s Super NES')]),
                 new Up.Table.Row.Cell([new Up.Text('1990`s')])
               ], new Up.Table.Header.Cell([new Up.Text('Chrono Trigger')])),
               new Up.Table.Row([
-                new Up.Table.Row.Cell([new Up.Text('Sony\`s Playstation')]),
+                new Up.Table.Row.Cell([new Up.Text('Sony`s Playstation')]),
                 new Up.Table.Row.Cell([new Up.Text('1990`s')])
               ], new Up.Table.Header.Cell([new Up.Text('Chrono Cross')]))
             ])
@@ -293,7 +293,7 @@ Table
 
                               Platform;         Release Decade
 Square\`s Chrono Trigger;     Super NES;        1990\`s
-Square\s Chrono Cross;        Playstation;      1990\`s`
+Square\`s Chrono Cross;        Playstation;      1990\`s`
 
       expect(Up.parse(markup)).to.deep.equal(
         new Up.Document([
@@ -306,11 +306,11 @@ Square\s Chrono Cross;        Playstation;      1990\`s`
               new Up.Table.Row([
                 new Up.Table.Row.Cell([new Up.Text('Super NES')]),
                 new Up.Table.Row.Cell([new Up.Text('1990`s')])
-              ], new Up.Table.Header.Cell([new Up.Text('Square\`s Chrono Trigger')])),
+              ], new Up.Table.Header.Cell([new Up.Text('Square`s Chrono Trigger')])),
               new Up.Table.Row([
                 new Up.Table.Row.Cell([new Up.Text('Playstation')]),
                 new Up.Table.Row.Cell([new Up.Text('1990`s')])
-              ], new Up.Table.Header.Cell([new Up.Text('Square\s Chrono Cross')]))
+              ], new Up.Table.Header.Cell([new Up.Text('Square`s Chrono Cross')]))
             ])
         ]))
     })

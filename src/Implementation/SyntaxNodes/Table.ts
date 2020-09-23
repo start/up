@@ -2,7 +2,7 @@ import { concat } from '../CollectionHelpers'
 import { anyCharMatching } from '../PatternHelpers'
 import { DIGIT, LETTER_CLASS, WHITESPACE_CHAR } from '../PatternPieces'
 import { Renderer } from '../Rendering/Renderer'
-import { Document } from './Document'
+import { Heading } from './Heading'
 import { getInlineDescendants } from './getInlineDescendants'
 import { InlineSyntaxNode } from './InlineSyntaxNode'
 import { InlineSyntaxNodeContainer } from './InlineSyntaxNodeContainer'
@@ -23,7 +23,7 @@ export class Table implements OutlineSyntaxNode {
     }
   }
 
-  descendantsToIncludeInTableOfContents(): Document.TableOfContents.Entry[] {
+  descendantsToIncludeInTableOfContents(): Heading[] {
     return []
   }
 

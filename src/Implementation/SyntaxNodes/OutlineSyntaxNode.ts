@@ -1,4 +1,4 @@
-import { Document } from './Document'
+import { Heading } from './Heading'
 import { SyntaxNode } from './SyntaxNode'
 
 
@@ -9,5 +9,5 @@ export interface OutlineSyntaxNode extends SyntaxNode {
 
   // Any descendants (children, grandchildren, etc.) to include in the table of
   // contents.
-  descendantsToIncludeInTableOfContents(): Document.TableOfContents.Entry[]
+  descendantsToIncludeInTableOfContents(): Heading[]
 }

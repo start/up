@@ -1018,8 +1018,8 @@ Purchasing
 
     const document = Up.parse(markup)
 
-    const [bestFruitHeading, purchasingHeading] = document.children as any[]
-    const entries = document.tableOfContents.entries as any[]
+    const [bestFruitHeading, purchasingHeading] = document.children
+    const { entries } = document.tableOfContents 
 
     expect(entries[0] === bestFruitHeading).to.be.true
     expect(entries[1] === purchasingHeading).to.be.true

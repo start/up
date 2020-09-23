@@ -9,9 +9,9 @@
     "compiled/Implementation"
   ],
   "scripts": {
-    "prepare": "rm -rf ./compiled && tsc",
-    "test": "npm run prepare && mocha --recursive ./compiled/Test && mocha ./verify-package-settings.js",
-    "lint": "npm run prepare && tslint --out lint-warnings.txt --project ."
+    "build": "rm -rf ./compiled && tsc",
+    "test": "npm run build && mocha --recursive ./compiled/Test && mocha ./verify-package-settings.js",
+    "lint": "eslint ./src --ext .js,.jsx,.ts,.tsx"
   },
   "keywords": [
     "formatting",
@@ -30,9 +30,14 @@
   "homepage": "https://tryup.org",
   "license": "MIT",
   "devDependencies": {
-    "chai": "latest",
-    "mocha": "latest",
-    "tslint": "latest",
-    "typescript": "latest"
-  }
+    "@types/chai": "^4.2.12",
+    "@types/mocha": "^8.0.3",
+    "@typescript-eslint/eslint-plugin": "^4.2.0",
+    "@typescript-eslint/parser": "^4.2.0",
+    "chai": "^4.2.0",
+    "eslint": "^7.9.0",
+    "mocha": "^8.1.3",
+    "typescript": "^4.0.3"
+  },
+  "dependencies": {}
 }

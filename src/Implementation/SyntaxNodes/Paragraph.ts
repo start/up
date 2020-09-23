@@ -1,5 +1,5 @@
 import { Renderer } from '../Rendering/Renderer'
-import { Document } from './Document'
+import { Heading } from './Heading'
 import { InlineSyntaxNode } from './InlineSyntaxNode'
 import { InlineSyntaxNodeContainer } from './InlineSyntaxNodeContainer'
 import { OutlineSyntaxNode } from './OutlineSyntaxNode'
@@ -16,7 +16,7 @@ export class Paragraph extends InlineSyntaxNodeContainer implements OutlineSynta
     }
   }
 
-  descendantsToIncludeInTableOfContents(): Document.TableOfContents.Entry[] {
+  descendantsToIncludeInTableOfContents(): Heading[] {
     return []
   }
 

@@ -1,11 +1,10 @@
 import { Renderer } from '../Rendering/Renderer'
-import { Document } from './Document'
 import { InlineSyntaxNode } from './InlineSyntaxNode'
 import { InlineSyntaxNodeContainer } from './InlineSyntaxNodeContainer'
 import { OutlineSyntaxNode } from './OutlineSyntaxNode'
 
 
-export class Heading extends InlineSyntaxNodeContainer implements OutlineSyntaxNode, Document.TableOfContents.Entry {
+export class Heading extends InlineSyntaxNodeContainer implements OutlineSyntaxNode {
   level: number
   titleMarkup: string
   ordinalInTableOfContents: number | undefined = undefined
@@ -28,7 +27,7 @@ export class Heading extends InlineSyntaxNodeContainer implements OutlineSyntaxN
     this.sourceLineNumber = options.sourceLineNumber
   }
 
-  descendantsToIncludeInTableOfContents(): Document.TableOfContents.Entry[] {
+  descendantsToIncludeInTableOfContents(): Heading[] {
     return []
   }
 

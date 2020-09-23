@@ -1,5 +1,6 @@
 import { concat } from '../CollectionHelpers'
 import { Document } from './Document'
+import { Heading } from './Heading'
 import { InlineSyntaxNode } from './InlineSyntaxNode'
 import { OutlineSyntaxNode } from './OutlineSyntaxNode'
 
@@ -9,7 +10,7 @@ export abstract class OutlineSyntaxNodeContainer {
 
   // Any descendants (children, grandchildren, etc.) to include in the table of
   // contents.
-  descendantsToIncludeInTableOfContents(): Document.TableOfContents.Entry[] {
+  descendantsToIncludeInTableOfContents(): Heading[] {
     return Document.TableOfContents.getEntries(this.children)
   }
 
