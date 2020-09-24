@@ -2,7 +2,7 @@ import { expect } from 'chai'
 import * as Up from '../../Main'
 
 
-const NOT_USED: string = null!
+const IGNORED_FIELD: string = null!
 
 describe('An empty document', () => {
   it('does not produce any HTML on its own', () => {
@@ -512,7 +512,7 @@ describe('A blockquote node', () => {
 describe('A level 1 heading node', () => {
   it('renders an <h1> element', () => {
     const document = new Up.Document([
-      new Up.Heading([new Up.Text('Bulbasaur')], { level: 1, titleMarkup: NOT_USED })
+      new Up.Heading([new Up.Text('Bulbasaur')], { level: 1, titleMarkup: IGNORED_FIELD })
     ])
 
     expect(Up.render(document)).to.equal('<h1>Bulbasaur</h1>')
@@ -523,7 +523,7 @@ describe('A level 1 heading node', () => {
 describe('A level 2 heading node', () => {
   it('renders an <h2> element', () => {
     const document = new Up.Document([
-      new Up.Heading([new Up.Text('Ivysaur')], { level: 2, titleMarkup: NOT_USED })
+      new Up.Heading([new Up.Text('Ivysaur')], { level: 2, titleMarkup: IGNORED_FIELD })
     ])
 
     expect(Up.render(document)).to.equal('<h2>Ivysaur</h2>')
@@ -534,7 +534,7 @@ describe('A level 2 heading node', () => {
 describe('A level 3 heading node', () => {
   it('renders an <h3> element', () => {
     const document = new Up.Document([
-      new Up.Heading([new Up.Text('Venusaur')], { level: 3, titleMarkup: NOT_USED })
+      new Up.Heading([new Up.Text('Venusaur')], { level: 3, titleMarkup: IGNORED_FIELD })
     ])
 
     expect(Up.render(document)).to.equal('<h3>Venusaur</h3>')
@@ -545,7 +545,7 @@ describe('A level 3 heading node', () => {
 describe('A level 4 heading node', () => {
   it('renders an <h4> element', () => {
     const document = new Up.Document([
-      new Up.Heading([new Up.Text('Charmander')], { level: 4, titleMarkup: NOT_USED })
+      new Up.Heading([new Up.Text('Charmander')], { level: 4, titleMarkup: IGNORED_FIELD })
     ])
 
     expect(Up.render(document)).to.equal('<h4>Charmander</h4>')
@@ -556,7 +556,7 @@ describe('A level 4 heading node', () => {
 describe('A level 5 heading node', () => {
   it('renders an <h5> element', () => {
     const document = new Up.Document([
-      new Up.Heading([new Up.Text('Charmeleon')], { level: 5, titleMarkup: NOT_USED })
+      new Up.Heading([new Up.Text('Charmeleon')], { level: 5, titleMarkup: IGNORED_FIELD })
     ])
 
     expect(Up.render(document)).to.equal('<h5>Charmeleon</h5>')
@@ -567,7 +567,7 @@ describe('A level 5 heading node', () => {
 describe('A level 6 heading node', () => {
   it('renders an <h6> element', () => {
     const document = new Up.Document([
-      new Up.Heading([new Up.Text('Charizard')], { level: 6, titleMarkup: NOT_USED })
+      new Up.Heading([new Up.Text('Charizard')], { level: 6, titleMarkup: IGNORED_FIELD })
     ])
 
     expect(Up.render(document)).to.equal('<h6>Charizard</h6>')
@@ -578,7 +578,7 @@ describe('A level 6 heading node', () => {
 context('Headings with levels 7 and up render as <div role="heading"> elements with an "aria-level" attribute equal to their level:', () => {
   specify('Level 7', () => {
     const document = new Up.Document([
-      new Up.Heading([new Up.Text('Squirtle')], { level: 7, titleMarkup: NOT_USED })
+      new Up.Heading([new Up.Text('Squirtle')], { level: 7, titleMarkup: IGNORED_FIELD })
     ])
 
     expect(Up.render(document)).to.equal('<div aria-level="7" role="heading">Squirtle</div>')
@@ -586,7 +586,7 @@ context('Headings with levels 7 and up render as <div role="heading"> elements w
 
   specify('Level 8', () => {
     const document = new Up.Document([
-      new Up.Heading([new Up.Text('Squirtle')], { level: 8, titleMarkup: NOT_USED })
+      new Up.Heading([new Up.Text('Squirtle')], { level: 8, titleMarkup: IGNORED_FIELD })
     ])
 
     expect(Up.render(document)).to.equal('<div aria-level="8" role="heading">Squirtle</div>')
@@ -594,7 +594,7 @@ context('Headings with levels 7 and up render as <div role="heading"> elements w
 
   specify('Level 9', () => {
     const document = new Up.Document([
-      new Up.Heading([new Up.Text('Squirtle')], { level: 9, titleMarkup: NOT_USED })
+      new Up.Heading([new Up.Text('Squirtle')], { level: 9, titleMarkup: IGNORED_FIELD })
     ])
 
     expect(Up.render(document)).to.equal('<div aria-level="9" role="heading">Squirtle</div>')
@@ -602,7 +602,7 @@ context('Headings with levels 7 and up render as <div role="heading"> elements w
 
   specify('Level 10', () => {
     const document = new Up.Document([
-      new Up.Heading([new Up.Text('Squirtle')], { level: 10, titleMarkup: NOT_USED })
+      new Up.Heading([new Up.Text('Squirtle')], { level: 10, titleMarkup: IGNORED_FIELD })
     ])
 
     expect(Up.render(document)).to.equal('<div aria-level="10" role="heading">Squirtle</div>')
@@ -755,7 +755,7 @@ describe('A section link node that is associated with a table of contents entry'
   it('renders a link to the entry in the document', () => {
     const heading = new Up.Heading([
       new Up.Text('Howdy there')
-    ], { level: 1, titleMarkup: NOT_USED, ordinalInTableOfContents: 1 })
+    ], { level: 1, titleMarkup: IGNORED_FIELD, ordinalInTableOfContents: 1 })
 
     const document =
       new Up.Document([

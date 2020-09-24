@@ -2,19 +2,19 @@ import { expect } from 'chai'
 import * as Up from '../../Main'
 
 
-const NOT_USED: string = null!
+const IGNORED_FIELD: string = null!
 
 context('The `Document.create` method is automatically used during the normal parsing process. It returns a document object with:', () => {
   specify('A table of contents', () => {
     const documentChildren = [
-      new Up.Heading([new Up.Text('I enjoy apples')], { level: 1, titleMarkup: NOT_USED }),
+      new Up.Heading([new Up.Text('I enjoy apples')], { level: 1, titleMarkup: IGNORED_FIELD }),
       new Up.NumberedList([
         new Up.NumberedList.Item([
-          new Up.Heading([new Up.Text("They're cheap")], { level: 2, titleMarkup: NOT_USED }),
+          new Up.Heading([new Up.Text("They're cheap")], { level: 2, titleMarkup: IGNORED_FIELD }),
           new Up.Paragraph([new Up.Text('Very cheap.')])
         ]),
         new Up.NumberedList.Item([
-          new Up.Heading([new Up.Text("They're delicious")], { level: 2, titleMarkup: NOT_USED }),
+          new Up.Heading([new Up.Text("They're delicious")], { level: 2, titleMarkup: IGNORED_FIELD }),
           new Up.Paragraph([new Up.Text('Very delicious.')])
         ])
       ])
@@ -26,21 +26,21 @@ context('The `Document.create` method is automatically used during the normal pa
     const enjoyHeading =
       new Up.Heading([new Up.Text('I enjoy apples')], {
         level: 1,
-        titleMarkup: NOT_USED,
+        titleMarkup: IGNORED_FIELD,
         ordinalInTableOfContents: 1
       })
 
     const cheapHeading =
       new Up.Heading([new Up.Text("They're cheap")], {
         level: 2,
-        titleMarkup: NOT_USED,
+        titleMarkup: IGNORED_FIELD,
         ordinalInTableOfContents: 2
       })
 
     const deliciousHeading =
       new Up.Heading([new Up.Text("They're delicious")], {
         level: 2,
-        titleMarkup: NOT_USED,
+        titleMarkup: IGNORED_FIELD,
         ordinalInTableOfContents: 3
       })
 

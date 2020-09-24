@@ -2,7 +2,7 @@ import { expect } from 'chai'
 import * as Up from '../../../Main'
 
 
-const NOT_USED: string = null!
+const IGNORED_FIELD: string = null!
 
 context('Inside a link', () => {
   specify("a footnote does not produce another <a> element. The footnote's <sup> directly contains the footnote's reference number", () => {
@@ -41,7 +41,7 @@ context('A link within a table of contents entry does not produce an <a> element
         new Up.Link([new Up.Text('I enjoy apples')], 'https://google.com')
       ], {
           level: 1,
-          titleMarkup: NOT_USED,
+          titleMarkup: IGNORED_FIELD,
           ordinalInTableOfContents: 1
         })
 
@@ -64,7 +64,7 @@ context('A link within a table of contents entry does not produce an <a> element
         new Up.Link([new Up.Text('I enjoy apples')], 'https://google.com')
       ], {
           level: 1,
-          titleMarkup: NOT_USED,
+          titleMarkup: IGNORED_FIELD,
           ordinalInTableOfContents: 1
         })
 
@@ -134,7 +134,7 @@ context("When a link is nested deeply within another link, it doesn't produce an
         ], 'https://apple.com')
       ], {
           level: 1,
-          titleMarkup: NOT_USED,
+          titleMarkup: IGNORED_FIELD,
           ordinalInTableOfContents: 1
         })
 
@@ -161,7 +161,7 @@ context("When a link is nested deeply within another link, it doesn't produce an
         ], 'https://apple.com')
       ], {
           level: 1,
-          titleMarkup: NOT_USED,
+          titleMarkup: IGNORED_FIELD,
           ordinalInTableOfContents: 1
         })
 

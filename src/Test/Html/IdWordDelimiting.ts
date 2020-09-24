@@ -2,7 +2,7 @@ import { expect } from 'chai'
 import * as Up from '../../Main'
 
 
-const NOT_USED: string = null!
+const IGNORED_FIELD: string = null!
 
 context('Words within HTML IDs are delimited by hyphens.', () => {
   context('This applies to terms appearing in IDs:', () => {
@@ -62,7 +62,7 @@ context('Words within HTML IDs are delimited by hyphens.', () => {
       const heading =
         new Up.Heading([new Up.Text('I enjoy apples')], {
           level: 1,
-          titleMarkup: NOT_USED,
+          titleMarkup: IGNORED_FIELD,
           ordinalInTableOfContents: 1
         })
 
@@ -152,7 +152,7 @@ context('Words within HTML IDs are delimited by hyphens.', () => {
       const heading =
         new Up.Heading([new Up.Text('I enjoy apples')], {
           level: 1,
-          titleMarkup: NOT_USED,
+          titleMarkup: IGNORED_FIELD,
           ordinalInTableOfContents: 1
         })
 

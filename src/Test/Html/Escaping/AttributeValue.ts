@@ -185,12 +185,12 @@ context('Within any attribute value, all instances of " and & are escaped. Speci
       }
     })
 
-    const NOT_USED: string = null!
+    const IGNORED_FIELD: string = null!
 
     const heading =
       new Up.Heading([new Up.Text('I enjoy apples')], {
         level: 1,
-        titleMarkup: NOT_USED,
+        titleMarkup: IGNORED_FIELD,
         ordinalInTableOfContents: 1
       })
 
