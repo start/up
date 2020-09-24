@@ -193,7 +193,7 @@ describe('A video description produced by square brackets', () => {
 })
 
 
-describe('A video description (enclosed by parentheses)', () => {
+describe('A video description enclosed by parentheses', () => {
   it('can contain matching parentheses', () => {
     expect(Up.parse('(video: ghosts eating (luggage))[http://example.com/?state=NE]')).to.deep.equal(
       new Up.Document([
@@ -210,7 +210,7 @@ describe('A video description (enclosed by parentheses)', () => {
 })
 
 
-describe('A video URL (enclosed by square brackets)', () => {
+describe('A video URL enclosed by square brackets', () => {
   it('can contain matching square brackets', () => {
     expect(Up.parse('(video: ghosts eating luggage)[http://example.com/?state=[NE]]')).to.deep.equal(
       new Up.Document([
@@ -227,7 +227,7 @@ describe('A video URL (enclosed by square brackets)', () => {
 })
 
 
-describe('A video URL (enclosed by parentheses)', () => {
+describe('A video URL enclosed by parentheses', () => {
   it('can contain matching parentheses', () => {
     expect(Up.parse('[video: ghosts eating luggage](http://example.com/?state=(NE))')).to.deep.equal(
       new Up.Document([
