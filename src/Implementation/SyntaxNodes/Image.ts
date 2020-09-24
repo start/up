@@ -7,5 +7,5 @@ export class Image extends MediaSyntaxNode {
     return renderer.image(this)
   }
 
-  protected IMAGE(): void { }
+  protected readonly IMAGE = undefined
 }

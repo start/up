@@ -31,7 +31,7 @@ export abstract class MediaSyntaxNode implements InlineSyntaxNode, OutlineSyntax
 
   abstract render(renderer: Renderer): string
 
-  protected MEDIA_SYNTAX_NODE(): void { }
+  protected readonly MEDIA_SYNTAX_NODE = undefined
 }
 
 export type MediaSyntaxNodeType = new (description: string, url: string) => MediaSyntaxNode

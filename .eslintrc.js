@@ -9,7 +9,8 @@ module.exports = {
       'plugin:@typescript-eslint/recommended',
     ],
     rules: {
-        "no-constant-condition": ["error", { "checkLoops": false }]
+        "no-constant-condition": ["error", { "checkLoops": false }],
+        "@typescript-eslint/no-namespace": "off"
     }
   };
   

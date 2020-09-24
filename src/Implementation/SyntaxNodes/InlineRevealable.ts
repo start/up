@@ -7,5 +7,5 @@ export class InlineRevealable extends RichInlineSyntaxNode {
     return renderer.inlineRevealable(this)
   }
 
-  protected INLINE_REVEALABLE(): void { }
+  protected readonly INLINE_REVEALABLE = undefined
 }

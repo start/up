@@ -14,5 +14,5 @@ export class RevealableBlock extends RichOutlineSyntaxNode {
     return []
   }
 
-  protected REVEALABLE_BLOCK(): void { }
+  protected readonly REVEALABLE_BLOCK = undefined
 }

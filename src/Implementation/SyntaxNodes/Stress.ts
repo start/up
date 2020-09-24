@@ -10,5 +10,5 @@ export class Stress extends RichInlineSyntaxNode {
     return renderer.stress(this)
   }
 
-  protected STRESS(): void { }
+  protected readonly STRESS = undefined
 }

@@ -7,5 +7,5 @@ export class Blockquote extends RichOutlineSyntaxNode {
     return renderer.blockquote(this)
   }
 
-  protected BLOCKQUOTE(): void { }
+  protected readonly BLOCKQUOTE = undefined
 }

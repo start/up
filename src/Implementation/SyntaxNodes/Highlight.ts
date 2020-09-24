@@ -7,5 +7,5 @@ export class Highlight extends RichInlineSyntaxNode {
     return renderer.highlight(this)
   }
 
-  protected HIGHLIGHT(): void { }
+  protected readonly HIGHLIGHT = undefined
 }

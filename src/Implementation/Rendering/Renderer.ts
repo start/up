@@ -52,7 +52,7 @@ export abstract class Renderer {
     return this.renderEach(nodes).join('')
   }
 
-  protected idFor(...parts: Array<number | string | undefined>): string {
+  protected idFor(...parts: Attr[]): string {
     const rawId =
       [this.settings.idPrefix, ...parts].join(' ')
 
@@ -62,5 +62,6 @@ export abstract class Renderer {
   }
 }
 
+export type Attr = number | string | undefined
 
 const WHITESPACE_PATTERN = new RegExp(WHITESPACE, 'g')

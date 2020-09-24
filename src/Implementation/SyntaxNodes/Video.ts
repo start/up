@@ -7,5 +7,5 @@ export class Video extends MediaSyntaxNode {
     return renderer.video(this)
   }
 
-  protected VIDEO(): void { }
+  protected readonly VIDEO = undefined
 }

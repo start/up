@@ -64,7 +64,7 @@ export namespace NumberedList {
       this.ordinal = options?.ordinal
     }
 
-    protected NUMBERED_LIST_ITEM(): void { }
+    protected readonly NUMBERED_LIST_ITEM = undefined
   }
 
   export type Order = 'asc' | 'desc'

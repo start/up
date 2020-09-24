@@ -7,5 +7,5 @@ export class InlineQuote extends InlineRevealable {
     return renderer.inlineQuote(this)
   }
 
-  protected INLINE_QUOTE(): void { }
+  protected readonly INLINE_QUOTE = undefined
 }

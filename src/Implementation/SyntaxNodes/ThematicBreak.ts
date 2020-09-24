@@ -23,5 +23,5 @@ export class ThematicBreak implements OutlineSyntaxNode {
     return renderer.thematicBreak(this)
   }
 
-  protected THEMATIC_BREAK(): void { }
+  protected readonly THEMATIC_BREAK = undefined
 }

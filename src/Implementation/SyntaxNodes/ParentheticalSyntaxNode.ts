@@ -2,5 +2,5 @@ import { RichInlineSyntaxNode } from './RichInlineSyntaxNode'
 
 
 export abstract class ParentheticalSyntaxNode extends RichInlineSyntaxNode {
-  protected PARENTHETICAL_SYNTAX_NODE(): void { }
+  protected readonly PARENTHETICAL_SYNTAX_NODE = undefined
 }

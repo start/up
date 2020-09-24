@@ -33,6 +33,6 @@ export class LineBlock implements OutlineSyntaxNode {
 
 export namespace LineBlock {
   export class Line extends InlineSyntaxNodeContainer {
-    protected LINE_BLOCK_LINE(): void { }
+    protected readonly LINE_BLOCK_LINE = undefined
   }
 }

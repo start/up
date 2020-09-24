@@ -10,5 +10,5 @@ export class Emphasis extends RichInlineSyntaxNode {
     return renderer.emphasis(this)
   }
 
-  protected EMPHASIS(): void { }
+  protected readonly EMPHASIS = undefined
 }

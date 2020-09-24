@@ -24,5 +24,5 @@ export class Paragraph extends InlineSyntaxNodeContainer implements OutlineSynta
     return renderer.paragraph(this)
   }
 
-  protected PARAGRAPH(): void { }
+  protected readonly PARAGRAPH = undefined
 }

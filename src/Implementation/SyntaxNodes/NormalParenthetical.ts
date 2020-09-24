@@ -7,5 +7,5 @@ export class NormalParenthetical extends ParentheticalSyntaxNode {
     return renderer.normalParenthetical(this)
   }
 
-  protected NORMAL_PARENTHETICAL(): void { }
+  protected readonly NORMAL_PARENTHETICAL = undefined
 }

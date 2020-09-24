@@ -10,5 +10,5 @@ export class Italic extends RichInlineSyntaxNode {
     return renderer.italic(this)
   }
 
-  protected ITALIC(): void { }
+  protected readonly ITALIC = undefined
 }

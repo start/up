@@ -7,5 +7,5 @@ export class SquareParenthetical extends ParentheticalSyntaxNode {
     return renderer.squareParenthetical(this)
   }
 
-  protected SQUARE_PARENTHETICAL(): void { }
+  protected readonly SQUARE_PARENTHETICAL = undefined
 }

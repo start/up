@@ -10,5 +10,5 @@ export class Bold extends RichInlineSyntaxNode {
     return renderer.bold(this)
   }
 
-  protected BOLD(): void { }
+  protected readonly BOLD = undefined
 }

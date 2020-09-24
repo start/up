@@ -53,11 +53,11 @@ export namespace DescriptionList {
 
   export namespace Item {
     export class Subject extends InlineSyntaxNodeContainer {
-      protected DESCRIPTION_LIST_ITEM_SUBJECT(): void { }
+      protected readonly DESCRIPTION_LIST_ITEM_SUBJECT = undefined
     }
 
     export class Description extends OutlineSyntaxNodeContainer {
-      protected DESCRIPTION_LIST_ITEM_DESCRIPTION(): void { }
+      protected readonly DESCRIPTION_LIST_ITEM_DESCRIPTION = undefined
     }
   }
 }

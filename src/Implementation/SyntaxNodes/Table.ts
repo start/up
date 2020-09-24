@@ -44,7 +44,7 @@ export class Table implements OutlineSyntaxNode {
 
 export namespace Table {
   export class Caption extends InlineSyntaxNodeContainer {
-    protected TABLE_CAPTION(): void { }
+    protected readonly TABLE_CAPTION = undefined
   }
 
 
@@ -74,7 +74,7 @@ export namespace Table {
 
   export namespace Header {
     export class Cell extends Table.Cell {
-      protected TABLE_HEADER_CELL(): void { }
+      protected readonly TABLE_HEADER_CELL = undefined
     }
   }
 
@@ -95,7 +95,7 @@ export namespace Table {
 
   export namespace Row {
     export class Cell extends Table.Cell {
-      protected TABLE_ROW_CELL(): void { }
+      protected readonly TABLE_ROW_CELL = undefined
     }
   }
 }

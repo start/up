@@ -7,5 +7,5 @@ export class Audio extends MediaSyntaxNode {
     return renderer.audio(this)
   }
 
-  protected AUDIO(): void { }
+  protected readonly AUDIO = undefined
 }

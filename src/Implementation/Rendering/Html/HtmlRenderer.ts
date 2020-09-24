@@ -1,6 +1,6 @@
 import * as Up from '../../../Main'
 import { either, patternIgnoringCapitalizationAndStartingWith } from '../../PatternHelpers'
-import { Renderer } from '.././Renderer'
+import { Renderer, Attr } from '.././Renderer'
 import { Attrs, EMPTY_ATTRBUTE_VALUE, htmlElement, htmlElementWithAlreadyEscapedChildren, singleTagHtmlElement } from './HtmlElementHelpers'
 import { escapeHtmlContent } from './HtmlEscapingHelpers'
 
@@ -60,7 +60,7 @@ export class HtmlRenderer extends Renderer {
   }
 
   numberedList(list: Up.NumberedList): string {
-    const attrs: { start?: number, reversed?: any } = {}
+    const attrs: { start?: number, reversed?: undefined } = {}
 
     const start = list.start()
 
@@ -390,10 +390,10 @@ export class HtmlRenderer extends Renderer {
     args: {
       revealableSyntaxNode: Up.InlineRevealable | Up.RevealableBlock
       tagNameForGenericContainer: string
-      attrsForOuterContainer?: any
+      attrsForOuterContainer?: {[key: string]: Attr}
     }
   ): string {
-    const revealableIdFor = (...parts: any[]) => {
+    const revealableIdFor = (...parts: Attr[]) => {
       // We use this hack to prevent the ID/name collisions of revealable elements within the
       // table of contents from clashing with the ID/names of the revealable elements within the
       // document itself.
