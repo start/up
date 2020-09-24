@@ -1,9 +1,8 @@
 import { expect } from 'chai'
 import * as Up from '../../Main'
-import { cast } from '../Helpers'
 
 
-const NOT_USED = cast<string>(null)
+const NOT_USED: string = null!
 
 context('The `Document.create` method is automatically used during the normal parsing process. It returns a document object with:', () => {
   specify('A table of contents', () => {

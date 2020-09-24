@@ -140,13 +140,8 @@ context('When the starting ordinal is negative', () => {
 
 
 function expectListOrderToBe(order: Up.NumberedList.Order, numberedListMarkup: string): void {
-  expect(listOrder(numberedListMarkup)).to.equal(order)
-}
-
-
-function listOrder(numberedListMarkup: string): Up.NumberedList.Order {
   const list =
     Up.parse(numberedListMarkup).children[0] as Up.NumberedList
 
-  return list.order()
+  expect(list.order()).to.equal(order)
 }

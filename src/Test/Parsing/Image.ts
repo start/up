@@ -190,7 +190,7 @@ describe("An image convention's URL", () => {
 })
 
 
-describe('An image description (enclosed in square brackets)', () => {
+describe('An image description enclosed in square brackets', () => {
   it('can contain matching square brackets', () => {
     expect(Up.parse('[image: haunted [house]](http://example.com/?state=NE)')).to.deep.equal(
       new Up.Document([
@@ -207,7 +207,7 @@ describe('An image description (enclosed in square brackets)', () => {
 })
 
 
-describe('An image description (enclosed by parentheses)', () => {
+describe('An image description enclosed in parentheses', () => {
   it('can contain matching parentheses', () => {
     expect(Up.parse('(image: ghosts eating (luggage))[http://example.com/?state=NE]')).to.deep.equal(
       new Up.Document([

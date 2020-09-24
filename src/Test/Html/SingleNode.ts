@@ -1,9 +1,8 @@
 import { expect } from 'chai'
 import * as Up from '../../Main'
-import { cast } from '../Helpers'
 
 
-const NOT_USED = cast<string>(null)
+const NOT_USED: string = null!
 
 describe('An empty document', () => {
   it('does not produce any HTML on its own', () => {

@@ -1,6 +1,5 @@
 import { expect } from 'chai'
 import * as Up from '../../../Main'
-import { cast } from '../../Helpers'
 
 
 function itCanBeProvidedMultipleWaysWithTheSameResult(
@@ -138,7 +137,7 @@ describe('The "footnote" term', () => {
 
 
 describe('The "sectionReferencedByTableOfContents" setting', () => {
-  const NOT_USED = cast<string>(null)
+  const NOT_USED: string = null!
 
   const heading = new Up.Heading([], { level: 1, titleMarkup: NOT_USED })
 

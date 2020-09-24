@@ -1,7 +1,6 @@
 import { expect } from 'chai'
 import { distinct } from '../../../Implementation/CollectionHelpers'
 import * as Up from '../../../Main'
-import { cast } from '../../Helpers'
 import { settingsFor } from './Helpers'
 
 
@@ -217,8 +216,10 @@ function itCanBeProvidedMultipleWaysWithTheSameResult(
 }
 
 
-const NULL_KEYWORD = cast<string>(null)
-const UNDEFINED_KEYWORD = cast<string>(undefined)
+// The API doesn't officially accept `null` or `undefined` keywords, but we'll
+// nonetheless ensure they politely ignored.
+const NULL_KEYWORD: string = null!
+const UNDEFINED_KEYWORD: string = undefined!
 
 describe('The "audio" keyword', () => {
   itCanBeProvidedMultipleWaysWithTheSameResult({

@@ -1,6 +1,5 @@
 import { expect } from 'chai'
 import * as Up from '../../../Main'
-import { cast } from '../../Helpers'
 
 
 context('Within any attribute value, all instances of " and & are escaped. Specifically, within the', () => {
@@ -186,7 +185,7 @@ context('Within any attribute value, all instances of " and & are escaped. Speci
       }
     })
 
-    const NOT_USED = cast<string>(null)
+    const NOT_USED: string = null!
 
     const heading =
       new Up.Heading([new Up.Text('I enjoy apples')], {

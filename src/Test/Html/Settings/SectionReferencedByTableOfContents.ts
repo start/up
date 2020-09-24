@@ -1,6 +1,5 @@
 import { expect } from 'chai'
 import * as Up from '../../../Main'
-import { cast } from '../../Helpers'
 
 
 describe('The ID of an element referenced by the table of contents', () => {
@@ -11,7 +10,7 @@ describe('The ID of an element referenced by the table of contents', () => {
       }
     })
 
-    const NOT_USED = cast<string>(null)
+    const NOT_USED: string = null!
 
     const heading =
       new Up.Heading([new Up.Text('I enjoy apples')], {

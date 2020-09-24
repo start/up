@@ -1,6 +1,5 @@
 import { expect } from 'chai'
 import * as Up from '../../Main'
-import { cast } from '../Helpers'
 
 
 context('When an outline syntax node has a source line number, its outermost element is given an "data-up-source-line" attribute whose value is the line number. This is true for:', () => {
@@ -239,7 +238,7 @@ context('When an outline syntax node has a source line number, its outermost ele
       + '</blockquote>')
   })
 
-  const NOT_USED = cast<string>(null)
+  const NOT_USED: string = null!
 
   specify('Level 1 headings', () => {
     const document = new Up.Document([
