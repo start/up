@@ -32,8 +32,8 @@ export class NumberedList implements OutlineSyntaxNode {
       && firstOrdinal > secondOrdinal
 
     return firstTwoOrdinalsAreDescending
-      ? NumberedList.Order.Descending
-      : NumberedList.Order.Ascending
+      ? 'desc'
+      : 'asc'
   }
 
   descendantsToIncludeInTableOfContents(): Heading[] {
@@ -67,8 +67,5 @@ export namespace NumberedList {
     protected NUMBERED_LIST_ITEM(): void { }
   }
 
-  export enum Order {
-    Ascending = 1,
-    Descending
-  }
+  export type Order = 'asc' | 'desc'
 }

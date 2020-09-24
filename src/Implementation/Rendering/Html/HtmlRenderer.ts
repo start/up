@@ -68,7 +68,7 @@ export class HtmlRenderer extends Renderer {
       attrs.start = start
     }
 
-    if (list.order() === Up.NumberedList.Order.Descending) {
+    if (list.order() === 'desc') {
       attrs.reversed = EMPTY_ATTRBUTE_VALUE
     }
 
