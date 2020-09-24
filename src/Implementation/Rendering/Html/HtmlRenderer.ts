@@ -6,7 +6,7 @@ import { escapeHtmlContent } from './HtmlEscapingHelpers'
 
 
 export class HtmlRenderer extends Renderer {
-  // Our HTML for revealable content doesn't require JavaScript (just CSS), and it works perfectly well for
+  // Our HTML for revealable content doesn't require JavaScript (just CSS), and it works perfectly well for
   // screen-readers. Here's how it looks:
   //
   // <span class="up-revealable">

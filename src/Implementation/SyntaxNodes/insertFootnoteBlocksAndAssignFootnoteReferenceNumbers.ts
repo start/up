@@ -57,7 +57,7 @@ import { Table } from '../SyntaxNodes/Table'
 // 4. Footnotes are assigned reference numbers based on the order those footnotes are referenced in the final
 //    document.
 //
-//    Due to rule 3, a nested footnote (one that is referenced by another footnote) isn't actually referenced
+//    Due to rule 3, a nested footnote (one that is referenced by another footnote) isn't actually referenced
 //    in the final document until its footnote block. As a result, that nested footnote is assigned a
 //    reference number after any non-nested footnotes appearing in the same top-level outline convention,
 //    because those footnotes are referenced inside the outline convention itself (and the footnote block

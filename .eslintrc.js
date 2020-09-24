@@ -8,5 +8,8 @@ module.exports = {
       'eslint:recommended',
       'plugin:@typescript-eslint/recommended',
     ],
+    rules: {
+        "no-constant-condition": ["error", { "checkLoops": false }]
+    }
   };
   

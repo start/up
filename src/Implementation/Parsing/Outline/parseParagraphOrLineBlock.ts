@@ -130,13 +130,14 @@ function getAppropriateOutlineNodes(
       outlineNodes = [new Paragraph(inlineSyntaxNodesPerLine[0])]
       break
 
-    default:
+    default: {
       const lineBlockLines =
         inlineSyntaxNodesPerLine.map(inlineNodes =>
           new LineBlock.Line(inlineNodes))
 
       outlineNodes = [new LineBlock(lineBlockLines)]
       break
+    }
   }
 
   return outlineNodes.concat(mediaPromotedToOutline)

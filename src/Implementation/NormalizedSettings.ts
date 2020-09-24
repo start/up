@@ -275,7 +275,7 @@ export namespace NormalizedSettings {
 // an array of strings containing those variations.
 //
 // For a given keyword, if the user wants to specify multiple new variations, those variations
-// are naturally specified using a string array. However, if the user only wants to specify a
+// are naturally specified using a string array. However, if the user only wants to specify a
 // single new variation, they can specify the single new variation with a plain string.
 //
 // This function takes the keyword variations provided by the user, cleans them up, and massages

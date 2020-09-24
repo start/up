@@ -52,7 +52,7 @@ export abstract class Renderer {
     return this.renderEach(nodes).join('')
   }
 
-  protected idFor(...parts: any[]): string {
+  protected idFor(...parts: Array<number | string | undefined>): string {
     const rawId =
       [this.settings.idPrefix, ...parts].join(' ')
 

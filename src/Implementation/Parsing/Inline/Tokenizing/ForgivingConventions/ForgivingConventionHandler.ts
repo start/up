@@ -52,7 +52,7 @@ export class ForgivingConventionHandler {
     return this.startDelimiters.filter(startDelimiter => startDelimiter.isUnused)
   }
 
-  addStartDelimiter(startDelimiterText: string, tokenIndex: number) {
+  addStartDelimiter(startDelimiterText: string, tokenIndex: number): void {
     // Start delimiters are stored from most-to-least recent!
     this.startDelimiters.unshift(
       new StartDelimiter(tokenIndex, startDelimiterText))
@@ -106,7 +106,7 @@ export class ForgivingConventionHandler {
     return true
   }
 
-  registerTokenInsertion(atIndex: number) {
+  registerTokenInsertion(atIndex: number): void {
     for (const startDelimiter of this.openStartDelimiters) {
       if (atIndex < startDelimiter.tokenIndex) {
         startDelimiter.tokenIndex += 1
