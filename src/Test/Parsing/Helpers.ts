@@ -42,10 +42,10 @@ export function expectEveryPermutationOfBrackets(
 ): void {
   const { toProduce, settings } = args
 
-  const precededBy = args.precededBy || ''
+  const precededBy = args.precededBy ?? ''
 
   const segments = args.bracketedSegments.map(segment => ({
-    prefixes: segment.prefixes || [''],
+    prefixes: segment.prefixes ?? [''],
     text: segment.text
   }))
 

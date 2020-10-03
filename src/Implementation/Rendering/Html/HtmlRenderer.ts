@@ -455,7 +455,7 @@ export class HtmlRenderer extends Renderer {
         args.revealableSyntaxNode.children,
         { role: 'alert' })
 
-    const attrsForOuterContainer = args.attrsForOuterContainer || {}
+    const attrsForOuterContainer = args.attrsForOuterContainer ?? {}
 
     attrsForOuterContainer.class =
       cssClassAttrValue('revealable')

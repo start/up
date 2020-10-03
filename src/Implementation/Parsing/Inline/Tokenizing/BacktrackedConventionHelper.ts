@@ -18,7 +18,7 @@ export class BacktrackedConventionHelper {
   }
 
   hasFailed(convention: ConventionVariation, markupIndex: number): boolean {
-    const failedConventions = (this.failedConventionsByMarkupIndex[markupIndex] || [])
+    const failedConventions = (this.failedConventionsByMarkupIndex[markupIndex] ?? [])
     return failedConventions.some(failedConvention => failedConvention === convention)
   }
 }

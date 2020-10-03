@@ -83,11 +83,11 @@ export class Up {
   }
 
   private getParsingSettings(changes: Settings.Parsing | undefined): NormalizedSettings.Parsing {
-    return this.settings.withChanges({ parsing: changes || {} }).parsing
+    return this.settings.withChanges({ parsing: changes ?? {} }).parsing
   }
 
   private getRenderingSettings(changes: Settings.Rendering | undefined): NormalizedSettings.Rendering {
-    return this.settings.withChanges({ rendering: changes || {} }).rendering
+    return this.settings.withChanges({ rendering: changes ?? {} }).rendering
   }
 }
 
@@ -98,7 +98,7 @@ export interface DocumentAndTableOfContentsHtml {
 }
 
 function getNonNullSettings(settings: Settings | undefined): Settings {
-  return settings || {
+  return settings ?? {
     parsing: {},
     rendering: {}
   }
