@@ -25,15 +25,3 @@ export function distinct<T>(...values: T[]): T[] {
       : distinctValues.concat([value])
     , [] as T[])
 }
-
-// Returns the first non-null value in `values`. If `values` does not contain a
-// non-null value, this function throws an exception.
-export function coalesce<T>(...values: Array<T | undefined>): T {
-  for (const value of values) {
-    if (value != null) {
-      return value
-    }
-  }
-
-  throw new Error('Every value in `values` was null.')
-}

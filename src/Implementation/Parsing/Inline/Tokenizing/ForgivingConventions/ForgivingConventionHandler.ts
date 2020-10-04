@@ -74,7 +74,7 @@ export class ForgivingConventionHandler {
           isPerfectMatch(startDelimiter.remainingLength, endDelimiterLength)
 
       const perfectStartDelimiter =
-        first(this.openStartDelimiters, isDelimiterPerfectMatch)
+        this.openStartDelimiters.find(isDelimiterPerfectMatch)
 
       if (perfectStartDelimiter) {
         const lengthInCommon =
@@ -127,15 +127,4 @@ export class ForgivingConventionHandler {
   private get openStartDelimiters(): StartDelimiter[] {
     return this.startDelimiters.filter(delimiter => !delimiter.isFullyExhausted)
   }
-}
-
-
-function first<T>(items: T[], predicate: (item: T) => boolean): T | undefined {
-  for (const item of items) {
-    if (predicate(item)) {
-      return item
-    }
-  }
-
-  return undefined
 }

@@ -1,4 +1,4 @@
-import { coalesce, distinct } from './CollectionHelpers'
+import { distinct } from './CollectionHelpers'
 import { FORWARD_SLASH, HASH_MARK } from './PatternPieces'
 import { URL_SCHEME_PATTERN } from './Patterns'
 import { Settings } from './Settings'
@@ -16,7 +16,9 @@ export class NormalizedSettings {
   rendering = new NormalizedSettings.Rendering()
 
   constructor(settings?: Settings) {
-    this.applySettings(settings)
+    if (settings) {
+      this.applySettings(settings)
+    }
   }
 
   // Returns a new `NormalizedSettings` object with the changes applied.
@@ -31,13 +33,14 @@ export class NormalizedSettings {
     return clone
   }
 
-  private applySettings(settings: Settings | undefined): void {
-    if (!settings) {
-      return
+  private applySettings(settings: Settings): void {
+    if (settings.parsing) {
+      this.parsing.applySettings(settings.parsing)
     }
 
-    this.parsing.applySettings(settings.parsing)
-    this.rendering.applySettings(settings.rendering)
+    if (settings.rendering) {
+      this.rendering.applySettings(settings.rendering)
+    }
   }
 }
 
@@ -65,25 +68,21 @@ export namespace NormalizedSettings {
       return clone
     }
 
-    applySettings(settings: Settings.Parsing | undefined): void {
-      if (!settings) {
-        return
-      }
-
+    applySettings(settings: Settings.Parsing): void {
       this.createSourceMap =
-        coalesce(settings.createSourceMap, this.createSourceMap)
+        settings.createSourceMap ?? this.createSourceMap
 
       this.fancyEllipsis =
-        coalesce(settings.fancyEllipsis, this.fancyEllipsis)
+        settings.fancyEllipsis ?? this.fancyEllipsis
 
       this.defaultUrlScheme =
-        coalesce(settings.defaultUrlScheme, this.defaultUrlScheme)
+        settings.defaultUrlScheme ?? this.defaultUrlScheme
 
       this.baseForUrlsStartingWithSlash =
-        coalesce(settings.baseForUrlsStartingWithSlash, this.baseForUrlsStartingWithSlash)
+        settings.baseForUrlsStartingWithSlash ?? this.baseForUrlsStartingWithSlash
 
       this.baseForUrlsStartingWithHashMark =
-        coalesce(settings.baseForUrlsStartingWithHashMark, this.baseForUrlsStartingWithHashMark)
+        settings.baseForUrlsStartingWithHashMark ?? this.baseForUrlsStartingWithHashMark
 
       this.keywords.applySettings(settings.keywords)
     }
@@ -208,18 +207,16 @@ export namespace NormalizedSettings {
       return clone
     }
 
-    applySettings(settings: Settings.Rendering | undefined): void {
-      if (!settings) {
-        return
-      }
-
+    applySettings(settings: Settings.Rendering): void {
       this.idPrefix =
-        coalesce(settings.idPrefix, this.idPrefix)
+        settings.idPrefix ?? this.idPrefix
 
       this.renderDangerousContent =
-        coalesce(settings.renderDangerousContent, this.renderDangerousContent)
+        settings.renderDangerousContent ?? this.renderDangerousContent
 
-      this.terms.applySettings(settings.terms)
+      if (settings.terms) {
+        this.terms.applySettings(settings.terms)
+      }
     }
   }
 
@@ -244,25 +241,21 @@ export namespace NormalizedSettings {
         return clone
       }
 
-      applySettings(terms: Settings.Rendering.Terms | undefined): void {
-        if (!terms) {
-          return
-        }
-
+      applySettings(terms: Settings.Rendering.Terms): void {
         this.footnote =
-          coalesce(terms.footnote, this.footnote)
+          terms.footnote ?? this.footnote
 
         this.footnoteReference =
-          coalesce(terms.footnoteReference, this.footnoteReference)
+          terms.footnoteReference ?? this.footnoteReference
 
         this.hide =
-          coalesce(terms.hide, this.hide)
+          terms.hide ?? this.hide
 
         this.reveal =
-          coalesce(terms.reveal, this.reveal)
+          terms.reveal ?? this.reveal
 
         this.sectionReferencedByTableOfContents =
-          coalesce(terms.sectionReferencedByTableOfContents, this.sectionReferencedByTableOfContents)
+          terms.sectionReferencedByTableOfContents ?? this.sectionReferencedByTableOfContents
       }
     }
 

@@ -236,7 +236,7 @@ class Tokenizer {
 
       ...(
         // If we're tokenizing an inline document...
-        (options != null) && options.isTokenizingInlineDocument
+        options?.isTokenizingInlineDocument
           // We'll treat footnotes differently, because they don't really make sense in an inline document
           ? this.getFootnoteConventionsForInlineDocuments()
           // Otherwise, if we're tokenizing a regular document...
