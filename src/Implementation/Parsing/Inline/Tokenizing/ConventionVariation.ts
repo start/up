@@ -29,15 +29,15 @@ export class ConventionVariation {
   canConsistSolelyOfWhitespace?: boolean
   flushesBufferToTextTokenBeforeOpening?: boolean
   whenOpening?: (match: string, charAfterMatch: string, ...captures: string[]) => void
-  insteadOfClosingOuterConventionsWhileOpen?: OnConventionEvent
-  insteadOfOpeningRegularConventionsWhileOpen?: OnConventionEvent
+  insteadOfClosingOuterConventionsWhileOpen?: () => void
+  insteadOfOpeningRegularConventionsWhileOpen?: () => void
   failsIfWhitespaceIsEnounteredBeforeClosing?: boolean
   beforeClosingItFlushesNonEmptyBufferTo?: TokenRole
   beforeClosingItAlwaysFlushesBufferTo?: TokenRole
   whenClosingItAlsoClosesInnerConventions?: boolean
   mustBeDirectlyFollowedBy?: ConventionVariation[]
-  whenClosing?: OnConventionEvent
-  insteadOfFailingWhenLeftUnclosed?: OnConventionEvent
+  whenClosing?: (context: ConventionContext) => void
+  insteadOfFailingWhenLeftUnclosed?: () => void
 
   constructor(args: ConventionVariationArgs) {
     // First, let's blindly copy everything from `args` to `this`.
@@ -45,7 +45,6 @@ export class ConventionVariation {
     // Alas! This also copies the string `startsWith`/`endsWith` fields, too! We'll
     // overwrite those below.
     Object.assign(this, args)
-
     const { startsWith, endsWith } = args
 
     this.startsWith =
@@ -63,9 +62,3 @@ export class ConventionVariation {
         : undefined
   }
 }
-
-
-export type OnConventionEvent =
-  (context: ConventionContext) => void
-
-  

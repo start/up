@@ -10,7 +10,7 @@ export class ConventionContext {
 
   doIsteadOfTryingToCloseOuterConventions(): boolean {
     if (this.convention.insteadOfClosingOuterConventionsWhileOpen) {
-      this.convention.insteadOfClosingOuterConventionsWhileOpen(this)
+      this.convention.insteadOfClosingOuterConventionsWhileOpen()
       return true
     }
 
@@ -19,7 +19,7 @@ export class ConventionContext {
 
   doInsteadOfTryingToOpenRegularConventions(): boolean {
     if (this.convention.insteadOfOpeningRegularConventionsWhileOpen) {
-      this.convention.insteadOfOpeningRegularConventionsWhileOpen(this)
+      this.convention.insteadOfOpeningRegularConventionsWhileOpen()
       return true
     }
 
@@ -28,7 +28,7 @@ export class ConventionContext {
 
   doInsteadOfFailingWhenLeftUnclosed(): boolean {
     if (this.convention.insteadOfFailingWhenLeftUnclosed) {
-      this.convention.insteadOfFailingWhenLeftUnclosed(this)
+      this.convention.insteadOfFailingWhenLeftUnclosed()
       return true
     }
 
