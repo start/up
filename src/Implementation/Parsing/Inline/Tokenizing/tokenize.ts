@@ -12,11 +12,10 @@ import { TokenRole } from '../TokenRole'
 import { BacktrackedConventionHelper } from './BacktrackedConventionHelper'
 import { Bracket } from './Bracket'
 import { ConventionContext } from './ConventionContext'
-import { ConventionVariation, OnConventionEvent } from './ConventionVariation'
+import { ConventionVariation, ConventionVariationArgs } from './ConventionVariation'
 import { EncloseWithinConventionArgs } from './EncloseWithinConventionArgs'
 import { ForgivingConventionHandler } from './ForgivingConventions/ForgivingConventionHandler'
 import { nestOverlappingConventions } from './nestOverlappingConventions'
-import { OnTextMatch } from './OnTextMatch'
 import { RichConvention } from './RichConvention'
 import { TextConsumer } from './TextConsumer'
 import { Token } from './Token'
@@ -72,7 +71,6 @@ const CURLY_BRACKET =
 
 
 class Tokenizer {
-
   private get justEnteredAConvention(): boolean {
     return this.markupIndexThatLastOpenedAConvention === this.markupConsumer.index
   }
@@ -276,8 +274,7 @@ class Tokenizer {
 
   private getFootnoteConventions(): ConventionVariation[] {
     return PARENTHETICAL_BRACKETS.map(bracket =>
-      this.getTokenizableRichConvention({
-        richConvention: FOOTNOTE,
+      this.getTokenizableRichConvention(FOOTNOTE, {
         // For regular footnotes (i.e. these), we collapse any leading whitespace.
         //
         // We don't do this for footnotes in inline documents, however. For more information about footnotes
@@ -293,8 +290,7 @@ class Tokenizer {
   // as normal parentheticals.
   private getFootnoteConventionsForInlineDocuments(): ConventionVariation[] {
     return PARENTHETICAL_BRACKETS.map(bracket =>
-      this.getTokenizableRichConvention({
-        richConvention: NORMAL_PARENTHETICAL,
+      this.getTokenizableRichConvention(NORMAL_PARENTHETICAL, {
         startsWith: this.getFootnoteStartDelimiter(bracket),
         endsWith: this.getFootnotEndDelimiter(bracket),
 
@@ -313,8 +309,7 @@ class Tokenizer {
 
   private getLinkContentConventions(): ConventionVariation[] {
     return PARENTHETICAL_BRACKETS.map(bracket =>
-      this.getTokenizableRichConvention({
-        richConvention: LINK,
+      this.getTokenizableRichConvention(LINK, {
         startsWith: bracket.startPattern,
         endsWith: bracket.endPattern,
         mustBeDirectlyFollowedBy: this.linkUrlConventions
@@ -339,11 +334,9 @@ class Tokenizer {
     const { richConvention, keyword } = args
 
     return PARENTHETICAL_BRACKETS.map(bracket =>
-      this.getTokenizableRichConvention({
-        richConvention,
+      this.getTokenizableRichConvention(richConvention, {
         startsWith: labeledBracketStartDelimiter(keyword, bracket),
         endsWith: bracket.endPattern,
-        startPatternContainsATerm: true
       }))
   }
 
@@ -355,8 +348,7 @@ class Tokenizer {
   ): ConventionVariation {
     const { richConvention, bracket } = args
 
-    return this.getTokenizableRichConvention({
-      richConvention,
+    return this.getTokenizableRichConvention(richConvention, {
       startsWith: bracket.startPattern + notFollowedBy(WHITESPACE_CHAR),
       endsWith: bracket.endPattern,
 
@@ -366,30 +358,26 @@ class Tokenizer {
   }
 
   private getTokenizableRichConvention(
-    args: {
-      richConvention: RichConvention
-      startsWith: string
-      endsWith: string
-      startPatternContainsATerm?: boolean
-      whenOpening?: OnTextMatch
-      insteadOfFailingWhenLeftUnclosed?: OnConventionEvent
-      whenClosing?: OnConventionEvent
-      mustBeDirectlyFollowedBy?: ConventionVariation[]
-    }
+    richConvention: RichConvention,
+    options: Pick<ConventionVariationArgs,
+      'startsWith' |
+      'endsWith' |
+      'whenOpening' |
+      'insteadOfFailingWhenLeftUnclosed' |
+      'whenClosing' |
+      'mustBeDirectlyFollowedBy'
+      >
   ): ConventionVariation {
-    const { richConvention, startsWith, endsWith, startPatternContainsATerm, whenOpening, insteadOfFailingWhenLeftUnclosed, whenClosing, mustBeDirectlyFollowedBy } = args
+    const { startsWith, endsWith, whenOpening, insteadOfFailingWhenLeftUnclosed, whenClosing, mustBeDirectlyFollowedBy } = options
 
     return new ConventionVariation({
       startsWith,
-      startPatternContainsATerm,
-
       endsWith,
 
-      beforeOpeningItFlushesNonEmptyBufferToTextToken: true,
+      flushesBufferToTextTokenBeforeOpening: true,
       beforeClosingItFlushesNonEmptyBufferTo: TokenRole.Text,
 
       whenOpening,
-
       whenClosing: context => {
         if (whenClosing) {
           whenClosing(context)
@@ -450,7 +438,7 @@ class Tokenizer {
       startsWith: CURLY_BRACKET.startPattern,
       endsWith: CURLY_BRACKET.endPattern,
 
-      beforeOpeningItFlushesNonEmptyBufferToTextToken: true,
+      flushesBufferToTextTokenBeforeOpening: true,
 
       insteadOfOpeningRegularConventionsWhileOpen: () =>
         this.tryToOpen(this.rawCurlyBracketConvention)
@@ -479,10 +467,9 @@ class Tokenizer {
     return PARENTHETICAL_BRACKETS.map(bracket =>
       new ConventionVariation({
         startsWith: labeledBracketStartDelimiter(keyword, bracket),
-        startPatternContainsATerm: true,
         endsWith: bracket.endPattern,
 
-        beforeOpeningItFlushesNonEmptyBufferToTextToken: true,
+        flushesBufferToTextTokenBeforeOpening: true,
 
         insteadOfOpeningRegularConventionsWhileOpen: () => this.handleTextAwareOfRawBrackets(),
 
@@ -501,10 +488,9 @@ class Tokenizer {
         return PARENTHETICAL_BRACKETS.map(bracket =>
           new ConventionVariation({
             startsWith: labeledBracketStartDelimiter(termForThisMediaConvention, bracket),
-            startPatternContainsATerm: true,
             endsWith: bracket.endPattern,
 
-            beforeOpeningItFlushesNonEmptyBufferToTextToken: true,
+            flushesBufferToTextTokenBeforeOpening: true,
 
             insteadOfClosingOuterConventionsWhileOpen: () =>
               this.tryToOpenRawParentheticalBracketConvention()
@@ -523,7 +509,7 @@ class Tokenizer {
       startsWith: ANY_OPTIONAL_WHITESPACE + this.startPatternForBracketedUrlAssumedToBeAUrl(bracket),
       endsWith: bracket.endPattern,
 
-      beforeOpeningItFlushesNonEmptyBufferToTextToken: true,
+      flushesBufferToTextTokenBeforeOpening: true,
 
       insteadOfClosingOuterConventionsWhileOpen: () => this.handleTextAwareOfRawBrackets(),
       whenClosingItAlsoClosesInnerConventions: true,
@@ -633,7 +619,6 @@ class Tokenizer {
       canOnlyOpenIfDirectlyFollowing,
 
       startsWith: this.startPatternForBracketedUrlAssumedToBeAUrl(bracket),
-
       endsWith: bracket.endPattern,
 
       insteadOfClosingOuterConventionsWhileOpen: () => this.handleTextAwareOfRawBrackets(),
@@ -677,7 +662,7 @@ class Tokenizer {
             FORWARD_SLASH,
             // ... or be the end of the URL.
             followedBy(bracket.endPattern)))),
-
+            
       endsWith: bracket.endPattern,
 
       whenOpening: (_1, _2, urlPrefix) => { this.bufferedContent += urlPrefix },
