@@ -24,7 +24,7 @@ export function tryToParseCodeBlock(args: OutlineParser.Args): OutlineParser.Res
   const codeLines: string[] = []
 
   // Let's keep consuming lines until we find a streak that matches the first one.
-  while (!markupLineConsumer.done) {
+  while (!markupLineConsumer.done()) {
     const endStreakResult =
       markupLineConsumer.consumeLineIfMatches(CODE_BLOCK_STREAK_PATTERN)
 
@@ -49,7 +49,7 @@ export function tryToParseCodeBlock(args: OutlineParser.Args): OutlineParser.Res
 
   return {
     parsedNodes: [new CodeBlock(codeLines.join(RENDERED_LINE_BREAK))],
-    countLinesConsumed: markupLineConsumer.countLinesConsumed
+    countLinesConsumed: markupLineConsumer.countLinesConsumed()
   }
 }
 

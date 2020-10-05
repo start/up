@@ -6,19 +6,19 @@ import { TokenRole } from './TokenRole'
 
 
 export const AUDIO: MediaConvention = {
-  keyword: keywords => keywords.audio,
+  keyword: keywords => keywords.audio(),
   SyntaxNodeType: Audio,
   tokenRoleForStartAndDescription: TokenRole.AudioStartAndDescription
 }
 
 export const IMAGE: MediaConvention = {
-  keyword: keywords => keywords.image,
+  keyword: keywords => keywords.image(),
   SyntaxNodeType: Image,
   tokenRoleForStartAndDescription: TokenRole.ImageStartAndDescription
 }
 
 export const VIDEO: MediaConvention = {
-  keyword: keywords => keywords.video,
+  keyword: keywords => keywords.video(),
   SyntaxNodeType: Video,
   tokenRoleForStartAndDescription: TokenRole.VideoStartAndDescription
 }

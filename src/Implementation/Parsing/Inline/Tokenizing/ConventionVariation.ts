@@ -1,6 +1,6 @@
 import { patternIgnoringCapitalizationAndStartingWith, patternStartingWith } from '../../../PatternHelpers'
 import { TokenRole } from '../TokenRole'
-import { ConventionContext } from './ConventionContext'
+import { OpenConvention } from './OpenConvention'
 
 
 // The start/end delimiters of a convention variation are ultimately represented by
@@ -28,7 +28,7 @@ export class ConventionVariation {
   isCutShortByWhitespace?: boolean
   canConsistSolelyOfWhitespace?: boolean
   flushesBufferToTextTokenBeforeOpening?: boolean
-  whenOpening?: (match: string, charAfterMatch: string, ...captures: string[]) => void
+  whenOpening?: (...captures: string[]) => void
   insteadOfClosingOuterConventionsWhileOpen?: () => void
   insteadOfOpeningRegularConventionsWhileOpen?: () => void
   failsIfWhitespaceIsEnounteredBeforeClosing?: boolean
@@ -36,14 +36,14 @@ export class ConventionVariation {
   beforeClosingItAlwaysFlushesBufferTo?: TokenRole
   whenClosingItAlsoClosesInnerConventions?: boolean
   mustBeDirectlyFollowedBy?: ConventionVariation[]
-  whenClosing?: (context: ConventionContext) => void
+  whenClosing?: (thisOpenConvention: OpenConvention) => void
   insteadOfFailingWhenLeftUnclosed?: () => void
 
   constructor(args: ConventionVariationArgs) {
     // First, let's blindly copy everything from `args` to `this`.
     //
     // Alas! This also copies the string `startsWith`/`endsWith` fields, too! We'll
-    // overwrite those below.
+    // overwrite those below and convert them into anchored RegExp patterns.
     Object.assign(this, args)
     const { startsWith, endsWith } = args
 
@@ -51,7 +51,7 @@ export class ConventionVariation {
       // Some of our start delimiters can contain terms. As a rule, terms are
       // case-insensitive.
       //
-      // Let's determine whether we need to worry about case sensitivity.
+      // Here, we determine whether we need to worry about case sensitivity.
       startsWith.toLowerCase() != startsWith.toUpperCase()
         ? patternIgnoringCapitalizationAndStartingWith(startsWith)
         : patternStartingWith(startsWith)

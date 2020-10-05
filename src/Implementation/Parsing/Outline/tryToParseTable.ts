@@ -61,7 +61,7 @@ export function tryToParseTable(args: OutlineParser.Args): OutlineParser.Result 
   const { settings } = args
 
   const labelPattern = solelyAndIgnoringCapitalization(
-    either(...settings.keywords.table.map(escapeForRegex)) + optional(':' + capture(REST_OF_TEXT)))
+    either(...settings.keywords.table().map(escapeForRegex)) + optional(':' + capture(REST_OF_TEXT)))
 
   const labelLineResult =
     markupLineConsumer.consumeLineIfMatches(labelPattern)
@@ -119,7 +119,7 @@ export function tryToParseTable(args: OutlineParser.Args): OutlineParser.Result 
   // Any trailing blank lines after the table are not consumed, and we don't know whether
   // the table will have any rows. Therefore, until we find our first row, we'll assume
   // the table ends here.
-  let countLinesConsumed = markupLineConsumer.countLinesConsumed
+  let countLinesConsumed = markupLineConsumer.countLinesConsumed()
 
   // Let's consume the optional blank line after the header row.
   markupLineConsumer.consumeLineIfMatches(BLANK_PATTERN)
@@ -141,7 +141,7 @@ export function tryToParseTable(args: OutlineParser.Args): OutlineParser.Result 
         : undefined
 
     rows.push(new Table.Row(cells.map(toRowCell), headerColumnCell))
-    countLinesConsumed = markupLineConsumer.countLinesConsumed
+    countLinesConsumed = markupLineConsumer.countLinesConsumed()
   }
 
   return {

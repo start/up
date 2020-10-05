@@ -19,8 +19,8 @@ export function tryToParseNumberedList(args: OutlineParser.Args): OutlineParser.
   const markupLineConsumer = new LineConsumer(args.markupLines)
   const unparsedListItems: UnparsedListItem[] = []
 
-  while (!markupLineConsumer.done) {
-    const countLinesConsumedBeforeListItem = markupLineConsumer.countLinesConsumed
+  while (!markupLineConsumer.done()) {
+    const countLinesConsumedBeforeListItem = markupLineConsumer.countLinesConsumed()
 
     const numberedLineResult =
       markupLineConsumer.consumeLineIfMatches(LINE_WITH_NUMERIC_BULLET_PATTERN, {
@@ -79,7 +79,7 @@ export function tryToParseNumberedList(args: OutlineParser.Args): OutlineParser.
 
   return {
     parsedNodes: [new NumberedList(listItems)],
-    countLinesConsumed: markupLineConsumer.countLinesConsumed
+    countLinesConsumed: markupLineConsumer.countLinesConsumed()
   }
 }
 

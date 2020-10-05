@@ -5,11 +5,11 @@ export class LineConsumer {
 
   constructor(private lines: string[]) { }
 
-  get countLinesConsumed(): number {
+  countLinesConsumed(): number {
     return this._countLinesConsumed
   }
 
-  get done(): boolean {
+  done(): boolean {
     return this._countLinesConsumed >= this.lines.length
   }
 
@@ -29,11 +29,11 @@ export class LineConsumer {
       andIf: (result: LineMatchResult) => boolean
     }
   ): LineMatchResult | null {
-    if (this.done) {
+    if (this.done()) {
       return null
     }
 
-    const line = this.nextRemainingLine
+    const line = this.nextRemainingLine()
     const result = linePattern.exec(line)
 
     if (result) {
@@ -54,17 +54,17 @@ export class LineConsumer {
   // This method consumes and returns the next remaining line. If there are
   // no remaining lines, this method throws an exception.
   consumeLine(): string {
-    if (this.done) {
+    if (this.done()) {
       throw new Error('No remaining lines')
     }
 
-    const line = this.nextRemainingLine
+    const line = this.nextRemainingLine()
     this.skipLines(1)
 
     return line
   }
 
-  private get nextRemainingLine(): string {
+  private nextRemainingLine(): string {
     return this.lines[this._countLinesConsumed]
   }
 }

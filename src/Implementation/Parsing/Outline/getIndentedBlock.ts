@@ -8,7 +8,7 @@ export function getIndentedBlock(lines: string[]): IndentedBlockResult | null {
   const indentedLines: string[] = []
   let countLinesWithoutTrailingBlankLines = 0
 
-  while (!markupLineConsumer.done) {
+  while (!markupLineConsumer.done()) {
     const blankLineResult =
       markupLineConsumer.consumeLineIfMatches(BLANK_PATTERN)
 

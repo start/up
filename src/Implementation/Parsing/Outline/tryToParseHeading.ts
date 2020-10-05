@@ -89,6 +89,6 @@ export function tryToParseHeading(args: OutlineParser.Args): OutlineParser.Resul
 
   return {
     parsedNodes: [new Heading(children, { level, titleMarkup: contentMarkup.trim() })],
-    countLinesConsumed: markupLineConsumer.countLinesConsumed
+    countLinesConsumed: markupLineConsumer.countLinesConsumed()
   }
 }

@@ -14,6 +14,6 @@ export function tryToParseThematicBreakStreak(args: OutlineParser.Args): Outline
 
   return {
     parsedNodes: [new ThematicBreak()],
-    countLinesConsumed: markupLineConsumer.countLinesConsumed
+    countLinesConsumed: markupLineConsumer.countLinesConsumed()
   }
 }

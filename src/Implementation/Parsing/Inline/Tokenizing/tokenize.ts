@@ -11,7 +11,7 @@ import { BOLD, EMPHASIS, FOOTNOTE, HIGHLIGHT, INLINE_QUOTE, INLINE_REVEALABLE, I
 import { TokenRole } from '../TokenRole'
 import { BacktrackedConventionHelper } from './BacktrackedConventionHelper'
 import { Bracket } from './Bracket'
-import { ConventionContext } from './ConventionContext'
+import { OpenConvention } from './OpenConvention'
 import { ConventionVariation, ConventionVariationArgs } from './ConventionVariation'
 import { EncloseWithinConventionArgs } from './EncloseWithinConventionArgs'
 import { ForgivingConventionHandler } from './ForgivingConventions/ForgivingConventionHandler'
@@ -19,7 +19,6 @@ import { nestOverlappingConventions } from './nestOverlappingConventions'
 import { RichConvention } from './RichConvention'
 import { TextConsumer } from './TextConsumer'
 import { Token } from './Token'
-import { TokenizerSnapshot } from './TokenizerSnapshot'
 import { trimEscapedAndUnescapedOuterWhitespace } from './trimEscapedAndUnescapedOuterWhitespace'
 import { tryToTokenizeInlineCode as tryToTokenizeInlineCodeOrUnmatchedDelimiter } from './tryToTokenizeInlineCode'
 
@@ -71,8 +70,8 @@ const CURLY_BRACKET =
 
 
 class Tokenizer {
-  private get justEnteredAConvention(): boolean {
-    return this.markupIndexThatLastOpenedAConvention === this.markupConsumer.index
+  private justEnteredAConvention(): boolean {
+    return this.markupIndexThatLastOpenedAConvention === this.markupConsumer.index()
   }
   // This is our result! A collection of tokens that the parser can use to generate syntax nodes.
   //
@@ -96,8 +95,8 @@ class Tokenizer {
   // This additional information helps us nest overlapping conventions.
   private tokens: Token[] = []
 
-  // When we open a new convention, we create a new context for it and add it to this collection.
-  private openContexts: ConventionContext[] = []
+  // When we open a new convention, we add it to this collection.
+  private openConventions: OpenConvention[] = []
 
   // When a convention is missing its closing delimiter, we backtrack and add the convention to our
   // `backtrackedConventionHelper`.
@@ -130,9 +129,9 @@ class Tokenizer {
   // relevant inside of the example user input convention.
   private rawCurlyBracketConvention = this.getRawCurlyBracketConvention()
 
-  // When tokenizing media (i.e. audio, image, or video), we open a context for the description. Once the
-  // description reaches its final bracket, we try to convert that media description context into a media URL
-  // context.
+  // When tokenizing media (i.e. audio, image, or video), we open a convention for the description. Once
+  // the description reaches its final bracket, we try to convert that media description convention into
+  // a media URL convention.
   //
   // If that fails (either because there isn't an opening bracket for the media URL, or because there isn't a
   // closing bracket), we backtrack to right before we opened the media convention.
@@ -227,7 +226,7 @@ class Tokenizer {
     this.conventionVariations = [
       ...this.getInlineRevealableConventions({
         richConvention: INLINE_REVEALABLE,
-        keyword: this.settings.keywords.revealable
+        keyword: this.settings.keywords.revealable()
       }),
 
       ...this.getMediaDescriptionConventions(),
@@ -269,7 +268,7 @@ class Tokenizer {
   }
 
   private indicateWeJustOpenedAConvention(): void {
-    this.markupIndexThatLastOpenedAConvention = this.markupConsumer.index
+    this.markupIndexThatLastOpenedAConvention = this.markupConsumer.index()
   }
 
   private getFootnoteConventions(): ConventionVariation[] {
@@ -366,7 +365,7 @@ class Tokenizer {
       'insteadOfFailingWhenLeftUnclosed' |
       'whenClosing' |
       'mustBeDirectlyFollowedBy'
-      >
+    >
   ): ConventionVariation {
     const { startsWith, endsWith, whenOpening, insteadOfFailingWhenLeftUnclosed, whenClosing, mustBeDirectlyFollowedBy } = options
 
@@ -378,12 +377,12 @@ class Tokenizer {
       beforeClosingItFlushesNonEmptyBufferTo: TokenRole.Text,
 
       whenOpening,
-      whenClosing: context => {
+      whenClosing: open => {
         if (whenClosing) {
-          whenClosing(context)
+          whenClosing(open)
         }
 
-        this.encloseContextWithinConvention(richConvention, context)
+        this.encloseWithin({ richConvention, startingBackAtTokenIndex: open.startTokenIndex })
       },
 
       insteadOfFailingWhenLeftUnclosed,
@@ -462,7 +461,7 @@ class Tokenizer {
   //   =================
   private getSectionLinkConventions(): ConventionVariation[] {
     const keyword =
-      this.settings.keywords.sectionLink
+      this.settings.keywords.sectionLink()
 
     return PARENTHETICAL_BRACKETS.map(bracket =>
       new ConventionVariation({
@@ -662,20 +661,20 @@ class Tokenizer {
             FORWARD_SLASH,
             // ... or be the end of the URL.
             followedBy(bracket.endPattern)))),
-            
+
       endsWith: bracket.endPattern,
 
-      whenOpening: (_1, _2, urlPrefix) => { this.bufferedContent += urlPrefix },
+      whenOpening: (urlPrefix) => { this.bufferedContent += urlPrefix },
 
       failsIfWhitespaceIsEnounteredBeforeClosing: true,
       insteadOfClosingOuterConventionsWhileOpen: () => this.handleTextAwareOfRawBrackets(),
       whenClosingItAlsoClosesInnerConventions: true,
 
-      whenClosing: context => {
+      whenClosing: open => {
         const url = this.settings.applySettingsToUrl(this.flushBufferedContent())
 
         if (this.probablyWasNotIntendedToBeAUrl(url)) {
-          this.backtrackToBeforeContext(context)
+          this.backTrackToBefore(open)
         } else {
           whenClosing(url)
         }
@@ -753,7 +752,7 @@ class Tokenizer {
     return new ForgivingConventionHandler({
       delimiterChar: '"',
       whenDelimitersEnclose: (startingBackAtTokenIndex: number) => {
-        this.closeBareUrlContextIfOneIsOpen()
+        this.closeBareUrlIfOneIsOpen()
         this.encloseWithin({ richConvention: INLINE_QUOTE, startingBackAtTokenIndex })
       }
     })
@@ -764,7 +763,7 @@ class Tokenizer {
       delimiterChar: '=',
       minDelimiterLength: 2,
       whenDelimitersEnclose: (startingBackAtTokenIndex: number) => {
-        this.closeBareUrlContextIfOneIsOpen()
+        this.closeBareUrlIfOneIsOpen()
         this.encloseWithin({ richConvention: HIGHLIGHT, startingBackAtTokenIndex })
       }
     })
@@ -787,7 +786,7 @@ class Tokenizer {
       delimiterChar,
 
       whenDelimitersEnclose: (startingBackAtTokenIndex: number, lengthInCommon: number) => {
-        this.closeBareUrlContextIfOneIsOpen()
+        this.closeBareUrlIfOneIsOpen()
 
         const encloseWithin = (richConvention: RichConvention) => {
           this.encloseWithin({ richConvention, startingBackAtTokenIndex })
@@ -835,7 +834,7 @@ class Tokenizer {
       const didAnything =
         this.tryToEscapeCurrentChar()
         || this.tryToCloseAnyConvention()
-        || this.performContextSpecificBehaviorInsteadOfTryingToOpenRegularConventions()
+        || this.performConventionSpecificBehaviorInsteadOfTryingToOpenRegularConventions()
         || this.tryToOpenAnyConvention()
 
       if (!didAnything) {
@@ -845,17 +844,22 @@ class Tokenizer {
   }
 
   private isDone(): boolean {
-    return this.markupConsumer.done && this.tryToResolveUnclosedContexts()
+    return this.markupConsumer.done() && this.tryToResolveOpenConventions()
   }
 
-  private tryToResolveUnclosedContexts(): boolean {
-    let context: ConventionContext | undefined
+  private tryToResolveOpenConventions(): boolean {
+    let open: OpenConvention | undefined
 
-    while (context = this.openContexts.pop()) {
-      if (!context.doInsteadOfFailingWhenLeftUnclosed()) {
-        this.backtrackToBeforeContext(context)
+    while (open = this.openConventions.pop()) {
+      const avoidFailure = open.convention.insteadOfFailingWhenLeftUnclosed
+
+      if (!avoidFailure) {
+        // Well, this convention is left unclosed, so we *should* fail.
+        this.backTrackToBefore(open)
         return false
       }
+
+      avoidFailure()
     }
 
     this.flushNonEmptyBufferToTextToken()
@@ -868,8 +872,8 @@ class Tokenizer {
   }
 
   private treatUnusedForgivingStartDelimitersAsText(handler: ForgivingConventionHandler): void {
-    for (const startDelimiter of handler.unusedStartDelimiters) {
-      if (startDelimiter.isUnused) {
+    for (const startDelimiter of handler.unusedStartDelimiters()) {
+      if (startDelimiter.isUnused()) {
         this.insertToken({
           token: new Token(TokenRole.Text, startDelimiter.delimiterText),
           atIndex: startDelimiter.tokenIndex
@@ -879,7 +883,7 @@ class Tokenizer {
   }
 
   private tryToEscapeCurrentChar(): boolean {
-    if (this.markupConsumer.currentChar !== BACKSLASH) {
+    if (this.markupConsumer.currentChar() !== BACKSLASH) {
       return false
     }
 
@@ -888,9 +892,9 @@ class Tokenizer {
     // If there are no more characters, we're done! We don't preserve the backslash,
     // because they are only preserved if they are themselves escaped.
 
-    this.markupConsumer.index += 1
+    this.markupConsumer.advanceIndex(1)
 
-    if (!this.markupConsumer.done) {
+    if (!this.markupConsumer.done()) {
       this.addCurrentCharToContentBuffer()
     }
 
@@ -928,9 +932,9 @@ class Tokenizer {
     // This is completely sufficient for now, but it wouldn't work if any of our conventions had any leading
     // whitespace in their end patterns.
     const canTryToBufferWhitespace =
-      this.openContexts.every(context =>
-        !context.convention.isCutShortByWhitespace
-        && !context.convention.failsIfWhitespaceIsEnounteredBeforeClosing)
+      this.openConventions.every(open =>
+        !open.convention.isCutShortByWhitespace
+        && !open.convention.failsIfWhitespaceIsEnounteredBeforeClosing)
 
     do {
       // First, let's try to skip any content that will *never* open or close any conventions.
@@ -959,7 +963,7 @@ class Tokenizer {
     // Note: To avoid catastrophic slowdown, we don't use a single regular expression for this. For more
     // information, please see: http://stackstatus.net/post/147710624694/outage-postmortem-july-20-2016
 
-    const remainingMarkup = this.markupConsumer.remaining
+    const remainingMarkup = this.markupConsumer.remaining()
     const matchResult = LEADING_WHITESPACE.exec(remainingMarkup)
 
     if (!matchResult) {
@@ -979,17 +983,17 @@ class Tokenizer {
     // Phew! We now know that the leading whitespace is just regular content. Let's add it to our content
     // buffer.
     this.bufferedContent += leadingWhitespace
-    this.markupConsumer.index += leadingWhitespace.length
+    this.markupConsumer.advanceIndex(leadingWhitespace.length)
 
     return true
   }
 
   private tryToCloseAnyConvention(): boolean {
-    for (let i = this.openContexts.length - 1; i >= 0; i--) {
-      const context = this.openContexts[i]
+    for (let i = this.openConventions.length - 1; i >= 0; i--) {
+      const open = this.openConventions[i]
 
-      if (this.shouldClose(context)) {
-        if (this.tryToCloseConventionWhoseEndDelimiterWeAlreadyFound({ belongingToContextAtIndex: i })) {
+      if (this.shouldClose(open)) {
+        if (this.tryToCloseConventionWhoseEndDelimiterWeAlreadyFound({ belongingToConventionAtIndex: i })) {
           return true
         }
 
@@ -998,7 +1002,7 @@ class Tokenizer {
         //
         // 1. It must be followed by one of a set of specific conventions, and
         // 2. None of those conventions could be opened
-        this.backtrackToBeforeContext(context)
+        this.backTrackToBefore(open)
 
         // We know for a fact that we won't be able to close any other conventions at our new (backtracked)
         // markup index; we already tried to close all of them when we opened the now-failed convention. So
@@ -1006,12 +1010,16 @@ class Tokenizer {
         return false
       }
 
-      if (context.convention.failsIfWhitespaceIsEnounteredBeforeClosing && this.isCurrentCharWhitespace()) {
-        this.backtrackToBeforeContext(context)
+      if (open.convention.failsIfWhitespaceIsEnounteredBeforeClosing && this.isCurrentCharWhitespace()) {
+        this.backTrackToBefore(open)
         return true
       }
 
-      if (context.doIsteadOfTryingToCloseOuterConventions()) {
+      const instead =
+        open.convention.insteadOfClosingOuterConventionsWhileOpen
+
+      if (instead) {
+        instead()
         return true
       }
     }
@@ -1019,44 +1027,44 @@ class Tokenizer {
     return this.tryToCloseAnyForgivingConventions()
   }
 
-  private shouldClose(context: ConventionContext): boolean {
-    const { convention } = context
+  private shouldClose(open: OpenConvention): boolean {
+    const { convention } = open
 
     return (
       (convention.isCutShortByWhitespace && this.isCurrentCharWhitespace())
       || ((convention.endsWith != null) && (this.markupConsumer.consume(convention.endsWith) != null)))
   }
 
-  private tryToCloseConventionWhoseEndDelimiterWeAlreadyFound(args: { belongingToContextAtIndex: number }): boolean {
-    const contextIndex = args.belongingToContextAtIndex
-    const context = this.openContexts[contextIndex]
-    const { convention } = context
+  private tryToCloseConventionWhoseEndDelimiterWeAlreadyFound(args: { belongingToConventionAtIndex: number }): boolean {
+    const conventionIndex = args.belongingToConventionAtIndex
+    const open = this.openConventions[conventionIndex]
+    const { convention } = open
 
     // As a rule, if a convention enclosing a bare URL is closed, the bare URL gets closed first.
-    this.closeBareUrlContextIfOneIsOpen({ withinContextAtIndex: contextIndex })
+    this.closeBareUrlIfOneIsOpen({ withinConventionAtIndex: conventionIndex })
 
-    if (convention.beforeClosingItFlushesNonEmptyBufferTo != null) {
+    if (convention.beforeClosingItFlushesNonEmptyBufferTo) {
       this.flushNonEmptyBufferToToken(convention.beforeClosingItFlushesNonEmptyBufferTo)
     }
 
-    if (convention.beforeClosingItAlwaysFlushesBufferTo != null) {
+    if (convention.beforeClosingItAlwaysFlushesBufferTo) {
       this.flushBufferToToken(convention.beforeClosingItAlwaysFlushesBufferTo)
     }
 
-    context.close()
-    this.openContexts.splice(contextIndex, 1)
+    open.convention.whenClosing?.(open)
+    this.openConventions.splice(conventionIndex, 1)
 
     if (convention.whenClosingItAlsoClosesInnerConventions) {
-      // Since we just removed the context at `contextIndex`, its inner contexts will now start at
-      // `contextIndex`.
-      this.openContexts.splice(contextIndex)
+      // Since we just removed the convention at `conventionIndex`, its inner conventions will now
+      // start at `conventionIndex`.
+      this.openConventions.splice(conventionIndex)
     }
 
-    return this.tryToOpenASubsequentRequiredConventionIfThereAreAny(context)
+    return this.tryToOpenASubsequentRequiredConventionIfThereAreAny(open)
   }
 
   private isCurrentCharWhitespace(): boolean {
-    return WHITESPACE_CHAR_PATTERN.test(this.markupConsumer.currentChar)
+    return WHITESPACE_CHAR_PATTERN.test(this.markupConsumer.currentChar())
   }
 
   // If a convention must be followed by one of a set of specific conventions, then we'll try to open one
@@ -1064,8 +1072,8 @@ class Tokenizer {
   //
   // If there aren't any subsequent required conventions, or if we *are* able to open one of them, this
   // method retuns true.
-  private tryToOpenASubsequentRequiredConventionIfThereAreAny(closedContext: ConventionContext): boolean {
-    const subsequentRequiredConventions = closedContext.convention.mustBeDirectlyFollowedBy
+  private tryToOpenASubsequentRequiredConventionIfThereAreAny(closing: OpenConvention): boolean {
+    const subsequentRequiredConventions = closing.convention.mustBeDirectlyFollowedBy
 
     if (!subsequentRequiredConventions) {
       return true
@@ -1076,9 +1084,10 @@ class Tokenizer {
 
     if (didOpenSubsequentRequiredConvention) {
       // If this new convention eventually fails, we need to backtrack to before the one we just closed.
-      // To make that process easier, we give the snapshot of the previous convention's context to the
-      // new context.
-      last(this.openContexts).snapshot = closedContext.snapshot
+      // To make that process easier, we give the opening snapshot of the previous convention to the
+      // new one.
+      last(this.openConventions).tokenizerSnapshotWhenOpening =
+        closing.tokenizerSnapshotWhenOpening
       return true
     }
 
@@ -1086,11 +1095,13 @@ class Tokenizer {
   }
 
   private tryToCloseAnyForgivingConventions(): boolean {
-    if (this.justEnteredAConvention || !this.isPreviousCharacterNonwhitespace()) {
+    if (this.justEnteredAConvention() || !this.isPreviousCharacterNonwhitespace()) {
       return false
     }
 
     return this.forgivingConventionHandlers.some(handler => {
+      const initialMarkupIndx = this.markupConsumer.index();
+
       const result = this.markupConsumer.consume(handler.delimiterPattern)
 
       if (!result) {
@@ -1099,40 +1110,34 @@ class Tokenizer {
 
       const delimiter = result.match
 
-      if (handler.tryToCloseAnyOpenStartDelimiters(delimiter)) {
+      if (handler.tryToCloseAnyOpenStartDelimiters(delimiter.length)) {
         return true
       }
 
       // The delimiter we found didn't close anything! Let's put it back.
-      this.markupConsumer.index -= delimiter.length
+      this.markupConsumer.setIndex(initialMarkupIndx)
       return false
     })
   }
 
   private isPreviousCharacterNonwhitespace(): boolean {
-    return NON_BLANK_PATTERN.test(this.markupConsumer.previousChar)
+    return NON_BLANK_PATTERN.test(this.markupConsumer.previousChar())
   }
 
-  private closeBareUrlContextIfOneIsOpen(args?: { withinContextAtIndex: number }): void {
-    const { openContexts } = this
-
+  private closeBareUrlIfOneIsOpen(args?: { withinConventionAtIndex: number }): void {
     const outermostIndexThatMayBeBareUrl =
-      args ? (args.withinContextAtIndex + 1) : 0
+      args ? (args.withinConventionAtIndex + 1) : 0
 
-    for (let i = outermostIndexThatMayBeBareUrl; i < openContexts.length; i++) {
-      if (openContexts[i].convention === this.bareUrlPathConvention) {
+    for (let i = outermostIndexThatMayBeBareUrl; i < this.openConventions.length; i++) {
+      if (this.openConventions[i].convention === this.bareUrlPathConvention) {
         this.appendBufferedUrlPathToCurrentBareUrl()
 
-        // We need to remove the bare URL's context, as well as the contexts of any raw text brackets
-        // inside it.
-        this.openContexts.splice(i)
+        // We need to remove the bare URL from our list of any open conventions, as well remove
+        // any open raw text brackets inside it.
+        this.openConventions.splice(i)
         return
       }
     }
-  }
-
-  private encloseContextWithinConvention(richConvention: RichConvention, context: ConventionContext): void {
-    this.encloseWithin({ richConvention, startingBackAtTokenIndex: context.startTokenIndex })
   }
 
   private encloseWithin(args: EncloseWithinConventionArgs): void {
@@ -1230,9 +1235,17 @@ class Tokenizer {
     this.insertToken({ token: endToken, atIndex: endTokenIndex })
   }
 
-  private performContextSpecificBehaviorInsteadOfTryingToOpenRegularConventions(): boolean {
-    return reversed(this.openContexts)
-      .some(context => context.doInsteadOfTryingToOpenRegularConventions())
+  private performConventionSpecificBehaviorInsteadOfTryingToOpenRegularConventions(): boolean {
+    for (const open of reversed(this.openConventions)) {
+      const altBehavior = open.convention.insteadOfOpeningRegularConventionsWhileOpen
+
+      if (altBehavior) {
+        altBehavior()
+        return true
+      }
+    }
+
+    return false
   }
 
   private tryToOpenAnyConvention(): boolean {
@@ -1278,7 +1291,8 @@ class Tokenizer {
 
   // Because inline code doesn't require any of the special machinery of this class, we keep its logic separate.
   private tryToTokenizeInlineCodeOrUnmatchedDelimiter(): boolean {
-    const result = tryToTokenizeInlineCodeOrUnmatchedDelimiter(this.markupConsumer.remaining)
+    const result =
+      tryToTokenizeInlineCodeOrUnmatchedDelimiter(this.markupConsumer.remaining())
 
     if (!result) {
       return false
@@ -1286,7 +1300,7 @@ class Tokenizer {
 
     this.flushNonEmptyBufferToTextToken()
     this.appendToken(result.inlineCodeOrTextToken)
-    this.markupConsumer.index += result.lengthConsumed
+    this.markupConsumer.advanceIndex(result.lengthConsumed)
 
     return true
   }
@@ -1352,7 +1366,7 @@ class Tokenizer {
     // ahead and add any consecutive whitespace characters to our content buffer, too.
     //
     // For more information, see `bufferContentThatCanNeverServeAsDelimiter`.
-    if (WHITESPACE_CHAR_PATTERN.test(this.markupConsumer.currentChar)) {
+    if (WHITESPACE_CHAR_PATTERN.test(this.markupConsumer.currentChar())) {
       this.buffer(LEADING_WHITESPACE)
     } else {
       this.addCurrentCharToContentBuffer()
@@ -1368,8 +1382,8 @@ class Tokenizer {
   }
 
   private addCurrentCharToContentBuffer(): void {
-    this.bufferedContent += this.markupConsumer.currentChar
-    this.markupConsumer.index += 1
+    this.bufferedContent += this.markupConsumer.currentChar()
+    this.markupConsumer.advanceIndex(1)
   }
 
   private tryToOpen(convention: ConventionVariation): boolean {
@@ -1379,8 +1393,7 @@ class Tokenizer {
       return false
     }
 
-    const markupIndexBeforeConvention = this.markupConsumer.index
-
+    const markupIndexBeforeConvention = this.markupConsumer.index()
     const result = this.markupConsumer.consume(startsWith)
 
     if (!result) {
@@ -1391,29 +1404,24 @@ class Tokenizer {
       this.flushNonEmptyBufferToTextToken()
     }
 
-    this.openContexts.push(new ConventionContext(convention, this.getSnapshot(markupIndexBeforeConvention)))
+    this.openConventions.push(
+      new OpenConvention(convention, {
+        markupIndex: markupIndexBeforeConvention,
+        markupIndexThatLastOpenedAConvention: this.markupIndexThatLastOpenedAConvention,
+        tokens: this.tokens.slice(),
+        openConventions: this.openConventions.map(open => open.clone()),
+        forgivingConventionHandlers: this.forgivingConventionHandlers.map(handler => handler.clone()),
+        bufferedContent: this.bufferedContent
+      }))
 
-    if (whenOpening) {
-      whenOpening(result.match, result.charAfterMatch, ...result.captures)
-    }
+    whenOpening?.(...result.captures)
 
     this.indicateWeJustOpenedAConvention()
     return true
   }
 
-  private getSnapshot(markupIndex: number): TokenizerSnapshot {
-    return {
-      markupIndex,
-      markupIndexThatLastOpenedAConvention: this.markupIndexThatLastOpenedAConvention,
-      tokens: this.tokens.slice(),
-      openContexts: this.openContexts.map(context => context.clone()),
-      forgivingConventionHandlers: this.forgivingConventionHandlers.map(handler => handler.clone()),
-      bufferedContent: this.bufferedContent
-    }
-  }
-
   private canTry(conventionToOpen: ConventionVariation): boolean {
-    const markupIndex = this.markupConsumer.index
+    const markupIndex = this.markupConsumer.index()
 
     // If a convention must be followed by one of a set of specific conventions, then there are really
     // three ways that convention can fail:
@@ -1460,16 +1468,16 @@ class Tokenizer {
       && tokenRoles.some(tokenRole => this.mostRecentToken!.role === tokenRole))
   }
 
-  private backtrackToBeforeContext(context: ConventionContext): void {
-    this.backtrackedConventionHelper.registerFailure(context)
+  private backTrackToBefore(open: OpenConvention): void {
+    this.backtrackedConventionHelper.registerFailure(open)
 
-    const { snapshot } = context
+    const snapshot = open.tokenizerSnapshotWhenOpening
 
     this.tokens = snapshot.tokens
     this.bufferedContent = snapshot.bufferedContent
-    this.markupConsumer.index = snapshot.markupIndex
+    this.markupConsumer.setIndex(snapshot.markupIndex)
     this.markupIndexThatLastOpenedAConvention = snapshot.markupIndexThatLastOpenedAConvention
-    this.openContexts = snapshot.openContexts
+    this.openConventions = snapshot.openConventions
     this.forgivingConventionHandlers = snapshot.forgivingConventionHandlers
   }
 
@@ -1507,8 +1515,10 @@ class Tokenizer {
 
     this.tokens.splice(atIndex, 0, token)
 
-    for (const openContext of this.openContexts) {
-      openContext.registerTokenInsertion(atIndex)
+    for (const open of this.openConventions) {
+      if (atIndex < open.startTokenIndex) {
+        open.startTokenIndex += 1
+      }
     }
 
     for (const handler of this.forgivingConventionHandlers) {

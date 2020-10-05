@@ -126,27 +126,27 @@ export namespace NormalizedSettings {
       private _table: Keyword = []
       private _video: Keyword = []
 
-      get audio(): Keyword {
+      audio(): Keyword {
         return distinct('audio', ...this._audio)
       }
 
-      get image(): Keyword {
+      image(): Keyword {
         return distinct('image', 'img', ...this._image)
       }
 
-      get revealable(): Keyword {
+      revealable(): Keyword {
         return distinct('spoiler', 'nsfw', 'nsfl', 'revealable', ...this._revealable)
       }
 
-      get sectionLink(): Keyword {
+      sectionLink(): Keyword {
         return distinct('section', 'topic', ...this._sectionLink)
       }
 
-      get table(): Keyword {
+      table(): Keyword {
         return distinct('table', ...this._table)
       }
 
-      get video(): Keyword {
+      video(): Keyword {
         return distinct('video', 'vid', ...this._video)
       }
 

@@ -69,7 +69,7 @@ export function parseParagraphOrLineBlock(args: OutlineParser.Args): OutlinePars
   // another outline convention, another parser would have already consumed it!
   let isOnFirstLine = true
 
-  while (!markupLineConsumer.done) {
+  while (!markupLineConsumer.done()) {
     const lineResult =
       markupLineConsumer.consumeLineIfMatches(NON_BLANK_PATTERN, {
         andIf: result => isOnFirstLine || !isLineFancyOutlineConvention(result.line, args.settings)
@@ -99,7 +99,7 @@ export function parseParagraphOrLineBlock(args: OutlineParser.Args): OutlinePars
       // We're done! Let's include the promoted media nodes in our result.
       return {
         parsedNodes: getAppropriateOutlineNodes(inlineSyntaxNodesPerLine, mediaPromotedToOutline),
-        countLinesConsumed: markupLineConsumer.countLinesConsumed
+        countLinesConsumed: markupLineConsumer.countLinesConsumed()
       }
     }
 
@@ -109,7 +109,7 @@ export function parseParagraphOrLineBlock(args: OutlineParser.Args): OutlinePars
 
   return {
     parsedNodes: getAppropriateOutlineNodes(inlineSyntaxNodesPerLine),
-    countLinesConsumed: markupLineConsumer.countLinesConsumed
+    countLinesConsumed: markupLineConsumer.countLinesConsumed()
   }
 }
 

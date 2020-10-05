@@ -1,15 +1,15 @@
-export class StartDelimiter {
+export class ActiveStartDelimiter {
   constructor(
     public tokenIndex: number,
     public delimiterText: string,
     public remainingLength = delimiterText.length) {
   }
 
-  get isUnused(): boolean {
+  isUnused(): boolean {
     return this.remainingLength === this.delimiterText.length
   }
 
-  get isFullyExhausted(): boolean {
+  isFullyExhausted(): boolean {
     return this.remainingLength <= 0
   }
 
@@ -17,7 +17,7 @@ export class StartDelimiter {
     this.remainingLength -= length
   }
 
-  clone(): StartDelimiter {
-    return new StartDelimiter(this.tokenIndex, this.delimiterText, this.remainingLength)
+  clone(): ActiveStartDelimiter {
+    return new ActiveStartDelimiter(this.tokenIndex, this.delimiterText, this.remainingLength)
   }
 }

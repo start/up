@@ -9,10 +9,8 @@ import { OutlineSyntaxNode } from './OutlineSyntaxNode'
 export class FootnoteBlock implements OutlineSyntaxNode {
   constructor(public footnotes: Footnote[]) { }
 
-  get sourceLineNumber(): number | undefined {
-    // The source line number of a footnote block wouldn't be particulalry meaninful.
-    return undefined
-  }
+  // The source line number of a footnote block wouldn't be particulalry meaninful.
+  readonly sourceLineNumber = undefined
 
   descendantsToIncludeInTableOfContents(): Heading[] {
     return []

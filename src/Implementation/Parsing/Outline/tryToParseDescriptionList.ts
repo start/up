@@ -26,11 +26,11 @@ export function tryToParseDescriptionList(args: OutlineParser.Args): OutlinePars
   const listItems: DescriptionList.Item[] = []
   let countLinesConsumed = 0
 
-  while (!markupLineConsumer.done) {
+  while (!markupLineConsumer.done()) {
     const markupLinesForSubjects: string[] = []
 
     // First, let's collect the subjects described by the upcoming description.
-    while (!markupLineConsumer.done) {
+    while (!markupLineConsumer.done()) {
       const subjectResult =
         markupLineConsumer.consumeLineIfMatches(NON_BLANK_PATTERN, {
           andIf: result => !INDENTED_PATTERN.test(result.line) && !isLineFancyOutlineConvention(result.line, args.settings)
@@ -53,7 +53,7 @@ export function tryToParseDescriptionList(args: OutlineParser.Args): OutlinePars
     markupLineConsumer.consumeLineIfMatches(BLANK_PATTERN)
 
     const sourceLineNumberForDescription =
-      args.sourceLineNumber + markupLineConsumer.countLinesConsumed
+      args.sourceLineNumber + markupLineConsumer.countLinesConsumed()
 
     // Let's parse the desription's first line.
     const descriptionResult =
@@ -81,7 +81,7 @@ export function tryToParseDescriptionList(args: OutlineParser.Args): OutlinePars
     }
 
     // Alright, we have our description! Let's update our number of lines consumed.
-    countLinesConsumed = markupLineConsumer.countLinesConsumed
+    countLinesConsumed = markupLineConsumer.countLinesConsumed()
 
     const subjects =
       markupLinesForSubjects.map(subject =>

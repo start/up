@@ -27,6 +27,6 @@ export function tryToParseBlankLineSeparation(args: OutlineParser.Args): Outline
     parsedNodes: countBlankLines >= MIN_COUNT_BLANK_LINES_IN_THEMATIC_BREAK
       ? [new ThematicBreak()]
       : [],
-    countLinesConsumed: markupLineConsumer.countLinesConsumed
+    countLinesConsumed: markupLineConsumer.countLinesConsumed()
   }
 }

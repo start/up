@@ -1,29 +1,22 @@
-import { ConventionContext } from './ConventionContext'
+import { OpenConvention } from './OpenConvention'
 import { ConventionVariation } from './ConventionVariation'
 
 
 // We use this class to keep track of which conventions we've been forced to backtrack.
 export class BacktrackedConventionHelper {
-  private failedConventionsByMarkupIndex: FailedConventionsByTextIndex = {}
+  private failedConventionsByMarkupIndex: {
+    [markupIndex: number]: ConventionVariation[]
+  } = {}
 
-  registerFailure(contextOfFailedConvention: ConventionContext): void {
-    const { convention, snapshot } = contextOfFailedConvention
-    const { markupIndex } = snapshot
+  registerFailure(failure: OpenConvention): void {
+    const { markupIndex } = failure.tokenizerSnapshotWhenOpening
 
-    if (!this.failedConventionsByMarkupIndex[markupIndex]) {
-      this.failedConventionsByMarkupIndex[markupIndex] = []
-    }
-
-    this.failedConventionsByMarkupIndex[markupIndex].push(convention)
+    this.failedConventionsByMarkupIndex[markupIndex] ??= []
+    this.failedConventionsByMarkupIndex[markupIndex].push(failure.convention)
   }
 
   hasFailed(convention: ConventionVariation, markupIndex: number): boolean {
     const failedConventions = (this.failedConventionsByMarkupIndex[markupIndex] ?? [])
     return failedConventions.some(failedConvention => failedConvention === convention)
   }
-}
-
-
-interface FailedConventionsByTextIndex {
-  [markupIndex: number]: ConventionVariation[]
 }

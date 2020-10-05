@@ -16,7 +16,7 @@ export function tryToParseRevealableBlock(args: OutlineParser.Args): OutlinePars
 
   const labelLinePattern =
     solelyAndIgnoringCapitalization(
-      either(...keywords.revealable.map(escapeForRegex)) + optional(':'))
+      either(...keywords.revealable().map(escapeForRegex)) + optional(':'))
 
   if (!markupLineConsumer.consumeLineIfMatches(labelLinePattern)) {
     return null
@@ -45,6 +45,6 @@ export function tryToParseRevealableBlock(args: OutlineParser.Args): OutlinePars
 
   return {
     parsedNodes: [new RevealableBlock(children)],
-    countLinesConsumed: markupLineConsumer.countLinesConsumed
+    countLinesConsumed: markupLineConsumer.countLinesConsumed()
   }
 }

@@ -57,20 +57,20 @@ export function tryToTokenizeInlineCode(markup: string): InlineCodeTokenizationR
   const startDelimiter = startDelimiterResult.match
   let inlineCode = ''
 
-  COLLECT_INLINE_CODE: while (!markupConsumer.done) {
+  COLLECT_INLINE_CODE: while (!markupConsumer.done()) {
     // First, lets collect all inline code up to the first unescaped backtick. That backtick might
     // not terminate our inline code, but we'll find that out later!
-    while (markupConsumer.currentChar !== BACKTICK) {
-      if (markupConsumer.currentChar === BACKSLASH) {
-        markupConsumer.index += 1
+    while (markupConsumer.currentChar() !== BACKTICK) {
+      if (markupConsumer.currentChar() === BACKSLASH) {
+        markupConsumer.advanceIndex(1)
       }
 
-      if (markupConsumer.done) {
+      if (markupConsumer.done()) {
         break COLLECT_INLINE_CODE
       }
 
-      inlineCode += markupConsumer.currentChar
-      markupConsumer.index += 1
+      inlineCode += markupConsumer.currentChar()
+      markupConsumer.advanceIndex(1)
     }
 
     // We're up against a possible end delimiter. If it doesn't match our start delimiter, we'll
@@ -85,7 +85,7 @@ export function tryToTokenizeInlineCode(markup: string): InlineCodeTokenizationR
     if (possibleEndDelimiter === startDelimiter) {
       return {
         inlineCodeOrTextToken: new Token(TokenRole.InlineCode, trimCode(inlineCode)),
-        lengthConsumed: markupConsumer.index
+        lengthConsumed: markupConsumer.index()
       }
     }
 

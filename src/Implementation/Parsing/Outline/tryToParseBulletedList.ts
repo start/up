@@ -18,11 +18,11 @@ export function tryToParseBulletedList(args: OutlineParser.Args): OutlineParser.
   const markupLineConsumer = new LineConsumer(args.markupLines)
   const listItems: BulletedList.Item[] = []
 
-  while (!markupLineConsumer.done) {
+  while (!markupLineConsumer.done()) {
     const linesOfMarkupInCurrentListItem: string[] = []
 
     const sourceLineNumberForCurrentListItem =
-      args.sourceLineNumber + markupLineConsumer.countLinesConsumed
+      args.sourceLineNumber + markupLineConsumer.countLinesConsumed()
 
     const bulletedLineResult = markupLineConsumer.consumeLineIfMatches(BULLETED_LINE_PATTERN)
 
@@ -64,7 +64,7 @@ export function tryToParseBulletedList(args: OutlineParser.Args): OutlineParser.
 
   return {
     parsedNodes: [new BulletedList(listItems)],
-    countLinesConsumed: markupLineConsumer.countLinesConsumed
+    countLinesConsumed: markupLineConsumer.countLinesConsumed()
   }
 }
 

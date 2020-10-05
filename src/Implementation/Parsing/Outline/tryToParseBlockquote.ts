@@ -41,7 +41,7 @@ export function tryToParseBlockquote(args: OutlineParser.Args): OutlineParser.Re
 
   return {
     parsedNodes: [new Blockquote(blockquoteChildren)],
-    countLinesConsumed: markupLineConsumer.countLinesConsumed
+    countLinesConsumed: markupLineConsumer.countLinesConsumed()
   }
 }
 
