@@ -10,11 +10,6 @@ export function concat<T>(collections: T[][]): T[] {
   return ([] as T[]).concat(...collections)
 }
 
-// Returns a reversed shallow copy of `collection`.
-export function reversed<T>(collection: T[]): T[] {
-  return collection.slice().reverse()
-}
-
 // Returns an array containing the distinct values in `values` using strict equality.
 //
 // The values' order is preserved.

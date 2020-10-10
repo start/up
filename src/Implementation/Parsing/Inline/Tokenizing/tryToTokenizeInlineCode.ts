@@ -76,7 +76,7 @@ export function tryToTokenizeInlineCode(markup: string): InlineCodeTokenizationR
     // We're up against a possible end delimiter. If it doesn't match our start delimiter, we'll
     // simply include it in our inline code.
     //
-    // We can safely cast to a non-nullable `MatchResult` because we know we must be up against a
+    // We can safely cast to a successful `MatchResult` because we know we must be up against a
     // backtick (thanks to the fact that the above loop terminated without breaking out of the
     // `COLLECT_INLINE_CODE` loop). Therefore, `DELIMITER_PATTERN` is guaranteed to find a match.
     const possibleEndDelimiter =

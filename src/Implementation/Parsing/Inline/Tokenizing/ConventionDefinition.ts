@@ -3,10 +3,10 @@ import { TokenRole } from '../TokenRole'
 import { OpenConvention } from './OpenConvention'
 
 
-// The start/end delimiters of a convention variation are ultimately represented by
+// The start/end delimiters of a convention definition are ultimately represented by
 // RegExp patterns anchored to the beginning of the input string (using `^`).
 //
-// For convenience, the ConventionVariation constructor instead accepts unanchored
+// For convenience, the ConventionDefinition constructor instead accepts unanchored
 // string patterns for those delimiters. (Those strings are then converted into
 // anchored RegExp patterns.)
 
@@ -15,13 +15,14 @@ type StringDelimiters = {
   endsWith?: string
 }
 
-export type ConventionVariationArgs =
-  Omit<ConventionVariation, keyof StringDelimiters> & StringDelimiters
+export type ConventionDefinitionArgs =
+  Omit<ConventionDefinition, keyof StringDelimiters>
+  & StringDelimiters
 
 
 // This represents the rules for a single variation of an inline writing convention.
 // For example: an inline revealable convention delimited by square brackets.
-export class ConventionVariation {
+export class ConventionDefinition {
   startsWith: RegExp
   endsWith?: RegExp
   canOnlyOpenIfDirectlyFollowing?: TokenRole[]
@@ -35,14 +36,14 @@ export class ConventionVariation {
   beforeClosingItFlushesNonEmptyBufferTo?: TokenRole
   beforeClosingItAlwaysFlushesBufferTo?: TokenRole
   whenClosingItAlsoClosesInnerConventions?: boolean
-  mustBeDirectlyFollowedBy?: ConventionVariation[]
+  mustBeDirectlyFollowedBy?: ConventionDefinition[]
   whenClosing?: (thisOpenConvention: OpenConvention) => void
   insteadOfFailingWhenLeftUnclosed?: () => void
 
-  constructor(args: ConventionVariationArgs) {
+  constructor(args: ConventionDefinitionArgs) {
     // First, let's blindly copy everything from `args` to `this`.
     //
-    // Alas! This also copies the string `startsWith`/`endsWith` fields, too! We'll
+    // Alas! This also copies the string `startsWith`/`endsWith` fields! We'll
     // overwrite those below and convert them into anchored RegExp patterns.
     Object.assign(this, args)
     const { startsWith, endsWith } = args

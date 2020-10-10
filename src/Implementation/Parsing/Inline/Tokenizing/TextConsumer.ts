@@ -10,19 +10,19 @@ export class TextConsumer {
     this.setIndex(0);
   }
 
+  setIndex(newIndex: number) {
+    this._index = newIndex
+    this._remaining = this.entireText.substr(newIndex)
+    this._currentChar = this._remaining[0]
+    this._previousChar = this.entireText[newIndex - 1]
+  }
+
   index(): number {
     return this._index
   }
 
   advanceIndex(by: number): void {
     this.setIndex(this._index + by)
-  }
-
-  setIndex(newIndex: number) {
-    this._index = newIndex
-    this._remaining = this.entireText.substr(newIndex)
-    this._currentChar = this._remaining[0]
-    this._previousChar = this.entireText[newIndex - 1]
   }
 
   remaining(): string {

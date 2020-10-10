@@ -1,4 +1,4 @@
-import { concat, last, reversed } from '../../../CollectionHelpers'
+import { concat, last } from '../../../CollectionHelpers'
 import { NormalizedSettings } from '../../../NormalizedSettings'
 import { anyCharMatching, anyCharNotMatching, capture, either, escapeForRegex, everyOptional, followedBy, multiple, notFollowedBy, oneOrMore, optional, patternStartingWith, solely } from '../../../PatternHelpers'
 import { ANY_OPTIONAL_WHITESPACE, DIGIT, FORWARD_SLASH, HASH_MARK, LETTER_CHAR, LETTER_CLASS, URL_SCHEME, WHITESPACE, WHITESPACE_CHAR } from '../../../PatternPieces'
@@ -12,7 +12,7 @@ import { TokenRole } from '../TokenRole'
 import { BacktrackedConventionHelper } from './BacktrackedConventionHelper'
 import { Bracket } from './Bracket'
 import { OpenConvention } from './OpenConvention'
-import { ConventionVariation, ConventionVariationArgs } from './ConventionVariation'
+import { ConventionDefinition, ConventionDefinitionArgs } from './ConventionDefinition'
 import { EncloseWithinConventionArgs } from './EncloseWithinConventionArgs'
 import { ForgivingConventionHandler } from './ForgivingConventions/ForgivingConventionHandler'
 import { nestOverlappingConventions } from './nestOverlappingConventions'
@@ -116,7 +116,7 @@ class Tokenizer {
   // `tryToTokenizeTypographicalConvention` method.
   //
   // The rest of the exceptions are all explained below.
-  private conventionVariations: ConventionVariation[]
+  private conventionDefinitions: ConventionDefinition[]
 
   // These bracket conventions don't produce special tokens, and they can only appear inside URLs (or a
   // few other contexts that ignore the typical conventions).
@@ -223,7 +223,7 @@ class Tokenizer {
 
     this.markupConsumer = new TextConsumer(trimmedMarkup)
 
-    this.conventionVariations = [
+    this.conventionDefinitions = [
       ...this.getInlineRevealableConventions({
         richConvention: INLINE_REVEALABLE,
         keyword: this.settings.keywords.revealable()
@@ -271,7 +271,7 @@ class Tokenizer {
     this.markupIndexThatLastOpenedAConvention = this.markupConsumer.index()
   }
 
-  private getFootnoteConventions(): ConventionVariation[] {
+  private getFootnoteConventions(): ConventionDefinition[] {
     return PARENTHETICAL_BRACKETS.map(bracket =>
       this.getTokenizableRichConvention(FOOTNOTE, {
         // For regular footnotes (i.e. these), we collapse any leading whitespace.
@@ -287,7 +287,7 @@ class Tokenizer {
   //
   // In inline documents, this purpose can't be fulfilled, so we do the next best thing: we treat footnotes
   // as normal parentheticals.
-  private getFootnoteConventionsForInlineDocuments(): ConventionVariation[] {
+  private getFootnoteConventionsForInlineDocuments(): ConventionDefinition[] {
     return PARENTHETICAL_BRACKETS.map(bracket =>
       this.getTokenizableRichConvention(NORMAL_PARENTHETICAL, {
         startsWith: this.getFootnoteStartDelimiter(bracket),
@@ -306,7 +306,7 @@ class Tokenizer {
     return bracket.endPattern
   }
 
-  private getLinkContentConventions(): ConventionVariation[] {
+  private getLinkContentConventions(): ConventionDefinition[] {
     return PARENTHETICAL_BRACKETS.map(bracket =>
       this.getTokenizableRichConvention(LINK, {
         startsWith: bracket.startPattern,
@@ -329,7 +329,7 @@ class Tokenizer {
       richConvention: RichConvention
       keyword: NormalizedSettings.Parsing.Keyword
     }
-  ): ConventionVariation[] {
+  ): ConventionDefinition[] {
     const { richConvention, keyword } = args
 
     return PARENTHETICAL_BRACKETS.map(bracket =>
@@ -344,7 +344,7 @@ class Tokenizer {
       richConvention: RichConvention
       bracket: Bracket
     }
-  ): ConventionVariation {
+  ): ConventionDefinition {
     const { richConvention, bracket } = args
 
     return this.getTokenizableRichConvention(richConvention, {
@@ -358,7 +358,7 @@ class Tokenizer {
 
   private getTokenizableRichConvention(
     richConvention: RichConvention,
-    options: Pick<ConventionVariationArgs,
+    options: Pick<ConventionDefinitionArgs,
       'startsWith' |
       'endsWith' |
       'whenOpening' |
@@ -366,10 +366,10 @@ class Tokenizer {
       'whenClosing' |
       'mustBeDirectlyFollowedBy'
     >
-  ): ConventionVariation {
+  ): ConventionDefinition {
     const { startsWith, endsWith, whenOpening, insteadOfFailingWhenLeftUnclosed, whenClosing, mustBeDirectlyFollowedBy } = options
 
-    return new ConventionVariation({
+    return new ConventionDefinition({
       startsWith,
       endsWith,
 
@@ -408,8 +408,8 @@ class Tokenizer {
   //  https://www.subdomain.example.co.uk/some/page?search=pokemon#4
   //
   // The path is "/some/page?search=pokemon#4"
-  private getBareUrlPathConvention(): ConventionVariation {
-    return new ConventionVariation({
+  private getBareUrlPathConvention(): ConventionDefinition {
+    return new ConventionDefinition({
       startsWith: FORWARD_SLASH,
       isCutShortByWhitespace: true,
 
@@ -432,8 +432,8 @@ class Tokenizer {
   // Usage:
   //
   //   Press {esc} to quit.
-  private getExampleUserInputConvention(): ConventionVariation {
-    return new ConventionVariation({
+  private getExampleUserInputConvention(): ConventionDefinition {
+    return new ConventionDefinition({
       startsWith: CURLY_BRACKET.startPattern,
       endsWith: CURLY_BRACKET.endPattern,
 
@@ -459,12 +459,12 @@ class Tokenizer {
   //
   //   Shading pixel art
   //   =================
-  private getSectionLinkConventions(): ConventionVariation[] {
+  private getSectionLinkConventions(): ConventionDefinition[] {
     const keyword =
       this.settings.keywords.sectionLink()
 
     return PARENTHETICAL_BRACKETS.map(bracket =>
-      new ConventionVariation({
+      new ConventionDefinition({
         startsWith: labeledBracketStartDelimiter(keyword, bracket),
         endsWith: bracket.endPattern,
 
@@ -479,13 +479,13 @@ class Tokenizer {
       }))
   }
 
-  private getMediaDescriptionConventions(): ConventionVariation[] {
+  private getMediaDescriptionConventions(): ConventionDefinition[] {
     return concat(
       [IMAGE, VIDEO, AUDIO].map(media => {
         const termForThisMediaConvention = media.keyword(this.settings.keywords)
 
         return PARENTHETICAL_BRACKETS.map(bracket =>
-          new ConventionVariation({
+          new ConventionDefinition({
             startsWith: labeledBracketStartDelimiter(termForThisMediaConvention, bracket),
             endsWith: bracket.endPattern,
 
@@ -503,8 +503,8 @@ class Tokenizer {
       }))
   }
 
-  private getMediaUrlConventions(): ConventionVariation[] {
-    return PARENTHETICAL_BRACKETS.map(bracket => new ConventionVariation({
+  private getMediaUrlConventions(): ConventionDefinition[] {
+    return PARENTHETICAL_BRACKETS.map(bracket => new ConventionDefinition({
       startsWith: ANY_OPTIONAL_WHITESPACE + this.startPatternForBracketedUrlAssumedToBeAUrl(bracket),
       endsWith: bracket.endPattern,
 
@@ -545,7 +545,7 @@ class Tokenizer {
   //    - The URL must start with a number or a letter
   //    - There must not be consecutive periods anywhere in the domain part of the URL. However,
   //      consecutive periods are allowed in the resource path.
-  private getLinkUrlConventions(): ConventionVariation[] {
+  private getLinkUrlConventions(): ConventionDefinition[] {
     const whenClosing = (url: string) => {
       // When closing a link URL, we're (correctly) going to assume that the most recent token is
       // a `LinkEnd` token.
@@ -567,7 +567,7 @@ class Tokenizer {
   // Like with link URLs, if we're sure the author intends to linkfiy a convention, we allow
   // whitespace between the linkifying URL and the original convention. For more information,
   // see `getLinkUrlConventions`.
-  private getLinkifyingUrlConventions(): ConventionVariation[] {
+  private getLinkifyingUrlConventions(): ConventionDefinition[] {
     const LINKIFIABLE_RICH_CONVENTIONS = [
       INLINE_REVEALABLE,
       FOOTNOTE
@@ -611,10 +611,10 @@ class Tokenizer {
       canOnlyOpenIfDirectlyFollowing?: TokenRole[]
       whenClosing: (url: string) => void
     }
-  ): ConventionVariation {
+  ): ConventionDefinition {
     const { bracket, canOnlyOpenIfDirectlyFollowing, whenClosing } = args
 
-    return new ConventionVariation({
+    return new ConventionDefinition({
       canOnlyOpenIfDirectlyFollowing,
 
       startsWith: this.startPatternForBracketedUrlAssumedToBeAUrl(bracket),
@@ -645,10 +645,10 @@ class Tokenizer {
       canOnlyOpenIfDirectlyFollowing?: TokenRole[]
       whenClosing: (url: string) => void
     }
-  ): ConventionVariation {
+  ): ConventionDefinition {
     const { bracket, canOnlyOpenIfDirectlyFollowing, whenClosing } = args
 
-    return new ConventionVariation({
+    return new ConventionDefinition({
       canOnlyOpenIfDirectlyFollowing,
 
       startsWith: WHITESPACE + bracket.startPattern + capture(
@@ -664,7 +664,7 @@ class Tokenizer {
 
       endsWith: bracket.endPattern,
 
-      whenOpening: (urlPrefix) => { this.bufferedContent += urlPrefix },
+      whenOpening: urlPrefix => { this.bufferedContent += urlPrefix },
 
       failsIfWhitespaceIsEnounteredBeforeClosing: true,
       insteadOfClosingOuterConventionsWhileOpen: () => this.handleTextAwareOfRawBrackets(),
@@ -673,17 +673,13 @@ class Tokenizer {
       whenClosing: open => {
         const url = this.settings.applySettingsToUrl(this.flushBufferedContent())
 
-        if (this.probablyWasNotIntendedToBeAUrl(url)) {
+        if (FALSE_URL_CONSISTING_SOLELY_OF_PREFIX.test(url)) {
           this.backTrackToBefore(open)
         } else {
           whenClosing(url)
         }
       }
     })
-  }
-
-  private probablyWasNotIntendedToBeAUrl(url: string): boolean {
-    return URL_CONSISTING_SOLELY_OF_PREFIX.test(url)
   }
 
   private closeLinkifyingUrlForRichConventions(url: string): void {
@@ -728,23 +724,25 @@ class Tokenizer {
     last(this.tokens).value = url
   }
 
-  private getRawParentheticalBracketConventions(): ConventionVariation[] {
+  private getRawParentheticalBracketConventions(): ConventionDefinition[] {
     return PARENTHETICAL_BRACKETS.map(bracket => this.getRawBracketConvention(bracket))
   }
 
-  private getRawCurlyBracketConvention(): ConventionVariation {
+  private getRawCurlyBracketConvention(): ConventionDefinition {
     return this.getRawBracketConvention(CURLY_BRACKET)
   }
 
-  private getRawBracketConvention(bracket: Bracket): ConventionVariation {
-    return new ConventionVariation({
+  private getRawBracketConvention(bracket: Bracket): ConventionDefinition {
+    return new ConventionDefinition({
       startsWith: bracket.startPattern,
       endsWith: bracket.endPattern,
 
       whenOpening: () => { this.bufferedContent += bracket.open },
       whenClosing: () => { this.bufferedContent += bracket.close },
 
-      insteadOfFailingWhenLeftUnclosed: () => { /* Neither fail nor do anything special */ }
+      insteadOfFailingWhenLeftUnclosed: () => {
+        // Don't fail, but don't do anything special, either!
+      }
     })
   }
 
@@ -851,15 +849,15 @@ class Tokenizer {
     let open: OpenConvention | undefined
 
     while (open = this.openConventions.pop()) {
-      const avoidFailure = open.convention.insteadOfFailingWhenLeftUnclosed
+      const insteadOfFailing = open.definition.insteadOfFailingWhenLeftUnclosed
 
-      if (!avoidFailure) {
-        // Well, this convention is left unclosed, so we *should* fail.
+      if (insteadOfFailing) {
+        insteadOfFailing()
+      } else {
+        // Well, this convention is left unclosed! We need to fail.
         this.backTrackToBefore(open)
         return false
       }
-
-      avoidFailure()
     }
 
     this.flushNonEmptyBufferToTextToken()
@@ -933,8 +931,8 @@ class Tokenizer {
     // whitespace in their end patterns.
     const canTryToBufferWhitespace =
       this.openConventions.every(open =>
-        !open.convention.isCutShortByWhitespace
-        && !open.convention.failsIfWhitespaceIsEnounteredBeforeClosing)
+        !open.definition.isCutShortByWhitespace
+        && !open.definition.failsIfWhitespaceIsEnounteredBeforeClosing)
 
     do {
       // First, let's try to skip any content that will *never* open or close any conventions.
@@ -1010,13 +1008,13 @@ class Tokenizer {
         return false
       }
 
-      if (open.convention.failsIfWhitespaceIsEnounteredBeforeClosing && this.isCurrentCharWhitespace()) {
+      if (open.definition.failsIfWhitespaceIsEnounteredBeforeClosing && this.isCurrentCharWhitespace()) {
         this.backTrackToBefore(open)
         return true
       }
 
       const instead =
-        open.convention.insteadOfClosingOuterConventionsWhileOpen
+        open.definition.insteadOfClosingOuterConventionsWhileOpen
 
       if (instead) {
         instead()
@@ -1028,33 +1026,33 @@ class Tokenizer {
   }
 
   private shouldClose(open: OpenConvention): boolean {
-    const { convention } = open
+    const { definition } = open
 
     return (
-      (convention.isCutShortByWhitespace && this.isCurrentCharWhitespace())
-      || ((convention.endsWith != null) && (this.markupConsumer.consume(convention.endsWith) != null)))
+      (definition.isCutShortByWhitespace && this.isCurrentCharWhitespace())
+      || ((definition.endsWith != null) && (this.markupConsumer.consume(definition.endsWith) != null)))
   }
 
   private tryToCloseConventionWhoseEndDelimiterWeAlreadyFound(args: { belongingToConventionAtIndex: number }): boolean {
     const conventionIndex = args.belongingToConventionAtIndex
     const open = this.openConventions[conventionIndex]
-    const { convention } = open
+    const { definition } = open
 
     // As a rule, if a convention enclosing a bare URL is closed, the bare URL gets closed first.
     this.closeBareUrlIfOneIsOpen({ withinConventionAtIndex: conventionIndex })
 
-    if (convention.beforeClosingItFlushesNonEmptyBufferTo) {
-      this.flushNonEmptyBufferToToken(convention.beforeClosingItFlushesNonEmptyBufferTo)
+    if (definition.beforeClosingItFlushesNonEmptyBufferTo) {
+      this.flushNonEmptyBufferToToken(definition.beforeClosingItFlushesNonEmptyBufferTo)
     }
 
-    if (convention.beforeClosingItAlwaysFlushesBufferTo) {
-      this.flushBufferToToken(convention.beforeClosingItAlwaysFlushesBufferTo)
+    if (definition.beforeClosingItAlwaysFlushesBufferTo) {
+      this.flushBufferToToken(definition.beforeClosingItAlwaysFlushesBufferTo)
     }
 
-    open.convention.whenClosing?.(open)
+    definition.whenClosing?.(open)
     this.openConventions.splice(conventionIndex, 1)
 
-    if (convention.whenClosingItAlsoClosesInnerConventions) {
+    if (definition.whenClosingItAlsoClosesInnerConventions) {
       // Since we just removed the convention at `conventionIndex`, its inner conventions will now
       // start at `conventionIndex`.
       this.openConventions.splice(conventionIndex)
@@ -1073,7 +1071,7 @@ class Tokenizer {
   // If there aren't any subsequent required conventions, or if we *are* able to open one of them, this
   // method retuns true.
   private tryToOpenASubsequentRequiredConventionIfThereAreAny(closing: OpenConvention): boolean {
-    const subsequentRequiredConventions = closing.convention.mustBeDirectlyFollowedBy
+    const subsequentRequiredConventions = closing.definition.mustBeDirectlyFollowedBy
 
     if (!subsequentRequiredConventions) {
       return true
@@ -1101,7 +1099,6 @@ class Tokenizer {
 
     return this.forgivingConventionHandlers.some(handler => {
       const initialMarkupIndx = this.markupConsumer.index();
-
       const result = this.markupConsumer.consume(handler.delimiterPattern)
 
       if (!result) {
@@ -1129,7 +1126,7 @@ class Tokenizer {
       args ? (args.withinConventionAtIndex + 1) : 0
 
     for (let i = outermostIndexThatMayBeBareUrl; i < this.openConventions.length; i++) {
-      if (this.openConventions[i].convention === this.bareUrlPathConvention) {
+      if (this.openConventions[i].definition === this.bareUrlPathConvention) {
         this.appendBufferedUrlPathToCurrentBareUrl()
 
         // We need to remove the bare URL from our list of any open conventions, as well remove
@@ -1236,11 +1233,12 @@ class Tokenizer {
   }
 
   private performConventionSpecificBehaviorInsteadOfTryingToOpenRegularConventions(): boolean {
-    for (const open of reversed(this.openConventions)) {
-      const altBehavior = open.convention.insteadOfOpeningRegularConventionsWhileOpen
+    for (let i = this.openConventions.length - 1; i >= 0; i--) {
+      const specialBehavior =
+        this.openConventions[i].definition.insteadOfOpeningRegularConventionsWhileOpen
 
-      if (altBehavior) {
-        altBehavior()
+      if (specialBehavior) {
+        specialBehavior()
         return true
       }
     }
@@ -1250,7 +1248,7 @@ class Tokenizer {
 
   private tryToOpenAnyConvention(): boolean {
     return (
-      this.conventionVariations.some(convention => this.tryToOpen(convention))
+      this.conventionDefinitions.some(convention => this.tryToOpen(convention))
       || this.tryToTokenizeBareUrlSchemeAndHostname()
       || this.tryToOpenForgivingConventionOrTreatDelimiterAsText()
       || this.tryToTokenizeInlineCodeOrUnmatchedDelimiter()
@@ -1386,7 +1384,7 @@ class Tokenizer {
     this.markupConsumer.advanceIndex(1)
   }
 
-  private tryToOpen(convention: ConventionVariation): boolean {
+  private tryToOpen(convention: ConventionDefinition): boolean {
     const { startsWith, flushesBufferToTextTokenBeforeOpening, whenOpening } = convention
 
     if (!this.canTry(convention)) {
@@ -1420,7 +1418,7 @@ class Tokenizer {
     return true
   }
 
-  private canTry(conventionToOpen: ConventionVariation): boolean {
+  private canTry(conventionToOpen: ConventionDefinition): boolean {
     const markupIndex = this.markupConsumer.index()
 
     // If a convention must be followed by one of a set of specific conventions, then there are really
@@ -1487,6 +1485,7 @@ class Tokenizer {
 
   private appendBufferedUrlPathToCurrentBareUrl(): void {
     if (this.mostRecentToken!.role !== TokenRole.BareUrl) {
+      // This should never happen.
       throw new Error('Most recent token is not a bare URL token')
     }
 
@@ -1567,12 +1566,12 @@ const PLUS_MINUS_SIGN_PATTERN =
   patternStartingWith(PLUS_SIGN + HYPHEN)
 
 
-// Our URL patterns (and associated string constants) are used to determine whether text was
-// likely intended to be a URL.
+// These URL patterns (and associated string constants) are used to determine whether text
+// was likely intended to be a URL.
 //
-// We aren't in the business of exhaustively excluding every invalid URL. Instead, we simply
-// want to avoid surprising the author by producing a link when they probably didn't intend
-// to produce one.
+// We aren't in the business of exhaustively determining the validity of every URL. Instead,
+// we simply want to avoid surprising the author by producing a link when they probably
+// didn't intend to produce one (and vice versa).
 
 
 const URL_SUBDOMAIN =
@@ -1592,7 +1591,7 @@ const EXPLICIT_URL_PREFIX =
     FORWARD_SLASH,
     HASH_MARK)
 
-const URL_CONSISTING_SOLELY_OF_PREFIX =
+const FALSE_URL_CONSISTING_SOLELY_OF_PREFIX =
   solely(EXPLICIT_URL_PREFIX)
 
 const BARE_URL_SCHEME =

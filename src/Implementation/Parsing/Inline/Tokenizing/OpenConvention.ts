@@ -1,11 +1,11 @@
-import { ConventionVariation } from './ConventionVariation'
+import { ConventionDefinition } from './ConventionDefinition'
 import { ForgivingConventionHandler } from './ForgivingConventions/ForgivingConventionHandler'
 import { Token } from './Token'
 
 
 export class OpenConvention {
   constructor(
-    public convention: ConventionVariation,
+    public definition: ConventionDefinition,
     public tokenizerSnapshotWhenOpening: {
       markupIndex: number
       markupIndexThatLastOpenedAConvention?: number
@@ -18,7 +18,7 @@ export class OpenConvention {
 
   clone(): OpenConvention {
     return new OpenConvention(
-      this.convention,
+      this.definition,
       this.tokenizerSnapshotWhenOpening,
       this.startTokenIndex)
   }
