@@ -997,16 +997,16 @@ class Tokenizer {
           return true
         }
 
-        // Well, we couldn't successfully close the convention, so we've got to backtrack. For now, a
-        // convention can only fail to close if:
+        // Well, we couldn't successfully close the convention, so we've got to backtrack. A convention can
+        // only fail to close if:
         //
         // 1. It must be followed by one of a set of specific conventions, and
         // 2. None of those conventions could be opened
         this.backTrackToBefore(open)
 
         // We know for a fact that we won't be able to close any other conventions at our new (backtracked)
-        // markup index; we already tried to close all of them when we opened the now-failed convention. So
-        // let's just return false and let the tokenizer continue at the next step.
+        // markup index; we had already tried to close all of them back when we opened this now-failed
+        // convention. So let's just return false and let the tokenizer continue at the next step.
         return false
       }
 

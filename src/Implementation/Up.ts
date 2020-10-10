@@ -16,54 +16,47 @@ export class Up {
 
   // Converts Up markup into HTML and returns the result.
   parseAndRender(markup: string, extraSettings?: Settings): string {
-    const { parsing, rendering } = getNonNullSettings(extraSettings)
-    const document = this.parse(markup, parsing)
-
-    return this.render(document, rendering)
+    const document = this.parse(markup, extraSettings?.parsing)
+    return this.render(document, extraSettings?.rendering)
   }
 
-  // This method converts Up markup into two pieces of HTML, both of which are returned:
+  // Converts Up markup into two pieces of HTML, both of which are returned:
   //
   // 1. A table of contents
   // 2. The document itself
   parseAndRenderWithTableOfContents(markup: string, extraSettings?: Settings): DocumentAndTableOfContentsHtml {
-    const { parsing, rendering } = getNonNullSettings(extraSettings)
-    const document = this.parse(markup, parsing)
-
-    return this.renderWithTableOfContents(document, rendering)
+    const document = this.parse(markup, extraSettings?.parsing)
+    return this.renderWithTableOfContents(document, extraSettings?.rendering)
   }
 
   // Converts inline Up markup into inline HTML and returns the result.
   parseAndRenderInline(inlineMarkup: string, extraSettings?: Settings): string {
-    const { parsing, rendering } = getNonNullSettings(extraSettings)
-    const inlineDocument = this.parseInline(inlineMarkup, parsing)
-
-    return this.renderInline(inlineDocument, rendering)
+    const inlineDocument = this.parseInline(inlineMarkup, extraSettings?.parsing)
+    return this.renderInline(inlineDocument, extraSettings?.rendering)
   }
 
   // Parses Up markup and returns the resulting syntax tree.
-  parse(markup: string, extraParsingSettings?: Settings.Parsing): Document {
-    return parse(markup, this.getParsingSettings(extraParsingSettings))
+  parse(markup: string, extraSettings?: Settings.Parsing): Document {
+    return parse(markup, this.getParsingSettings(extraSettings))
   }
 
   // Parses inline Up markup and returns the resulting inline syntax tree.
-  parseInline(inlineMarkup: string, extraParsingSettings?: Settings.Parsing): InlineDocument {
-    return parseInline(inlineMarkup, this.getParsingSettings(extraParsingSettings))
+  parseInline(inlineMarkup: string, extraSettings?: Settings.Parsing): InlineDocument {
+    return parseInline(inlineMarkup, this.getParsingSettings(extraSettings))
   }
 
   // Converts a syntax tree into HTML, then returns the result.
-  render(document: Document, extraRenderingSettings?: Settings.Rendering): string {
-    const htmlRenderer = this.getHtmlRenderer(extraRenderingSettings)
-
+  render(document: Document, extraSettings?: Settings.Rendering): string {
+    const htmlRenderer = this.getHtmlRenderer(extraSettings)
     return htmlRenderer.document(document)
   }
 
-  // This method converts a syntax tree into two pieces of HTML, both of which are returned:
+  // Converts a syntax tree into two pieces of HTML, both of which are returned:
   //
   // 1. A table of contents
   // 2. The document itself
-  renderWithTableOfContents(document: Document, extraRenderingSettings?: Settings.Rendering): DocumentAndTableOfContentsHtml {
-    const htmlRenderer = this.getHtmlRenderer(extraRenderingSettings)
+  renderWithTableOfContents(document: Document, extraSettings?: Settings.Rendering): DocumentAndTableOfContentsHtml {
+    const htmlRenderer = this.getHtmlRenderer(extraSettings)
 
     return {
       documentHtml: htmlRenderer.document(document),
@@ -72,14 +65,13 @@ export class Up {
   }
 
   // Converts an inline syntax tree into inline HTML and returns the result.
-  renderInline(inlineDocument: InlineDocument, extraRenderingSettings?: Settings.Rendering): string {
-    const htmlRenderer = this.getHtmlRenderer(extraRenderingSettings)
-
+  renderInline(inlineDocument: InlineDocument, extraSettings?: Settings.Rendering): string {
+    const htmlRenderer = this.getHtmlRenderer(extraSettings)
     return htmlRenderer.inlineDocument(inlineDocument)
   }
 
-  private getHtmlRenderer(extraRenderingSettings: Settings.Rendering | undefined): HtmlRenderer {
-    return new HtmlRenderer(this.getRenderingSettings(extraRenderingSettings))
+  private getHtmlRenderer(extraSettings: Settings.Rendering | undefined): HtmlRenderer {
+    return new HtmlRenderer(this.getRenderingSettings(extraSettings))
   }
 
   private getParsingSettings(changes: Settings.Parsing | undefined): NormalizedSettings.Parsing {
@@ -95,11 +87,4 @@ export class Up {
 export interface DocumentAndTableOfContentsHtml {
   documentHtml: string
   tableOfContentsHtml: string
-}
-
-function getNonNullSettings(settings: Settings | undefined): Settings {
-  return settings ?? {
-    parsing: {},
-    rendering: {}
-  }
 }
