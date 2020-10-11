@@ -6,13 +6,10 @@ import { distinct } from '../../CollectionHelpers'
 export class HeadingLeveler {
   private headingSignatures: string[] = []
 
-  registerHeadingAndGetLevel(underline: string, overline: string | null): number {
-    // Alright, this requires some explanation.
+  registerHeadingAndGetLevel(underline: string, hasOverline: boolean): number {
+    // Yes, this requires some explanation!
     //
-    // First of all, we're going to assume that `underline` and `overline` obey the
-    // rules and both consist of the same combination of characters.
-    //
-    // As explained in `tryToParseHeading.ts`:
+    // As mentioned in `tryToParseHeading.ts`:
     //
     // 1. Headings with the same combination of underline characters share the same
     //    level
@@ -29,10 +26,10 @@ export class HeadingLeveler {
     // These two pieces of information comprise a heading's signature, hence the
     // following weird line.
     const headingSignature =
-      fingerprint(underline) + (overline ? 'with overline' : '')
+      fingerprint(underline) + (hasOverline ? 'with overline' : '')
 
     const hasCombinationOfUnderlineAndOverlineAlreadyBeenUsed =
-      this.headingSignatures.indexOf(headingSignature) >= 0
+      this.headingSignatures.indexOf(headingSignature) !== -1
 
     if (!hasCombinationOfUnderlineAndOverlineAlreadyBeenUsed) {
       this.headingSignatures.push(headingSignature)
@@ -47,18 +44,18 @@ export class HeadingLeveler {
 }
 
 
-export function isUnderlineConsistentWithOverline(overline: string | null, underline: string): boolean {
-  return !overline || (fingerprint(overline) === fingerprint(underline))
+export function isUnderlineConsistentWithOverline(underline: string, overline: string | null): boolean {
+  return !overline || (fingerprint(underline) === fingerprint(overline))
 }
 
 
-// Returns a string containing only the distinct characters from trimmed `text`, sorted
+// Returns a string containing only the distinct characters from trimmed `line`, sorted
 // according to the characters' Unicode code points.
 //
-// For example, when `text` is " =-~-=-~-=-~-= ", this function returns "-=~".
-function fingerprint(text: string): string {
+// For example, when `line` is " =-~-=-~-=-~-= ", this function returns "-=~".
+function fingerprint(line: string): string {
   const chars =
-    text.trim().split('')
+    line.trim().split('')
 
   return distinct(...chars).sort().join('')
 }

@@ -890,7 +890,7 @@ class Tokenizer {
     // If there are no more characters, we're done! We don't preserve the backslash,
     // because they are only preserved if they are themselves escaped.
 
-    this.markupConsumer.advanceIndex(1)
+    this.markupConsumer.advance(1)
 
     if (!this.markupConsumer.done()) {
       this.addCurrentCharToContentBuffer()
@@ -981,7 +981,7 @@ class Tokenizer {
     // Phew! We now know that the leading whitespace is just regular content. Let's add it to our content
     // buffer.
     this.bufferedContent += leadingWhitespace
-    this.markupConsumer.advanceIndex(leadingWhitespace.length)
+    this.markupConsumer.advance(leadingWhitespace.length)
 
     return true
   }
@@ -1298,7 +1298,7 @@ class Tokenizer {
 
     this.flushNonEmptyBufferToTextToken()
     this.appendToken(result.inlineCodeOrTextToken)
-    this.markupConsumer.advanceIndex(result.lengthConsumed)
+    this.markupConsumer.advance(result.lengthConsumed)
 
     return true
   }
@@ -1381,7 +1381,7 @@ class Tokenizer {
 
   private addCurrentCharToContentBuffer(): void {
     this.bufferedContent += this.markupConsumer.currentChar()
-    this.markupConsumer.advanceIndex(1)
+    this.markupConsumer.advance(1)
   }
 
   private tryToOpen(convention: ConventionDefinition): boolean {

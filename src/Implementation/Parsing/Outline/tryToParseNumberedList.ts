@@ -49,7 +49,7 @@ export function tryToParseNumberedList(args: OutlineParser.Args): OutlineParser.
 
     if (indentedBlockResult) {
       unparsedListItem.markupLines.push(...indentedBlockResult.lines)
-      markupLineConsumer.skipLines(indentedBlockResult.countLinesConsumed)
+      markupLineConsumer.advance(indentedBlockResult.countLinesConsumed)
       shouldTerminateList = indentedBlockResult.hasMultipleTrailingBlankLines
     }
 
@@ -86,7 +86,7 @@ export function tryToParseNumberedList(args: OutlineParser.Args): OutlineParser.
 
 class UnparsedListItem {
   bullet: string
-  markupLines: string[] = []
+  markupLines: string[]
   sourceLineNumber: number
 
   constructor(

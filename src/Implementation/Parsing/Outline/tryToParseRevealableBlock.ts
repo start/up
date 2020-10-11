@@ -28,7 +28,7 @@ export function tryToParseRevealableBlock(args: OutlineParser.Args): OutlinePars
 
   if (indentedBlockResult) {
     contentLines.push(...indentedBlockResult.lines)
-    markupLineConsumer.skipLines(indentedBlockResult.countLinesConsumed)
+    markupLineConsumer.advance(indentedBlockResult.countLinesConsumed)
   }
 
   if (!contentLines.length) {

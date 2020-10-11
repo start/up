@@ -57,7 +57,7 @@ export function tryToParseHeading(args: OutlineParser.Args): OutlineParser.Resul
 
   const underline = underlineResult.line
 
-  if (!isUnderlineConsistentWithOverline(optionalOverline, underline)) {
+  if (!isUnderlineConsistentWithOverline( underline, optionalOverline )) {
     return null
   }
 
@@ -85,7 +85,7 @@ export function tryToParseHeading(args: OutlineParser.Args): OutlineParser.Resul
     getInlineSyntaxNodes(contentMarkup, args.settings)
 
   const level =
-    args.headingLeveler.registerHeadingAndGetLevel(underline, optionalOverline)
+    args.headingLeveler.registerHeadingAndGetLevel(underline, !!optionalOverline)
 
   return {
     parsedNodes: [new Heading(children, { level, titleMarkup: contentMarkup.trim() })],

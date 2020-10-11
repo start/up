@@ -40,7 +40,7 @@ export function tryToParseBulletedList(args: OutlineParser.Args): OutlineParser.
 
     if (indentedBlockResult) {
       linesOfMarkupInCurrentListItem.push(...indentedBlockResult.lines)
-      markupLineConsumer.skipLines(indentedBlockResult.countLinesConsumed)
+      markupLineConsumer.advance(indentedBlockResult.countLinesConsumed)
       shouldTerminateList = indentedBlockResult.hasMultipleTrailingBlankLines
     }
 

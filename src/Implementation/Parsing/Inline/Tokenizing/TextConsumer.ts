@@ -21,7 +21,7 @@ export class TextConsumer {
     return this._index
   }
 
-  advanceIndex(by: number): void {
+  advance(by: number): void {
     this.setIndex(this._index + by)
   }
 
@@ -44,7 +44,11 @@ export class TextConsumer {
   // This method consumes any text from the start of `remaining` if it matches `pattern`.
   //
   // NOTE: We assume `pattern` is anchored to the beginning of the input string!
-  consume(pattern: RegExp): MatchResult | null {
+  consume(pattern: RegExp): null | {
+    match: string
+    charAfterMatch: string
+    captures: string[]
+  } {
     const result = pattern.exec(this._remaining)
 
     if (!result) {
@@ -54,14 +58,8 @@ export class TextConsumer {
     const [match, ...captures] = result
     const charAfterMatch = this.entireText[this._index + match.length]
 
-    this.advanceIndex(match.length)
+    this.advance(match.length)
 
     return { match, charAfterMatch, captures }
   }
-}
-
-export interface MatchResult {
-  match: string
-  charAfterMatch: string
-  captures: string[]
 }

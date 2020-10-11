@@ -17,7 +17,7 @@ export class LineConsumer {
     return this.lines.slice(this._countLinesConsumed)
   }
 
-  skipLines(count: number): void {
+  advance(count: number): void {
     this._countLinesConsumed += count
   }
 
@@ -43,7 +43,7 @@ export class LineConsumer {
       }
 
       if (!options || options.andIf(lineMatchResult)) {
-        this.skipLines(1)
+        this.advance(1)
         return lineMatchResult
       }
     }
@@ -59,7 +59,7 @@ export class LineConsumer {
     }
 
     const line = this.nextRemainingLine()
-    this.skipLines(1)
+    this.advance(1)
 
     return line
   }

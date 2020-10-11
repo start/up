@@ -1,7 +1,7 @@
 import { oneOrMore, patternEndingWith, patternStartingWith } from '../../../PatternHelpers'
 import { BACKSLASH } from '../../Strings'
 import { TokenRole } from '../TokenRole'
-import { MatchResult, TextConsumer } from './TextConsumer'
+import { TextConsumer } from './TextConsumer'
 import { Token } from './Token'
 
 type InlineCodeTokenizationResult = null | {
@@ -62,7 +62,7 @@ export function tryToTokenizeInlineCode(markup: string): InlineCodeTokenizationR
     // not terminate our inline code, but we'll find that out later!
     while (markupConsumer.currentChar() !== BACKTICK) {
       if (markupConsumer.currentChar() === BACKSLASH) {
-        markupConsumer.advanceIndex(1)
+        markupConsumer.advance(1)
       }
 
       if (markupConsumer.done()) {
@@ -70,7 +70,7 @@ export function tryToTokenizeInlineCode(markup: string): InlineCodeTokenizationR
       }
 
       inlineCode += markupConsumer.currentChar()
-      markupConsumer.advanceIndex(1)
+      markupConsumer.advance(1)
     }
 
     // We're up against a possible end delimiter. If it doesn't match our start delimiter, we'll
@@ -80,7 +80,7 @@ export function tryToTokenizeInlineCode(markup: string): InlineCodeTokenizationR
     // backtick (thanks to the fact that the above loop terminated without breaking out of the
     // `COLLECT_INLINE_CODE` loop). Therefore, `DELIMITER_PATTERN` is guaranteed to find a match.
     const possibleEndDelimiter =
-      (markupConsumer.consume(DELIMITER_PATTERN) as MatchResult).match
+      markupConsumer.consume(DELIMITER_PATTERN)!.match
 
     if (possibleEndDelimiter === startDelimiter) {
       return {

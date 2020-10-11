@@ -5,7 +5,6 @@ import { OutlineSyntaxNode } from '../../SyntaxNodes/OutlineSyntaxNode'
 import { ThematicBreak } from '../../SyntaxNodes/ThematicBreak'
 import { HeadingLeveler } from './HeadingLeveler'
 import { LineConsumer } from './LineConsumer'
-import { OutlineParser } from './OutlineParser'
 import { parseParagraphOrLineBlock } from './parseParagraphOrLineBlock'
 import { tryToParseBlankLineSeparation } from './tryToParseBlankLineSeparation'
 import { tryToParseBlockquote } from './tryToParseBlockquote'
@@ -46,26 +45,45 @@ export function getOutlineSyntaxNodes(
 ): OutlineSyntaxNode[] {
   const { markupLines, headingLeveler, settings } = args
 
-  const markupWithoutLeadingBlankLines =
-    withoutLeadingBlankLines(markupLines)
+  // Alright! Our first task is to strip away any leading and trailing lines that
+  // are entirely blank. These outer blank lines carry no semantic significance,
+  // and we don't want them to be inadvertently parsed as thematic breaks.
+  //
+  // For what it's worth, we *do* allow thematic breaks at the beginning and end of
+  // the document, but they must deliberately be produced from streaks rather than
+  // from blank lines. For example:
+  //
+  // #~#~#~#~#~#~#~#~#~#~#~#~#~#~#~#~#~#~#~#~#~#~#
 
-  const countLeadingBlankLinesRemoved =
-    (markupLines.length - markupWithoutLeadingBlankLines.length)
+  let firstIndexOfNonBlankLine = 0
+  for (; firstIndexOfNonBlankLine < markupLines.length; firstIndexOfNonBlankLine++) {
+    if (NON_BLANK_PATTERN.test(markupLines[firstIndexOfNonBlankLine])) {
+      break
+    }
+  }
 
   const initialSourceLineNumber =
-    args.sourceLineNumber + countLeadingBlankLinesRemoved
+    args.sourceLineNumber + firstIndexOfNonBlankLine
+
+  let lastIndexOfNonBlankLine = markupLines.length - 1
+  for (; lastIndexOfNonBlankLine >= 0; lastIndexOfNonBlankLine--) {
+    if (NON_BLANK_PATTERN.test(markupLines[lastIndexOfNonBlankLine])) {
+      break
+    }
+  }
 
   const markupWithoutOuterBlankLines =
-    withoutTrailingBlankLines(markupWithoutLeadingBlankLines)
+    markupLines.slice(firstIndexOfNonBlankLine, lastIndexOfNonBlankLine + 1)
 
   const markupLineConsumer = new LineConsumer(markupWithoutOuterBlankLines)
   const nodes: OutlineSyntaxNode[] = []
 
+  // We're all set up. Here's our main parser loop!
   while (!markupLineConsumer.done()) {
     const sourceLineNumber =
       initialSourceLineNumber + markupLineConsumer.countLinesConsumed()
 
-    const outlineParserArgs: OutlineParser.Args = {
+    const outlineParserArgs = {
       markupLines: markupLineConsumer.remaining(),
       sourceLineNumber,
       headingLeveler,
@@ -75,66 +93,33 @@ export function getOutlineSyntaxNodes(
     for (const parse of OUTLINE_CONVENTION_PARSERS) {
       const result = parse(outlineParserArgs)
 
-      if (result) {
-        if (settings.createSourceMap) {
-          for (const node of result.parsedNodes) {
-            node.sourceLineNumber = sourceLineNumber
-          }
+      if (!result) {
+        continue;
+      }
+
+      // We parsed some syntax nodes!
+      for (const newNode of result.parsedNodes) {
+        // To produce a cleaner document, we condense multiple consecutive thematic
+        // breaks into one.
+        if (last(nodes) instanceof ThematicBreak && newNode instanceof ThematicBreak) {
+          // Rather than add a consecutive thematic break, let's just move on to the
+          // next new node.
+          continue;
         }
 
-        nodes.push(...result.parsedNodes)
-        markupLineConsumer.skipLines(result.countLinesConsumed)
+        if (settings.createSourceMap) {
+          newNode.sourceLineNumber = sourceLineNumber
+        }
 
-        break
+        nodes.push(newNode)
       }
+
+      // If we've made it here, it means we produced a result. Let's advance our line consumer...
+      markupLineConsumer.advance(result.countLinesConsumed)
+      // ... and start parsing at the new position!
+      break;
     }
   }
 
-  return condenseConsecutiveThematicBreaks(nodes)
-}
-
-
-function withoutLeadingBlankLines(lines: string[]): string[] {
-  let firstIndexOfNonBlankLine = 0
-
-  for (; firstIndexOfNonBlankLine < lines.length; firstIndexOfNonBlankLine++) {
-    const line = lines[firstIndexOfNonBlankLine]
-
-    if (NON_BLANK_PATTERN.test(line)) {
-      break
-    }
-  }
-
-  return lines.slice(firstIndexOfNonBlankLine)
-}
-
-function withoutTrailingBlankLines(lines: string[]): string[] {
-  let lastIndexOfNonBlankLine = lines.length - 1
-
-  for (; lastIndexOfNonBlankLine >= 0; lastIndexOfNonBlankLine--) {
-    const line = lines[lastIndexOfNonBlankLine]
-
-    if (NON_BLANK_PATTERN.test(line)) {
-      break
-    }
-  }
-
-  return lines.slice(0, lastIndexOfNonBlankLine + 1)
-}
-
-// To produce a cleaner document, we condense multiple consecutive thematic breaks into one.
-function condenseConsecutiveThematicBreaks(nodes: OutlineSyntaxNode[]): OutlineSyntaxNode[] {
-  const resultNodes: OutlineSyntaxNode[] = []
-
-  for (const node of nodes) {
-    const isConsecutiveThematicBreak =
-      node instanceof ThematicBreak
-      && last(resultNodes) instanceof ThematicBreak
-
-    if (!isConsecutiveThematicBreak) {
-      resultNodes.push(node)
-    }
-  }
-
-  return resultNodes
+  return nodes
 }

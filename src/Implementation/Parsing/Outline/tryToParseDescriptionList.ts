@@ -76,7 +76,7 @@ export function tryToParseDescriptionList(args: OutlineParser.Args): OutlinePars
 
     if (indentedBlockResult) {
       descriptionLines.push(...indentedBlockResult.lines)
-      markupLineConsumer.skipLines(indentedBlockResult.countLinesConsumed)
+      markupLineConsumer.advance(indentedBlockResult.countLinesConsumed)
       shouldTerminateList = indentedBlockResult.hasMultipleTrailingBlankLines
     }
 
