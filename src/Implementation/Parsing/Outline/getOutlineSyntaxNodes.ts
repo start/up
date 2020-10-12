@@ -1,9 +1,7 @@
 import { last } from '../../CollectionHelpers'
-import { NormalizedSettings } from '../../NormalizedSettings'
 import { NON_BLANK_PATTERN } from '../../Patterns'
 import { OutlineSyntaxNode } from '../../SyntaxNodes/OutlineSyntaxNode'
 import { ThematicBreak } from '../../SyntaxNodes/ThematicBreak'
-import { HeadingLeveler } from './HeadingLeveler'
 import { LineConsumer } from './LineConsumer'
 import { parseParagraphOrLineBlock } from './parseParagraphOrLineBlock'
 import { tryToParseBlankLineSeparation } from './tryToParseBlankLineSeparation'
@@ -16,7 +14,7 @@ import { tryToParseNumberedList } from './tryToParseNumberedList'
 import { tryToParseRevealableBlock } from './tryToParseRevealableBlock'
 import { tryToParseTable } from './tryToParseTable'
 import { tryToParseThematicBreakStreak } from './tryToParseThematicBreakStreak'
-
+import { OutlineParser } from './OutlineParser'
 
 
 // This includes every outline convention.
@@ -35,14 +33,7 @@ const OUTLINE_CONVENTION_PARSERS = [
 ]
 
 
-export function getOutlineSyntaxNodes(
-  args: {
-    markupLines: string[],
-    sourceLineNumber: number,
-    headingLeveler: HeadingLeveler,
-    settings: NormalizedSettings.Parsing
-  }
-): OutlineSyntaxNode[] {
+export function getOutlineSyntaxNodes(args: OutlineParser.Args): OutlineSyntaxNode[] {
   const { markupLines, headingLeveler, settings } = args
 
   // Alright! Our first task is to strip away any leading and trailing lines that
@@ -83,7 +74,7 @@ export function getOutlineSyntaxNodes(
     const sourceLineNumber =
       initialSourceLineNumber + markupLineConsumer.countLinesConsumed()
 
-    const outlineParserArgs = {
+    const outlineParserArgs: OutlineParser.Args = {
       markupLines: markupLineConsumer.remaining(),
       sourceLineNumber,
       headingLeveler,
