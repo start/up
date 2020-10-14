@@ -2,10 +2,10 @@ import { NormalizedSettings } from '../../NormalizedSettings'
 import { OutlineSyntaxNode } from '../../SyntaxNodes/OutlineSyntaxNode'
 import { HeadingLeveler } from './HeadingLeveler'
 
-
 export namespace OutlineParser {
   export interface Args {
     markupLines: string[]
+    mostRecentSibling?: OutlineSyntaxNode
     sourceLineNumber: number
     headingLeveler: HeadingLeveler
     settings: NormalizedSettings.Parsing

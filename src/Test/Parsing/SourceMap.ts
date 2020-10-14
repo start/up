@@ -56,7 +56,7 @@ I actually start on the seventh line.`
   })
 
 
-  context("Paragraphs nodes aren't the only type to receive a line number. Nearly every type of outline node is given one. Specifically:", () => {
+  context("Nearly every type of outline node is given a source line number. Specifically:", () => {
     context('Headings:', () => {
       specify('Without an overline', () => {
         const markup = `
@@ -558,7 +558,7 @@ Pink lady.`
         bestAppleHeading])))
   })
 
-  specify('Some are deeply nested.', () => {
+  specify('Some are deeply nested', () => {
     const markup = `
 ==============
 I enjoy apples

@@ -1,5 +1,5 @@
 // Returns the last item from `collection`.
-export function last<T>(collection: T[]): T {
+export function last<T>(collection: T[]): T | undefined{
   return collection[collection.length - 1]
 }
 

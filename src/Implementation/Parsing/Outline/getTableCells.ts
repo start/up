@@ -15,13 +15,13 @@ import { BACKSLASH } from '../Strings'
 // be misleading to export it as non-abstract.
 //
 // During parsing, however, we do need to create objects that can later be converted to
-// eaither header cells or row cells. Hence this fun little class.
+// either header cells or row cells. Hence this fun little class.
 export class TableCell extends Table.Cell { }
 
 
 export function getTableCells(row: string, settings: NormalizedSettings.Parsing): Table.Cell[] {
   // We trim the contents of each cell, which means trimming the whole row isn't strictly
-  // necessary. However, doing so (or at least trimming the end of the strimg) makes it a
+  // necessary. However, doing so (or at least trimming the end of the string) makes it a
   // bit easier for us to tell when a row ends with a single unescaped semicolon.
   //
   // As a rule, if the last cell in a row spans just a single column (i.e. it ends in
@@ -71,11 +71,11 @@ export function getTableCells(row: string, settings: NormalizedSettings.Parsing)
   //
   // Furthermore, even if the last delimiter was on the end of the row, we have to satisfy
   // the rule described at the to of the mthod: If the last cell in a row spans just a single
-  // column (i.e. it ends in a single unescaped semiclon), and if that last cell was not
+  // column (i.e. it ends in a single unescaped semiclon), and if that last cell was not a
   // 0-length cell at the start of the row (i.e. the row does not consist solely of a single
   // semicolon), then we add an extra empty cell to the end of the row.
 
-  const lastCell = last(cells)
+  const lastCell = last(cells)!
 
   const shouldCollectOneLastCell =
     // If the last delimiter row wasn't at the end of the row...

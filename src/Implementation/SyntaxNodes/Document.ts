@@ -7,7 +7,7 @@ import { SectionLink } from './SectionLink'
 
 
 export class Document extends OutlineSyntaxNodeContainer {
-  // Returns an `Document` object with:
+  // Returns a `Document` object with:
   //
   // 1. Footnotes extracted into footnote blocks
   // 2. A table of contents produced from `children`

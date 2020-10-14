@@ -8,25 +8,48 @@ import { OutlineParser } from './OutlineParser'
 //
 // However, 3 or more consecutive blank lines indicates extra, purposeful separation between
 // outline conventions. We represent that separation with a `ThematicBreak` syntax node.
+//
+// NOTE: "Separation" is the magic word! Outer blank lines carry no semantic significance, and
+// and they never produce thematic breaks.
 export function tryToParseBlankLineSeparation(args: OutlineParser.Args): OutlineParser.Result {
   const markupLineConsumer = new LineConsumer(args.markupLines)
-  let countBlankLines = 0
 
-  while (markupLineConsumer.consumeLineIfMatches(BLANK_PATTERN)) {
-    countBlankLines += 1
+  while (true) {
+    if (markupLineConsumer.done()) {
+      // We've reached the end of our text! As mentioned above, outer blank lines never
+      // produce thematic breaks.
+      return {
+        parsedNodes: [],
+        countLinesConsumed: args.markupLines.length
+      }
+    }
+
+    if (!markupLineConsumer.consumeLineIfMatches(BLANK_PATTERN)) {
+      break
+    }
   }
 
-  // If there are no blank lines, we can't say we parsed anything. Bail!
+  const countBlankLines = markupLineConsumer.countLinesConsumed();
+
   if (!countBlankLines) {
+    // If there are no blank lines, we can't say we parsed anything. Bail!
     return null
   }
 
-  const MIN_COUNT_BLANK_LINES_IN_THEMATIC_BREAK = 3
-
   return {
-    parsedNodes: countBlankLines >= MIN_COUNT_BLANK_LINES_IN_THEMATIC_BREAK
-      ? [new ThematicBreak()]
-      : [],
-    countLinesConsumed: markupLineConsumer.countLinesConsumed()
+    parsedNodes: (
+      // This condition is easy. If we have fewer than 3 blank lines, we aren't dealing with a
+      // thematic break.
+      countBlankLines < 3
+      // If we don't have a most recent sibling, that means we just parsed *leading* blank lines.
+      // As mentioned above, outer blank lines never produce thematic breaks.
+      || !args.mostRecentSibling
+      // To produce a cleaner document, we condense multiple consecutive thematic breaks into one. 
+      // (If the most recent sibling is a thematic break, we don't need another.)
+      || args.mostRecentSibling instanceof ThematicBreak
+    )
+      ? []
+      : [new ThematicBreak()],
+    countLinesConsumed: countBlankLines
   }
 }

@@ -721,7 +721,7 @@ class Tokenizer {
     })
 
     // Now, the last token is a LinkEndAndUrl token. Let's assign its URL!
-    last(this.tokens).value = url
+    last(this.tokens)!.value = url
   }
 
   private getRawParentheticalBracketConventions(): ConventionDefinition[] {
@@ -1084,7 +1084,7 @@ class Tokenizer {
       // If this new convention eventually fails, we need to backtrack to before the one we just closed.
       // To make that process easier, we give the opening snapshot of the previous convention to the
       // new one.
-      last(this.openConventions).tokenizerSnapshotWhenOpening =
+      last(this.openConventions)!.tokenizerSnapshotWhenOpening =
         closing.tokenizerSnapshotWhenOpening
       return true
     }

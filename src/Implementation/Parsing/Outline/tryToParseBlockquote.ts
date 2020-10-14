@@ -30,12 +30,10 @@ export function tryToParseBlockquote(args: OutlineParser.Args): OutlineParser.Re
     return null
   }
 
-  const { sourceLineNumber, headingLeveler } = args
-
   const blockquoteChildren = getOutlineSyntaxNodes({
     markupLines: blockquotedLines,
-    sourceLineNumber,
-    headingLeveler,
+    sourceLineNumber: args.sourceLineNumber,
+    headingLeveler: args.headingLeveler,
     settings: args.settings
   })
 

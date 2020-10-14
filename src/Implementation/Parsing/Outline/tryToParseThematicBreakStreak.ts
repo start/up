@@ -13,7 +13,12 @@ export function tryToParseThematicBreakStreak(args: OutlineParser.Args): Outline
   }
 
   return {
-    parsedNodes: [new ThematicBreak()],
+    parsedNodes: (
+      // To produce a cleaner document, we condense multiple consecutive thematic breaks into one. 
+      // (If the most recent sibling is a thematic break, we don't need another.)
+      args.mostRecentSibling instanceof ThematicBreak
+        ? []
+        : [new ThematicBreak()]),
     countLinesConsumed: markupLineConsumer.countLinesConsumed()
   }
 }
