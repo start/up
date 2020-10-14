@@ -12,11 +12,11 @@ context('In package.json', () => {
     expect(Up.parseAndRender('It *actually* worked?')).to.equal('<p>It <em>actually</em> worked?</p>')
   })
 
-  specify('the `typings` field points to the typings for the entry point of the library', () => {
-    const typingsBasename = path.basename(packageSettings.typings, '.d.ts')
+  specify('the `types` field points to the typings for the entry point of the library', () => {
+    const typesBasename = path.basename(packageSettings.types, '.d.ts')
     const entryPointBasename = path.basename(packageSettings.main, '.js')
 
-    expect(typingsBasename).to.equal(entryPointBasename)
+    expect(typesBasename).to.equal(entryPointBasename)
   })
 
   specify('the `version` field matches the version of the library', () => {
