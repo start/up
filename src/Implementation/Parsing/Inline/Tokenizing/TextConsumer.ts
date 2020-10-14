@@ -7,7 +7,7 @@ export class TextConsumer {
   private _previousChar!: string
 
   constructor(private entireText: string) {
-    this.setIndex(0);
+    this.setIndex(0)
   }
 
   setIndex(newIndex: number) {

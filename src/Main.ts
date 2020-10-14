@@ -65,7 +65,7 @@ export const VERSION = '39.0.0'
 
 import { Up } from './Implementation/Up'
 
-const up = new Up();
+const up = new Up()
 
 export const parseAndRender = up.parseAndRender.bind(up)
 export const parseAndRenderWithTableOfContents = up.parseAndRenderWithTableOfContents.bind(up)

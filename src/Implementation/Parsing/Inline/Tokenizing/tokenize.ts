@@ -1098,7 +1098,7 @@ class Tokenizer {
     }
 
     return this.forgivingConventionHandlers.some(handler => {
-      const initialMarkupIndx = this.markupConsumer.index();
+      const initialMarkupIndx = this.markupConsumer.index()
       const result = this.markupConsumer.consume(handler.delimiterPattern)
 
       if (!result) {

@@ -29,7 +29,7 @@ export function tryToParseBlankLineSeparation(args: OutlineParser.Args): Outline
     }
   }
 
-  const countBlankLines = markupLineConsumer.countLinesConsumed();
+  const countBlankLines = markupLineConsumer.countLinesConsumed()
 
   if (!countBlankLines) {
     // If there are no blank lines, we can't say we parsed anything. Bail!

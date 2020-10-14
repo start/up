@@ -43,7 +43,7 @@ export function getOutlineSyntaxNodes(args: OutlineParser.Args): OutlineSyntaxNo
     const sourceLineNumber =
       args.sourceLineNumber + markupLineConsumer.countLinesConsumed()
 
-    // We pass these args to every outline convention parser.
+    // We pass these to every outline convention parser.
     const outlineParserArgs: OutlineParser.Args = {
       markupLines: markupLineConsumer.remaining(),
       mostRecentSibling: last(nodes),
@@ -69,7 +69,7 @@ export function getOutlineSyntaxNodes(args: OutlineParser.Args): OutlineSyntaxNo
 
       // If we've made this far, it means our parser found a match.
       //
-      // Let's advance our line consumer...
+      // Let's advance our markup line consumer...
       markupLineConsumer.advance(result.countLinesConsumed)
       // ... and start over at the new markup position!
       break
