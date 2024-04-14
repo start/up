@@ -20,10 +20,10 @@ context('Consecutive periods normally produce an ellipsis.', () => {
     })
 
     specify('Preceding a word', () => {
-      expect(Up.parse('"I like Starcraft" ...still')).to.deep.equal(
+      expect(Up.parse('"I like StarCraft" ...still')).to.deep.equal(
         insideDocumentAndParagraph([
           new Up.InlineQuote([
-            new Up.Text('I like Starcraft')
+            new Up.Text('I like StarCraft')
           ]),
           new Up.Text(' …still')
         ]))
@@ -158,7 +158,7 @@ context('Any number of consecutive periods produces a single ellipsis.', () => {
 
 
 describe('When one of many consecutive periods is escaped, that period is treated as a regular period. The periods around it are unaffected (unless they are also escaped):', () => {
-  specify('Escaping a period in the middle of many periods produces a period sandwiched by elipsis', () => {
+  specify('Escaping a period in the middle of many periods produces a period sandwiched by ellipsis', () => {
     expect(Up.parse('Just some typical punctuation usage: ...\\....')).to.deep.equal(
       insideDocumentAndParagraph([
         new Up.Text('Just some typical punctuation usage: ….…')

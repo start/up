@@ -1,7 +1,7 @@
 import { atLeast, escapeForRegex, patternStartingWith } from '../../../../PatternHelpers'
 import { ActiveStartDelimiter } from './ActiveStartDelimiter'
 
-// For a given delimiter character (`delimiterChar`), this class matchds end delimiters with start
+// For a given delimiter character (`delimiterChar`), this class matches end delimiters with start
 // delimiters, even if they aren't perfectly balanced.
 export class ForgivingConventionHandler {
   delimiterPattern: RegExp

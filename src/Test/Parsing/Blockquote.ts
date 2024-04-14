@@ -24,7 +24,7 @@ describe('Consecutive lines starting with "> "', () => {
 })
 
 
-describe('Blockquote delimeters', () => {
+describe('Blockquote delimiters', () => {
   specify('can have their trailing space omitted', () => {
     const markup = `
 >Hello, world!
@@ -221,7 +221,7 @@ describe('Several blockquoted lines, followed by a blank line, followed by more 
 })
 
 
-describe('Sseveral blockquoted lines, followed by blank line, followed by more blockquoted lines, all within an outer blockquote', () => {
+describe('Several blockquoted lines, followed by blank line, followed by more blockquoted lines, all within an outer blockquote', () => {
   it('produce a blockquote node containing two separate blockquote nodes', () => {
     const markup = `
 > > Hello, world!
@@ -360,7 +360,7 @@ describe('Multiple blockquote delimiters, each with their trailing space, follow
 
 
 context('Within a given blockquote', () => {
-  specify('some delimiters can have trailing spaces delimeters while others do not', () => {
+  specify('some delimiters can have trailing spaces delimiters while others do not', () => {
     const markup = `
 >Hello, world!
 >

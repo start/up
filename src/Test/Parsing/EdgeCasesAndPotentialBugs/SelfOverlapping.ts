@@ -1,6 +1,6 @@
 import { expect } from 'chai'
 import * as Up from '../../../Main'
-import { insideDocumentAndParagraph } from '.././Helpers'
+import { insideDocumentAndParagraph } from '../Helpers'
 
 
 context('Up offers no real support for self-overlapping. When a convention overlaps itself, the start/end delimiters simply match from innermost to outermost.', () => {
@@ -99,7 +99,7 @@ context('Up offers no real support for self-overlapping. When a convention overl
 
 
   context('When a convention overlaps itself, and both instances are overlapped by another convention, things get messy.', () => {
-    specify('It technically works, but needless splitting occers.', () => {
+    specify('It technically works, but needless splitting occurs.', () => {
       expect(Up.parse('This [SPOILER: truly *does (SPOILER: not] make* much) sense.')).to.deep.equal(
         insideDocumentAndParagraph([
           new Up.Text('This '),

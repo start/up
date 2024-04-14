@@ -1,6 +1,6 @@
 import { expect } from 'chai'
 import * as Up from '../../../Main'
-import { insideDocumentAndParagraph } from '.././Helpers'
+import { insideDocumentAndParagraph } from '../Helpers'
 
 
 context('When most otherwise-nested conventions overlap by only their start delimiters, they nest without being split. This includes:', () => {
@@ -49,7 +49,7 @@ context('When most otherwise-nested conventions overlap by only their start deli
       ]))
   })
 
-  specify('A link overlapping epmhasis', () => {
+  specify('A link overlapping emphasis', () => {
     expect(Up.parse('[*Yes, I watched it live](example.com/replay) yesterday*.')).to.deep.equal(
       insideDocumentAndParagraph([
         new Up.Emphasis([

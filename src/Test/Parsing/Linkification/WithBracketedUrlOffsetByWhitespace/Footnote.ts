@@ -64,7 +64,7 @@ context('A linkified footnote can have whitespace between itself and its bracket
         ]))
     })
 
-    specify('there must be somethng after the scheme', () => {
+    specify('there must be something after the scheme', () => {
       const footnote = new Up.Footnote([
         new Up.Text('email')
       ], { referenceNumber: 1 })
@@ -82,7 +82,7 @@ context('A linkified footnote can have whitespace between itself and its bracket
         ]))
     })
 
-    specify('there must be somethng after the scheme beyond only slashes', () => {
+    specify('there must be something after the scheme beyond only slashes', () => {
       const footnote = new Up.Footnote([
         new Up.Text('local files')
       ], { referenceNumber: 1 })
@@ -306,7 +306,7 @@ context('A linkified footnote can have whitespace between itself and its bracket
         ]))
     })
 
-    it('must not have its hashmark escaped', () => {
+    it('must not have its hash mark escaped', () => {
       const footnote = new Up.Footnote([
         new Up.Text('hash mark')
       ], { referenceNumber: 1 })
@@ -586,7 +586,7 @@ context('A linkified footnote can have whitespace between itself and its bracket
 })
 
 
-describe('If there is nothing but whitspace between a footnote and a bracketed URL, but one of the whitespace characters is escaped', () => {
+describe('If there is nothing but whitespace between a footnote and a bracketed URL, but one of the whitespace characters is escaped', () => {
   it('the footnote convention is not linkified', () => {
     const footnote = new Up.Footnote([
       new Up.Text('something terrible')

@@ -731,7 +731,7 @@ Not quite true.`
         ], new Up.Document.TableOfContents([sodaHeading, neverLieHeading])))
     })
 
-    specify("When a subsquent heading contains the section link's snippet (and a previous heading does not)", () => {
+    specify("When a subsequent heading contains the section link's snippet (and a previous heading does not)", () => {
       const markup = `
 I drink soda
 ============
@@ -789,7 +789,7 @@ I never drink soda.`
         ], new Up.Document.TableOfContents([drinkSodaHeading, neverLieHeading, liesHeading])))
     })
 
-    specify("When a subsquent heading perfectly matches the section link's snippet (and a previous heading merely contains the snippet)", () => {
+    specify("When a subsequent heading perfectly matches the section link's snippet (and a previous heading merely contains the snippet)", () => {
       const markup = `
 I drink soda
 ============
@@ -937,7 +937,7 @@ Not quite true.`
         ], new Up.Document.TableOfContents([sodaHeading, neverLieHeading])))
     })
 
-    specify('When a subsquent heading perfectly matches the snippet, but the snippet is the only convention in its own heading', () => {
+    specify('When a subsequent heading perfectly matches the snippet, but the snippet is the only convention in its own heading', () => {
       const markup = `
 I drink soda
 ============

@@ -25,7 +25,7 @@ export function getTableCells(row: string, settings: NormalizedSettings.Parsing)
   // bit easier for us to tell when a row ends with a single unescaped semicolon.
   //
   // As a rule, if the last cell in a row spans just a single column (i.e. it ends in
-  // a single unescaped semiclon), and if that last cell was not 0-length cell at the
+  // a single unescaped semicolon), and if that last cell was not 0-length cell at the
   // start of the row (i.e. the row does not consist solely of a single semicolon), then
   // we add an extra empty cell to the end of the row.
   row = row.trim()
@@ -45,7 +45,7 @@ export function getTableCells(row: string, settings: NormalizedSettings.Parsing)
     const char = row[charIndex]
 
     if (char === BACKSLASH) {
-      // Escaped semiclons don't delimit cells, so we can safely skip the next character.
+      // Escaped semicolons don't delimit cells, so we can safely skip the next character.
       charIndex++
       continue
     }
@@ -70,8 +70,8 @@ export function getTableCells(row: string, settings: NormalizedSettings.Parsing)
   // collect the row's final cell (the one after the last delimiter).
   //
   // Furthermore, even if the last delimiter was on the end of the row, we have to satisfy
-  // the rule described at the to of the mthod: If the last cell in a row spans just a single
-  // column (i.e. it ends in a single unescaped semiclon), and if that last cell was not a
+  // the rule described at the top of the method: If the last cell in a row spans just a single
+  // column (i.e. it ends in a single unescaped semicolon), and if that last cell was not a
   // 0-length cell at the start of the row (i.e. the row does not consist solely of a single
   // semicolon), then we add an extra empty cell to the end of the row.
 

@@ -3,9 +3,9 @@ import * as Up from '../../../../Main'
 import { expectEveryPermutationOfBrackets, insideDocumentAndParagraph } from '../../Helpers'
 
 
-const WHTIESPACE = ' \t\t '
-const WITH_WHITESPACE = [WHTIESPACE]
-const WITH_AND_WITHOUT_WHITESPACE = ['', WHTIESPACE]
+const WHITESPACE = ' \t\t '
+const WITH_WHITESPACE = [WHITESPACE]
+const WITH_AND_WITHOUT_WHITESPACE = ['', WHITESPACE]
 
 
 context('A linkified audio convention can have whitespace between its audio URL and its linkifying URL (regardless of whether there is whitespace between its content and its audio URL), but the linkifying URL must satisfy one of the following conditions:', () => {
@@ -66,7 +66,7 @@ context('A linkified audio convention can have whitespace between its audio URL 
         ]))
     })
 
-    specify('there must be somethng after the scheme', () => {
+    specify('there must be something after the scheme', () => {
       expect(Up.parse('[audio: email sending] (https://example.com/sounds.ogg) (mailto:)')).to.deep.equal(
         insideDocumentAndParagraph([
           new Up.Audio('email sending', 'https://example.com/sounds.ogg'),
@@ -77,7 +77,7 @@ context('A linkified audio convention can have whitespace between its audio URL 
         ]))
     })
 
-    specify('there must be somethng after the scheme beyond only slashes', () => {
+    specify('there must be something after the scheme beyond only slashes', () => {
       expect(Up.parse('[audio: local files rustling](https://example.com/sounds.ogg) (file:///)')).to.deep.equal(
         insideDocumentAndParagraph([
           new Up.Audio('local files rustling', 'https://example.com/sounds.ogg'),
@@ -220,7 +220,7 @@ context('A linkified audio convention can have whitespace between its audio URL 
 
 
   describe('When the URL starts with a hash mark ("#"), the URL', () => {
-    it('may consist solely of digits after the hask mark', () => {
+    it('may consist solely of digits after the hash mark', () => {
       expectEveryPermutationOfBrackets({
         bracketedSegments: [
           { text: 'audio: Model 3 theft' },
@@ -262,7 +262,7 @@ context('A linkified audio convention can have whitespace between its audio URL 
         ]))
     })
 
-    it('must not have its hashmark escaped', () => {
+    it('must not have its hash mark escaped', () => {
       expect(Up.parse('[audio: hash marking](https://example.com/sounds.ogg) (\\#starcraft2)')).to.deep.equal(
         insideDocumentAndParagraph([
           new Up.Audio('hash marking', 'https://example.com/sounds.ogg'),

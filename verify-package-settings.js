@@ -1,7 +1,7 @@
 "use strict";
 
 const expect = require('chai').expect
-const path = require('path');
+const path = require('node:path');
 
 const packageSettings = require('./package.json')
 const Up = require('./' + packageSettings.main)

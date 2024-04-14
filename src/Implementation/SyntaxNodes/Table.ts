@@ -64,6 +64,8 @@ export namespace Table {
 
   const CONTAINS_DIGIT = new RegExp(DIGIT)
 
+  // TODO: Doesn't work for non-English
+  // Todo: Use u flag
   const CONTAINS_NON_NUMERIC_CHARACTER = new RegExp(
     anyCharMatching(LETTER_CLASS, '_', WHITESPACE_CHAR))
 

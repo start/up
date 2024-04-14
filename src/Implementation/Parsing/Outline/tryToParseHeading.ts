@@ -75,7 +75,7 @@ export function tryToParseHeading(args: OutlineParser.Args): OutlineParser.Resul
   // * Buy milk
   // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   //
-  // Neither of those should be parsed as headings. We only accept the heading's content if it would
+  // Neither of those should be parsed as headings. We only accept the heading's content if it
   // would otherwise be parsed as a regular paragraph.
   if (isLineFancyOutlineConvention(contentMarkup, args.settings)) {
     return null

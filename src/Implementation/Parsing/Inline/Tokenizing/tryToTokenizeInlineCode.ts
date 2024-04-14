@@ -14,7 +14,7 @@ type InlineCodeTokenizationResult = null | {
 // If `markup` starts with inline code, this function tokenizes it, ultimately producing an
 // `InlineCode` token. If `markup` instead starts with an unmatched inline code start delimiter
 // (i.e. streak of backticks), this function produces a text token for that unmatched delimiter.
-// Otherwise, thie method does nothing.
+// Otherwise, this method does nothing.
 //
 // Within inline code, backticks can be escaped with a backslash. That being said, inline code can
 // contain streaks of *unescaped* backticks that aren't exactly as long as the delimiters.

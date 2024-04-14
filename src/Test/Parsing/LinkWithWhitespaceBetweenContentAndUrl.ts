@@ -49,7 +49,7 @@ context('A link can have whitespace between its bracketed content and bracketed 
         ]))
     })
 
-    specify('there must be somethng after the scheme', () => {
+    specify('there must be something after the scheme', () => {
       expect(Up.parse('[email] (mailto:)')).to.deep.equal(
         insideDocumentAndParagraph([
           new Up.SquareParenthetical([
@@ -62,7 +62,7 @@ context('A link can have whitespace between its bracketed content and bracketed 
         ]))
     })
 
-    specify('there must be somethng after the scheme beyond only slashes', () => {
+    specify('there must be something after the scheme beyond only slashes', () => {
       expect(Up.parse('[local files] (file:///)')).to.deep.equal(
         insideDocumentAndParagraph([
           new Up.SquareParenthetical([

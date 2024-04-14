@@ -48,7 +48,7 @@ const FREELY_SPLITTABLE_CONVENTIONS: RichConvention[] = [
 
 // We avoid splitting these conventions.
 //
-// The order is important: We'd rather split a link than revealable ontent, and we'll never split a footnote.
+// The order is important: We'd rather split a link than revealable content, and we'll never split a footnote.
 const CONVENTIONS_TO_AVOID_SPLITTING_FROM_LEAST_TO_MOST_IMPORTANT = [
   LINK,
   INLINE_REVEALABLE,
@@ -113,22 +113,24 @@ class ConventionNester {
       // We'll check the unclosed start tokens from most recently opened to least recently opened (from inner to
       // outer).
       for (let i = unclosedStartTokens.length - 1; i >= 0; i--) {
-        const unclosedStartToken = unclosedStartTokens[i]
+        const correspondingEnclosingToken = unclosedStartTokens[i].correspondingEnclosingToken!;
+
+
 
         // We want to see whether this start token matches our end token. Why aren't we just doing
-        // `unclosedStartToken.correspondingEnclosingToken === endToken`?
+        // `correspondingEnclosingToken === endToken`?
         //
         // Well, as explained in the comments above this class, we ignore self-overlapping conventions, instead
         // choosing to match their start/end tokens from innermost to outermost.
         //
-        // Let's look at this example of one highlight overlapping another:
+        // Let's look at this example of one spoiler overlapping another:
         //
         //   This [SPOILER: does (SPOILER: not] make) much sense.
         //
         // The end token produced by `]` corresponds to the start token produced by `[SPOILER:`. By checking
         // only the `role` fields, we instead match `]` with `(SPOILER:`, ultimately ignoring that the
         // conventions are overlapping. Mission accomplished!
-        if (unclosedStartToken.correspondingEnclosingToken!.role === endToken.role) {
+        if (correspondingEnclosingToken.role === endToken.role) {
           // Hooray! We've reached the start token that is closed by the current token.
           unclosedStartTokens.splice(i, 1)
 
@@ -137,7 +139,7 @@ class ConventionNester {
         }
 
         // Uh-oh. This start token belongs to an overlapping convention.
-        endTokensOfOverlappingConventions.push(unclosedStartToken.correspondingEnclosingToken!)
+        endTokensOfOverlappingConventions.push(correspondingEnclosingToken)
       }
 
       // Okay, now we know which conventions overlap the one that's about to close. To preserve overlapping
@@ -156,8 +158,8 @@ class ConventionNester {
       // end tokens before `endToken`, and `countOverlapping` start tokens after `endToken`.
       //
       // Before we added those tokens, `endToken` was sitting at `tokenIndex`. We don't need to revisit any of
-      // the tokens we just added, so we want the next the next token we examine to be the token following the
-      // start tokens we added after `endToken`.
+      // the tokens we just added, so we want the next token we examine to be the token following the start
+      // tokens we added after `endToken`.
       tokenIndex += (2 * countOverlapping)
     }
   }
@@ -165,7 +167,7 @@ class ConventionNester {
   // This method assumes that any `splittableConventions` tokens are already properly nested within each other.
   //
   // By design, this method does not resolve self-overlapping! If `conventionNotToSplit` overlaps another
-  // instance of itself, we do nothing abou it. Please see the comment above this class for more information.
+  // instance of itself, we do nothing about it. Please see the comment above this class for more information.
   private resolveOverlapping(splittableConventions: RichConvention[], conventionNotToSplit: RichConvention): void {
     // To keep local variable names shorter, we'll refer to `conventionNotToSplit` as the hero convention.
 
@@ -218,7 +220,7 @@ class ConventionNester {
 
             if (doesTokenEndAnyConvention(innerToken, splittableConventions)) {
               // Because this function requires any conventions in `conventionsToSplit` to already be properly nested
-              // into a treee structure, if there are any conventions that started inside `conventionNotToSplit`, the
+              // into a tree structure, if there are any conventions that started inside `conventionNotToSplit`, the
               // end token we've found must end the most recent one. We `unshift` items into this collection, so the
               // most recent item is the first.
               if (endTokensOfOverlappingConventionsStartingInside.length) {
@@ -254,10 +256,10 @@ class ConventionNester {
     // We're going to close and reopen the innermost conventions first (those belonging to end tokens appearing
     // earlier in `endTokensInTheirOriginalOrder`.
     //
-    // Befoire adding a new end token, we examine the token that would directly precede it. If that token is the
+    // Before adding a new end token, we examine the token that would directly precede it. If that token is the
     // corresponding start token, rather than create an empty convention, we simply remove that start token.
     //
-    // Befoire adding a new start token, we examine the token that would directly follow it. If that token is the
+    // Before adding a new start token, we examine the token that would directly follow it. If that token is the
     // corresponding end token, rather than create an empty convention, we simply remove that end token.
 
     const { tokens } = this

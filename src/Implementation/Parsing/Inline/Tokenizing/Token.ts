@@ -8,7 +8,8 @@ export class Token implements ParseableToken {
 
   constructor(
     public role: TokenRole,
-    public value?: string) { }
+    public value?: string
+  ) { }
 
   // Associates a start token with an end token.
   //

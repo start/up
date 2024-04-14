@@ -2,5 +2,5 @@ import { InlineSyntaxNodeContainer } from './InlineSyntaxNodeContainer'
 
 
 export class InlineDocument extends InlineSyntaxNodeContainer {
-  INLINE_DOCUMENT(): void { }
+  protected readonly INLINE_DOCUMENT = undefined
 }

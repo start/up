@@ -3,7 +3,7 @@ import * as Up from '../../../Main'
 import { expectEveryPermutationOfBrackets, insideDocumentAndParagraph } from '../Helpers'
 
 
-describe('An example user input convention followed by a parenthesized/bracketd URL', () => {
+describe('An example user input convention followed by a parenthesized/bracketed URL', () => {
   it('produces an example user input node within a link pointing to the URL', () => {
     expect(Up.parse('To view your shopping cart, press { My Cart } (https://example.com/my-cart) and scroll down.')).to.deep.equal(
       insideDocumentAndParagraph([

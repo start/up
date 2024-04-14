@@ -9,7 +9,7 @@ import { OutlineSyntaxNode } from './OutlineSyntaxNode'
 export class FootnoteBlock implements OutlineSyntaxNode {
   constructor(public footnotes: Footnote[]) { }
 
-  // The source line number of a footnote block wouldn't be particulalry meaninful.
+  // The source line number of a footnote block wouldn't be particularly meaningful.
   readonly sourceLineNumber = undefined
 
   descendantsToIncludeInTableOfContents(): Heading[] {

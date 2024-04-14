@@ -3,7 +3,7 @@ import * as Up from '../../../../Main'
 
 
 context("In a table's label line, when the keyword for 'table' is followed by a colon,", () => {
-  specify('the colon can be folowed by a caption', () => {
+  specify('the colon can be followed by a caption', () => {
     const markup = `
 Table: Games in the Chrono series
 

@@ -10,7 +10,7 @@ import { OutlineParser } from './OutlineParser'
 // outline conventions. We represent that separation with a `ThematicBreak` syntax node.
 //
 // NOTE: "Separation" is the magic word! Outer blank lines carry no semantic significance, and
-// and they never produce thematic breaks.
+// they never produce thematic breaks.
 export function tryToParseBlankLineSeparation(args: OutlineParser.Args): OutlineParser.Result {
   const markupLineConsumer = new LineConsumer(args.markupLines)
 

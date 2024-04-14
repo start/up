@@ -3,7 +3,7 @@ import * as Up from '../../../Main'
 import { expectEveryPermutationOfBrackets, insideDocumentAndParagraph } from '../Helpers'
 
 
-describe('An audio convention (with its URL) followed immediately by a (second) parenthesized/bracketd URL', () => {
+describe('An audio convention (with its URL) followed immediately by a (second) parenthesized/bracketed URL', () => {
   it('produces an audio node within a link pointing to that second URL', () => {
     expect(Up.parse('After you beat the Elite Four, [audio: you fight Gary](https://example.com/fight.ogg)(http://example.com/finalbattle).')).to.deep.equal(
       insideDocumentAndParagraph([

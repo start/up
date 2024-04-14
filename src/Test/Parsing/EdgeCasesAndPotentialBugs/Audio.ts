@@ -4,7 +4,7 @@ import { insideDocumentAndParagraph } from '../Helpers'
 
 
 describe('A paragraph directly followed by audio on its own line', () => {
-  it('produces a pagraph node followed by an audio node, not a line block', () => {
+  it('produces a paragraph node followed by an audio node, not a line block', () => {
     const markup = `
 Do not pour the spiders into your sister's cereal.
 [audio: six seconds of screaming][http://example.com/screaming.ogg]`
@@ -55,7 +55,7 @@ describe('An otherwise-valid audio convention with mismatched brackets surroundi
 
 
 context('Unmatched opening parentheses in an audio description have no affect on', () => {
-  specify('parentheses surounding the URL', () => {
+  specify('parentheses surrounding the URL', () => {
     expect(Up.parse('[audio: sad :( sad :( sounds](http://example.com/sad.ogg)')).to.deep.equal(
       new Up.Document([
         new Up.Audio('sad :( sad :( sounds', 'http://example.com/sad.ogg')

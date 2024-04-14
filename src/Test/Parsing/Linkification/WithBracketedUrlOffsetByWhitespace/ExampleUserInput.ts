@@ -54,7 +54,7 @@ context('A linkified example user input convention can have whitespace between i
         ]))
     })
 
-    specify('there must be somethng after the scheme', () => {
+    specify('there must be something after the scheme', () => {
       expect(Up.parse('{ Send Email } (mailto:)')).to.deep.equal(
         insideDocumentAndParagraph([
           new Up.ExampleUserInput('Send Email'),
@@ -65,7 +65,7 @@ context('A linkified example user input convention can have whitespace between i
         ]))
     })
 
-    specify('there must be somethng after the scheme beyond only slashes', () => {
+    specify('there must be something after the scheme beyond only slashes', () => {
       expect(Up.parse('{ Rustle Files } (file:///)')).to.deep.equal(
         insideDocumentAndParagraph([
           new Up.ExampleUserInput('Rustle Files'),
@@ -188,7 +188,7 @@ context('A linkified example user input convention can have whitespace between i
 
 
   describe('When the URL starts with a hash mark ("#"), the URL', () => {
-    it('may consist solely of digits after the hask mark', () => {
+    it('may consist solely of digits after the hash mark', () => {
       expectEveryPermutationOfBrackets({
         precededBy: '{ Go }',
         bracketedSegments: [{
@@ -225,7 +225,7 @@ context('A linkified example user input convention can have whitespace between i
         ]))
     })
 
-    it('must not have its hashmark escaped', () => {
+    it('must not have its hash mark escaped', () => {
       expect(Up.parse('{Play} (\\#starcraft2)')).to.deep.equal(
         insideDocumentAndParagraph([
           new Up.ExampleUserInput('Play'),

@@ -1,6 +1,6 @@
 {
-  "name": "up-lang",
-  "version": "39.0.2",
+  "name": "@xcvz/up",
+  "version": "1.0.0",
   "description": "A markup language for writing structured documents in plain text",
   "main": "compiled/Main.js",
   "types": "compiled/Main.d.ts",
@@ -11,8 +11,7 @@
   ],
   "scripts": {
     "build": "rm -rf ./compiled && tsc",
-    "test": "npm run build && mocha --recursive ./compiled/Test && mocha ./verify-package-settings.js",
-    "lint": "eslint ./src --ext .js,.jsx,.ts,.tsx"
+    "test": "npm run build && mocha --recursive ./compiled/Test && mocha ./verify-package-settings.js"
   },
   "keywords": [
     "formatting",
@@ -33,12 +32,8 @@
   "devDependencies": {
     "@types/chai": "^4.2.12",
     "@types/mocha": "^8.0.3",
-    "@typescript-eslint/eslint-plugin": "^4.2.0",
-    "@typescript-eslint/parser": "^4.2.0",
     "chai": "^4.2.0",
-    "eslint": "^7.9.0",
-    "mocha": "^8.1.3",
-    "typescript": "^4.0.3"
-  },
-  "dependencies": {}
+    "mocha": "^10.3.0",
+    "typescript": "^5.4.2"
+  }
 }

@@ -156,7 +156,7 @@ context('A table cell is numeric if its text content (ignoring footnotes) contai
       expectTableCellNotToBeNumeric('StarCraft')
     })
 
-    specify('a word conaining digits and letters', () => {
+    specify('a word containing digits and letters', () => {
       expectTableCellNotToBeNumeric('3D')
     })
 

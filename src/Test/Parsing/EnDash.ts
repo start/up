@@ -20,10 +20,10 @@ context('2 consecutive hyphens normally produce an en dash.', () => {
     })
 
     specify('Preceding a word', () => {
-      expect(Up.parse('"I like Starcraft" --Mark Twain')).to.deep.equal(
+      expect(Up.parse('"I like StarCraft" --Mark Twain')).to.deep.equal(
         insideDocumentAndParagraph([
           new Up.InlineQuote([
-            new Up.Text('I like Starcraft')
+            new Up.Text('I like StarCraft')
           ]),
           new Up.Text(' –Mark Twain')
         ]))

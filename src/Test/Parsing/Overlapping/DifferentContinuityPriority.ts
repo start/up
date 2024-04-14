@@ -1,6 +1,6 @@
 import { expect } from 'chai'
 import * as Up from '../../../Main'
-import { insideDocumentAndParagraph } from '.././Helpers'
+import { insideDocumentAndParagraph } from '../Helpers'
 
 
 // TODO: Organize these tests into contexts for clarity

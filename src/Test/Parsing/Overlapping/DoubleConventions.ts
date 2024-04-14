@@ -284,7 +284,7 @@ describe('Emphasis nested within parenthesized text, both of which overlap a lin
 
 describe('A link that overlaps both an emphasis convention and some parenthesized text that the emphasis convention is nested within', () => {
   it('splits the parenthesized text and emphasis conventions', () => {
-    expect(Up.parse('In [Texas, (*I](example.com/texas-hurricans) never eat cereal*) outside.')).to.deep.equal(
+    expect(Up.parse('In [Texas, (*I](example.com/texas-hurricanes) never eat cereal*) outside.')).to.deep.equal(
       insideDocumentAndParagraph([
         new Up.Text('In '),
         new Up.Link([
@@ -295,7 +295,7 @@ describe('A link that overlaps both an emphasis convention and some parenthesize
               new Up.Text('I')
             ])
           ])
-        ], 'https://example.com/texas-hurricans'),
+        ], 'https://example.com/texas-hurricanes'),
         new Up.NormalParenthetical([
           new Up.Emphasis([
             new Up.Text(' never eat cereal')
@@ -310,7 +310,7 @@ describe('A link that overlaps both an emphasis convention and some parenthesize
 
 describe('A link that overlaps nested emphasis conventions', () => {
   it('splits both emphasis conventions', () => {
-    expect(Up.parse('In [Texas, **I](example.com/texas-hurricans) never* eat cereal* outside.')).to.deep.equal(
+    expect(Up.parse('In [Texas, **I](example.com/texas-hurricanes) never* eat cereal* outside.')).to.deep.equal(
       insideDocumentAndParagraph([
         new Up.Text('In '),
         new Up.Link([
@@ -320,7 +320,7 @@ describe('A link that overlaps nested emphasis conventions', () => {
               new Up.Text('I')
             ])
           ])
-        ], 'https://example.com/texas-hurricans'),
+        ], 'https://example.com/texas-hurricanes'),
         new Up.Emphasis([
           new Up.Emphasis([
             new Up.Text(' never')

@@ -1,7 +1,7 @@
 import * as Up from '../../../Main'
 import { either, patternIgnoringCapitalizationAndStartingWith } from '../../PatternHelpers'
-import { Renderer, Attr } from '.././Renderer'
-import { Attrs, EMPTY_ATTRBUTE_VALUE, htmlElement, htmlElementWithAlreadyEscapedChildren, singleTagHtmlElement } from './HtmlElementHelpers'
+import { Renderer, Attr } from '../Renderer'
+import { Attrs, EMPTY_ATTRIBUTE_VALUE, htmlElement, htmlElementWithAlreadyEscapedChildren, singleTagHtmlElement } from './HtmlElementHelpers'
 import { escapeHtmlContent } from './HtmlEscapingHelpers'
 
 
@@ -69,7 +69,7 @@ export class HtmlRenderer extends Renderer {
     }
 
     if (list.order() === 'desc') {
-      attrs.reversed = EMPTY_ATTRBUTE_VALUE
+      attrs.reversed = EMPTY_ATTRIBUTE_VALUE
     }
 
     return htmlElementWithAlreadyEscapedChildren(
@@ -111,14 +111,14 @@ export class HtmlRenderer extends Renderer {
     const attrs = htmlAttrsFor(heading)
 
     if (heading.ordinalInTableOfContents) {
-      attrs.id = this.htmlIdOfActualEntryInDocument(heading)
+      attrs['id'] = this.htmlIdOfActualEntryInDocument(heading)
     }
 
     if (heading.level <= 6) {
       return this.htmlElement('h' + heading.level, heading.children, attrs)
     }
 
-    attrs.role = 'heading'
+    attrs['role'] = 'heading'
     attrs['aria-level'] = heading.level
 
     return this.htmlElement('div', heading.children, attrs)
@@ -377,7 +377,7 @@ export class HtmlRenderer extends Renderer {
         playableMedia, {
           src: url,
           title: description,
-          controls: EMPTY_ATTRBUTE_VALUE
+          controls: EMPTY_ATTRIBUTE_VALUE
         }))
       : ''
   }
@@ -424,7 +424,7 @@ export class HtmlRenderer extends Renderer {
         id: hideButtonId,
         name: buttonGroupName,
         class: cssClassAttrValue('hide'),
-        checked: EMPTY_ATTRBUTE_VALUE
+        checked: EMPTY_ATTRIBUTE_VALUE
       })
 
     const radioButtonReveal = singleTagHtmlElement(
@@ -457,7 +457,7 @@ export class HtmlRenderer extends Renderer {
 
     const attrsForOuterContainer = args.attrsForOuterContainer ?? {}
 
-    attrsForOuterContainer.class =
+    attrsForOuterContainer['class'] =
       cssClassAttrValue('revealable')
 
     return htmlElementWithAlreadyEscapedChildren(
@@ -507,11 +507,11 @@ export class HtmlRenderer extends Renderer {
 
   private tableCell(tagName: string, cell: Up.Table.Cell, attrs: Attrs = {}): string {
     if (cell.isNumeric()) {
-      attrs.class = cssClassAttrValue('numeric')
+      attrs['class'] = cssClassAttrValue('numeric')
     }
 
     if (cell.countColumnsSpanned > 1) {
-      attrs.colspan = cell.countColumnsSpanned
+      attrs['colspan'] = cell.countColumnsSpanned
     }
 
     return htmlElementWithAlreadyEscapedChildren(

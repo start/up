@@ -53,7 +53,7 @@ context('A linified revealable can have whitespace between itself and its bracke
         ]))
     })
 
-    specify('there must be somethng after the scheme', () => {
+    specify('there must be something after the scheme', () => {
       expect(Up.parse('[SPOILER: email] (mailto:)')).to.deep.equal(
         insideDocumentAndParagraph([
           new Up.InlineRevealable([
@@ -66,7 +66,7 @@ context('A linified revealable can have whitespace between itself and its bracke
         ]))
     })
 
-    specify('there must be somethng after the scheme beyond only slashes', () => {
+    specify('there must be something after the scheme beyond only slashes', () => {
       expect(Up.parse('[SPOILER: local files] (file:///)')).to.deep.equal(
         insideDocumentAndParagraph([
           new Up.InlineRevealable([
@@ -199,7 +199,7 @@ context('A linified revealable can have whitespace between itself and its bracke
 
 
   describe('When the URL starts with a hash mark ("#"), the URL', () => {
-    it('may consist solely of digits after the hask mark', () => {
+    it('may consist solely of digits after the hash mark', () => {
       expectEveryPermutationOfBracketsAroundContentAndUrl({
         content: 'SPOILER: Model 3 theft',
         partsBetweenContentAndUrl: ['  ', '\t', ' \t '],
@@ -240,7 +240,7 @@ context('A linified revealable can have whitespace between itself and its bracke
         ]))
     })
 
-    it('must not have its hashmark escaped', () => {
+    it('must not have its hash mark escaped', () => {
       expect(Up.parse('[SPOILER: yeah] (\\#starcraft2)')).to.deep.equal(
         insideDocumentAndParagraph([
           new Up.InlineRevealable([

@@ -3,9 +3,9 @@ import * as Up from '../../../../Main'
 import { expectEveryPermutationOfBrackets, insideDocumentAndParagraph } from '../../Helpers'
 
 
-const WHTIESPACE = ' \t\t '
-const WITH_AND_WITHOUT_WHITESPACE = ['', WHTIESPACE]
-const WITH_WHITESPACE = [WHTIESPACE]
+const WHITESPACE = ' \t\t '
+const WITH_AND_WITHOUT_WHITESPACE = ['', WHITESPACE]
+const WITH_WHITESPACE = [WHITESPACE]
 
 
 context('A linkified image convention can have whitespace between its image URL and its linkifying URL (regardless of whether there is whitespace between its content and its image URL), but the linkifying URL must satisfy one of the following conditions:', () => {
@@ -66,7 +66,7 @@ context('A linkified image convention can have whitespace between its image URL 
         ]))
     })
 
-    specify('there must be somethng after the scheme', () => {
+    specify('there must be something after the scheme', () => {
       expect(Up.parse('[image: email sending] (https://example.com/image.png) (mailto:)')).to.deep.equal(
         insideDocumentAndParagraph([
           new Up.Image('email sending', 'https://example.com/image.png'),
@@ -77,7 +77,7 @@ context('A linkified image convention can have whitespace between its image URL 
         ]))
     })
 
-    specify('there must be somethng after the scheme beyond only slashes', () => {
+    specify('there must be something after the scheme beyond only slashes', () => {
       expect(Up.parse('[image: local files rustling](https://example.com/image.png) (file:///)')).to.deep.equal(
         insideDocumentAndParagraph([
           new Up.Image('local files rustling', 'https://example.com/image.png'),
@@ -220,7 +220,7 @@ context('A linkified image convention can have whitespace between its image URL 
 
 
   describe('When the URL starts with a hash mark ("#"), the URL', () => {
-    it('may consist solely of digits after the hask mark', () => {
+    it('may consist solely of digits after the hash mark', () => {
       expectEveryPermutationOfBrackets({
         bracketedSegments: [
           { text: 'image: Model 3 theft' },
@@ -262,7 +262,7 @@ context('A linkified image convention can have whitespace between its image URL 
         ]))
     })
 
-    it('must not have its hashmark escaped', () => {
+    it('must not have its hash mark escaped', () => {
       expect(Up.parse('[image: hash marking](https://example.com/image.png) (\\#starcraft2)')).to.deep.equal(
         insideDocumentAndParagraph([
           new Up.Image('hash marking', 'https://example.com/image.png'),

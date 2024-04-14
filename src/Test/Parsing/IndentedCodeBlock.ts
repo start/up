@@ -324,7 +324,7 @@ Lesson 1
 
 
 context('When a code block is nested within a blockquote that has no spaces after each delimiter', () => {
-  specify('tabbed indentation within the code block is preseved', () => {
+  specify('tabbed indentation within the code block is preserved', () => {
     const markup = `
 >\`\`\`
 >\tif (x < 0) {

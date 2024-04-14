@@ -54,7 +54,7 @@ function itCanBeProvidedMultipleWaysWithTheSameResult(
   const whenProvidingChangesWhenCallingDefaultMethod =
     Up.renderWithTableOfContents(document, change)
 
-  const whenProvidingChangesWhenCallingtMethodOnObject =
+  const whenProvidingChangesWhenCallingMethodOnObject =
     new Up.Up().renderWithTableOfContents(document, change)
 
   const whenOverwritingChangesProvidedAtCreation =
@@ -67,7 +67,7 @@ function itCanBeProvidedMultipleWaysWithTheSameResult(
     })
 
     it("has the same result as providing the setting when calling the Up object's renderWithTableOfContents method", () => {
-      expect(whenProvidingSettingsAtCreation).to.deep.equal(whenProvidingChangesWhenCallingtMethodOnObject)
+      expect(whenProvidingSettingsAtCreation).to.deep.equal(whenProvidingChangesWhenCallingMethodOnObject)
     })
 
     it("has the same result as providing the setting when calling the Up object's renderWithTableOfContents method, overwriting the setting provided at creation", () => {

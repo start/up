@@ -128,7 +128,7 @@ context('Except for footnotes and section links, every inline convention is supp
         ]))
     })
 
-    specify('Parnetheses', () => {
+    specify('Parentheses', () => {
       expect(Up.parseInline('I loved my (Nintendo) Game Boy, though I never took it with me when I left home.')).to.deep.equal(
         new Up.InlineDocument([
           new Up.Text('I loved my '),

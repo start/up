@@ -36,7 +36,7 @@ Table:
 Chrono Trigger;     Square;;;                                               March 11, 1995
 Terranigma;         Quintet;              Nintendo;         Quintet;        October 20, 1995
 Command & Conquer;  Westwood Studios;;;                                     August 31, 1995
-Starcraft;          Blizzard;;;                                             March 31, 1998`
+StarCraft;          Blizzard;;;                                             March 31, 1998`
 
     expect(Up.parse(markup)).to.deep.equal(
       new Up.Document([
@@ -65,7 +65,7 @@ Starcraft;          Blizzard;;;                                             Marc
             new Up.Table.Row([
               new Up.Table.Row.Cell([new Up.Text('Blizzard')], 3),
               new Up.Table.Row.Cell([new Up.Text('March 31, 1998')])
-            ], new Up.Table.Header.Cell([new Up.Text('Starcraft')]))
+            ], new Up.Table.Header.Cell([new Up.Text('StarCraft')]))
           ])
       ]))
   })

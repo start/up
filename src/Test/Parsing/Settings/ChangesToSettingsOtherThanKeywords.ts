@@ -21,7 +21,7 @@ function itWorksAsAdvertised(
   // First, let's make sure the caller is expecting their settings changes to make a difference
   expect(documentWhenChangeIsApplied).to.not.deep.equal(documentWhenSettingIsNotChanged)
 
-  // Next, we'll produce "overall" settings (which cover both parsing and rendering setttings).
+  // Next, we'll produce "overall" settings (which cover both parsing and rendering settings).
   // The `Up` class's constructor accepts these settings.
   const changedSettings = settingsFor(change)
   const conflictingChangedSettings = settingsFor(changeBackToDefault)
@@ -52,7 +52,7 @@ function itWorksAsAdvertised(
       expect(new Up.Up().parse(markup, change)).to.deep.equal(documentWhenChangeIsApplied)
     })
 
-    specify('when calling the parse method on an Up object that had the setting explictly set to default when the object was created', () => {
+    specify('when calling the parse method on an Up object that had the setting explicitly set to default when the object was created', () => {
       expect(new Up.Up(conflictingChangedSettings).parse(markup, change)).to.deep.equal(documentWhenChangeIsApplied)
     })
   })

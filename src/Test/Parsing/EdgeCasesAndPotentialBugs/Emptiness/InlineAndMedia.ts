@@ -140,7 +140,7 @@ context('Due to syntax for forgiving conventions, they cannot be empty or blank.
     })
 
 
-    context('Umatched delimiters are preserved as plain text. This includes delimiters with a length of...', () => {
+    context('Unmatched delimiters are preserved as plain text. This includes delimiters with a length of...', () => {
       specify('1 character', () => {
         expect(Up.parse('*')).to.deep.equal(
           insideDocumentAndParagraph([
@@ -203,7 +203,7 @@ context('Due to syntax for forgiving conventions, they cannot be empty or blank.
     })
 
 
-    context('Umatched delimiters are preserved as plain text. This includes delimiters with a length of...', () => {
+    context('Unmatched delimiters are preserved as plain text. This includes delimiters with a length of...', () => {
       specify('1 character', () => {
         expect(Up.parse('_')).to.deep.equal(
           insideDocumentAndParagraph([
@@ -265,7 +265,7 @@ context('Due to syntax for forgiving conventions, they cannot be empty or blank.
     })
 
 
-    context('Umatched delimiters are preserved as plain text. This includes delimiters with a length of...', () => {
+    context('Unmatched delimiters are preserved as plain text. This includes delimiters with a length of...', () => {
       specify('1 character', () => {
         expect(Up.parse('"')).to.deep.equal(
           insideDocumentAndParagraph([
@@ -327,7 +327,7 @@ context('Due to syntax for forgiving conventions, they cannot be empty or blank.
     })
 
 
-    context('Umatched delimiters are preserved as plain text. This includes delimiters with a length of...', () => {
+    context('Unmatched delimiters are preserved as plain text. This includes delimiters with a length of...', () => {
       specify('2 characters', () => {
         expect(Up.parse('==')).to.deep.equal(
           insideDocumentAndParagraph([

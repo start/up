@@ -3,7 +3,7 @@ import * as Up from '../../../Main'
 
 
 describe('A bulleted list with a single item', () => {
-  it('can be sandwched by identical thematic break streaks without producing a heading', () => {
+  it('can be sandwiched by identical thematic break streaks without producing a heading', () => {
     const markup = `
 -----------
 * Mittens
@@ -26,7 +26,7 @@ describe('A bulleted list with a single item', () => {
 
 
 describe('A bulleted list', () => {
-  it('can be sandwched by line blocks', () => {
+  it('can be sandwiched by line blocks', () => {
     const markup = `
 Roses are red
 Violets are blue

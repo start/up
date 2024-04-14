@@ -3,9 +3,9 @@ import * as Up from '../../../../Main'
 import { expectEveryPermutationOfBrackets, insideDocumentAndParagraph } from '../../Helpers'
 
 
-const WHTIESPACE = ' \t\t '
-const WITH_AND_WITHOUT_WHITESPACE = ['', WHTIESPACE]
-const WITH_WHITESPACE = [WHTIESPACE]
+const WHITESPACE = ' \t\t '
+const WITH_AND_WITHOUT_WHITESPACE = ['', WHITESPACE]
+const WITH_WHITESPACE = [WHITESPACE]
 
 
 context('A linkified video convention can have whitespace between its video URL and its linkifying URL (regardless of whether there is whitespace between its content and its video URL), but the linkifying URL must satisfy one of the following conditions:', () => {
@@ -66,7 +66,7 @@ context('A linkified video convention can have whitespace between its video URL 
         ]))
     })
 
-    specify('there must be somethng after the scheme', () => {
+    specify('there must be something after the scheme', () => {
       expect(Up.parse('[video: email sending] (https://example.com/video.webm) (mailto:)')).to.deep.equal(
         insideDocumentAndParagraph([
           new Up.Video('email sending', 'https://example.com/video.webm'),
@@ -77,7 +77,7 @@ context('A linkified video convention can have whitespace between its video URL 
         ]))
     })
 
-    specify('there must be somethng after the scheme beyond only slashes', () => {
+    specify('there must be something after the scheme beyond only slashes', () => {
       expect(Up.parse('[video: local files rustling](https://example.com/video.webm) (file:///)')).to.deep.equal(
         insideDocumentAndParagraph([
           new Up.Video('local files rustling', 'https://example.com/video.webm'),
@@ -220,7 +220,7 @@ context('A linkified video convention can have whitespace between its video URL 
 
 
   describe('When the URL starts with a hash mark ("#"), the URL', () => {
-    it('may consist solely of digits after the hask mark', () => {
+    it('may consist solely of digits after the hash mark', () => {
       expectEveryPermutationOfBrackets({
         bracketedSegments: [
           { text: 'video: Model 3 theft' },
@@ -262,7 +262,7 @@ context('A linkified video convention can have whitespace between its video URL 
         ]))
     })
 
-    it('must not have its hashmark escaped', () => {
+    it('must not have its hash mark escaped', () => {
       expect(Up.parse('[video: hash marking](https://example.com/video.webm) (\\#starcraft2)')).to.deep.equal(
         insideDocumentAndParagraph([
           new Up.Video('hash marking', 'https://example.com/video.webm'),

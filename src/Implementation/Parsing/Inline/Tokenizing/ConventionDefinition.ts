@@ -6,7 +6,7 @@ import { OpenConvention } from './OpenConvention'
 // The start/end delimiters of a convention definition are ultimately represented by
 // RegExp patterns anchored to the beginning of the input string (using `^`).
 //
-// For convenience, the ConventionDefinition constructor instead accepts unanchored
+// For convenience, the ConventionDefinition constructor instead accepts un-anchored
 // string patterns for those delimiters. (Those strings are then converted into
 // anchored RegExp patterns.)
 
@@ -32,7 +32,7 @@ export class ConventionDefinition {
   whenOpening?: (...captures: string[]) => void
   insteadOfClosingOuterConventionsWhileOpen?: () => void
   insteadOfOpeningRegularConventionsWhileOpen?: () => void
-  failsIfWhitespaceIsEnounteredBeforeClosing?: boolean
+  failsIfWhitespaceIsEncounteredBeforeClosing?: boolean
   beforeClosingItFlushesNonEmptyBufferTo?: TokenRole
   beforeClosingItAlwaysFlushesBufferTo?: TokenRole
   whenClosingItAlsoClosesInnerConventions?: boolean

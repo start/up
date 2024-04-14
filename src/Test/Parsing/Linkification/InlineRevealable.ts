@@ -3,7 +3,7 @@ import * as Up from '../../../Main'
 import { expectEveryPermutationOfBracketsAroundContentAndUrl, insideDocumentAndParagraph } from '../Helpers'
 
 
-describe('An inline revealable followed immediately by a parenthesized/bracketd URL', () => {
+describe('An inline revealable followed immediately by a parenthesized/bracketed URL', () => {
   it('produces an inline revealable node whose contents are put inside a link pointing to that URL', () => {
     expect(Up.parse('After you beat the Elite Four, [SPOILER: you fight Gary](http://example.com/finalbattle).')).to.deep.equal(
       insideDocumentAndParagraph([

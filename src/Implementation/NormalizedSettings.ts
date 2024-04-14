@@ -4,7 +4,7 @@ import { URL_SCHEME_PATTERN } from './Patterns'
 import { Settings } from './Settings'
 
 
-// The `Settings` provided by the user are almost always imcomplete.
+// The `Settings` provided by the user are almost always incomplete.
 //
 // This class:
 //
@@ -87,7 +87,7 @@ export namespace NormalizedSettings {
       this.keywords.applySettings(settings.keywords)
     }
 
-    // Applies the relevant settings settings to `url` and returns the result.
+    // Applies the relevant settings to `url` and returns the result.
     //
     // This method assumes that `url` is non-blank.
     applySettingsToUrl(url: string): string {

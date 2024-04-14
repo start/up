@@ -1,18 +1,18 @@
 import { concat } from '../CollectionHelpers'
-import { BulletedList } from '../SyntaxNodes/BulletedList'
-import { DescriptionList } from '../SyntaxNodes/DescriptionList'
-import { Document } from '../SyntaxNodes/Document'
-import { Footnote } from '../SyntaxNodes/Footnote'
-import { FootnoteBlock } from '../SyntaxNodes/FootnoteBlock'
-import { InlineSyntaxNode } from '../SyntaxNodes/InlineSyntaxNode'
-import { InlineSyntaxNodeContainer } from '../SyntaxNodes/InlineSyntaxNodeContainer'
-import { LineBlock } from '../SyntaxNodes/LineBlock'
-import { NumberedList } from '../SyntaxNodes/NumberedList'
-import { OutlineSyntaxNode } from '../SyntaxNodes/OutlineSyntaxNode'
-import { OutlineSyntaxNodeContainer } from '../SyntaxNodes/OutlineSyntaxNodeContainer'
-import { RevealableBlock } from '../SyntaxNodes/RevealableBlock'
-import { RichInlineSyntaxNode } from '../SyntaxNodes/RichInlineSyntaxNode'
-import { Table } from '../SyntaxNodes/Table'
+import { BulletedList } from './BulletedList'
+import { DescriptionList } from './DescriptionList'
+import { Document } from './Document'
+import { Footnote } from './Footnote'
+import { FootnoteBlock } from './FootnoteBlock'
+import { InlineSyntaxNode } from './InlineSyntaxNode'
+import { InlineSyntaxNodeContainer } from './InlineSyntaxNodeContainer'
+import { LineBlock } from './LineBlock'
+import { NumberedList } from './NumberedList'
+import { OutlineSyntaxNode } from './OutlineSyntaxNode'
+import { OutlineSyntaxNodeContainer } from './OutlineSyntaxNodeContainer'
+import { RevealableBlock } from './RevealableBlock'
+import { RichInlineSyntaxNode } from './RichInlineSyntaxNode'
+import { Table } from './Table'
 
 
 // This function is responsible for assigning footnote reference numbers and producing footnote blocks.
@@ -134,7 +134,7 @@ class FootnoteBlockInserter {
   }
 
   // Here, "outermost footnote" refers to any footnote that isn't nested within another footnote. It does not
-  // exclude footntoes nested within other inline conventions (e.g. emphasis or stress).
+  // exclude footnotes nested within other inline conventions (e.g. emphasis or stress).
   //
   // Because of rule 4 (described above), the reference numbers of nested footnotes aren't assigned until we
   // produce their containing footnote blocks.

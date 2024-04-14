@@ -16,8 +16,8 @@ const OUTLINE_CONVENTIONS_POSSIBLY_ONE_LINE_LONG = [
 ]
 
 
-// We don't care about heading levels or source line numbers!  We only care whether or not
-// the line is a regular paragraph.
+// We don't care about heading levels or source line numbers!  We only care whether this line
+// is a regular paragraph.
 const DUMMY_HEADING_LEVELER = new HeadingLeveler()
 const DUMMY_SOURCE_LINE_NUMBER = 1
 

@@ -2,7 +2,7 @@ import { expect } from 'chai'
 import * as Up from '../../../Main'
 
 
-describe('A numbered list with a single item can be sandwched by identical thematic break streaks without producing a heading.', () => {
+describe('A numbered list with a single item can be sandwiched by identical thematic break streaks without producing a heading.', () => {
   context('This includes when the bullet is:', () => {
     specify('A number sign', () => {
       const markup = `

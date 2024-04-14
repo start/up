@@ -514,7 +514,7 @@ context('Subsequent lines in a numbered list item must be indented.', () => {
         ]))
     })
 
-    specify('One space folled by one tab', () => {
+    specify('One space followed by one tab', () => {
       const markup = `
 # Roses are red
  \tViolets are blue`

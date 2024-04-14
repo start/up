@@ -37,7 +37,7 @@ import { OutlineParser } from './OutlineParser'
 // Chrono Trigger;     Square;;                                March 11, 1995
 // Terranigma;         Quintet;              Nintendo;         October 20, 1995
 // Command & Conquer;  Westwood Studios;;                      August 31, 1995
-// Starcraft;          Blizzard;;                              March 31, 1998
+// StarCraft;          Blizzard;;                              March 31, 1998
 //
 //
 // If a table's header row is indented, it indicates the table should also have a

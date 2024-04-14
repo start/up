@@ -4,7 +4,7 @@ import { insideDocumentAndParagraph } from '../Helpers'
 
 
 describe('A paragraph directly followed by an image on its own line', () => {
-  it('produces a pagraph node followed by an image node, not a line block', () => {
+  it('produces a paragraph node followed by an image node, not a line block', () => {
     const markup = `
 Do not pour the spiders into your sister's cereal.
 [image: sister arraigned on charges][http://example.com/court.jpg]`
@@ -55,7 +55,7 @@ describe('An otherwise-valid image convention with mismatched brackets surroundi
 
 
 context('Unmatched opening parentheses in an image description have no affect on', () => {
-  specify('parentheses surounding the URL', () => {
+  specify('parentheses surrounding the URL', () => {
     expect(Up.parse('[image: sad :( sad :( sounds](http://example.com/sad.ogg)')).to.deep.equal(
       new Up.Document([
         new Up.Image('sad :( sad :( sounds', 'http://example.com/sad.ogg')
@@ -98,7 +98,7 @@ describe('Unmatched opening parentheses in an image URL', () => {
 })
 
 
-describe('A line consistingly solely of a link that contains both an image and regular text', () => {
+describe('A line consisting solely of a link that contains both an image and regular text', () => {
   it('is placed into a paragraph node', () => {
     expect(Up.parse('[Look: (image: haunted house)(example.com/hauntedhouse.svg)] [example.com]')).to.deep.equal(
       insideDocumentAndParagraph([

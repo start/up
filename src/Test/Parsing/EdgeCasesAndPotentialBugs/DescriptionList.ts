@@ -64,7 +64,7 @@ context('The keyword for table', () => {
   it('can be the subject in a description list if it is escaped', () => {
     const markup = `
 \\Table
-  A table is a collection of data organized into rows and columns. Evere table must have a header, but the caption is optional.`
+  A table is a collection of data organized into rows and columns. Every table must have a header, but the caption is optional.`
 
     expect(Up.parse(markup)).to.deep.equal(
       new Up.Document([
@@ -73,7 +73,7 @@ context('The keyword for table', () => {
             new Up.DescriptionList.Item.Subject([new Up.Text('Table')])
           ], new Up.DescriptionList.Item.Description([
             new Up.Paragraph([
-              new Up.Text('A table is a collection of data organized into rows and columns. Evere table must have a header, but the caption is optional.')
+              new Up.Text('A table is a collection of data organized into rows and columns. Every table must have a header, but the caption is optional.')
             ])
           ]))
         ])

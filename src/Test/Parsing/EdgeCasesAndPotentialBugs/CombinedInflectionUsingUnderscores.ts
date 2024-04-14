@@ -7,7 +7,7 @@ import { insideDocumentAndParagraph } from '../Helpers'
 //
 // TODO: Clarify tests and organize them into contexts.
 
-describe('Inside of italiczed text, text that is bolded/again-italiczed at the same time', () => {
+describe('Inside of italicized text, text that is bolded/again-italicized at the same time', () => {
   it('can have its bold convention closed first', () => {
     expect(Up.parse('_Please ___stop__ eating the cardboard_ immediately_')).to.deep.equal(
       insideDocumentAndParagraph([
@@ -24,7 +24,7 @@ describe('Inside of italiczed text, text that is bolded/again-italiczed at the s
       ]))
   })
 
-  it('can have its inner mphasis convention closed first', () => {
+  it('can have its inner emphasis convention closed first', () => {
     expect(Up.parse('_Please ___stop_ eating the cardboard__ immediately_')).to.deep.equal(
       insideDocumentAndParagraph([
         new Up.Italic([
@@ -61,7 +61,7 @@ describe('Inside of italiczed text, text that is bolded/again-italiczed at the s
 
 
 describe('A start delimiter consisting of 3 underscores', () => {
-  it('can be closed by a single underscore if no other subsequent underscores close it, resulting in italiczed text and no stray underscores in the document', () => {
+  it('can be closed by a single underscore if no other subsequent underscores close it, resulting in italicized text and no stray underscores in the document', () => {
     expect(Up.parse('A ___bread_ to believe in')).to.deep.equal(
       insideDocumentAndParagraph([
         new Up.Text('A '),
@@ -113,7 +113,7 @@ describe('A start delimiter consisting of 2 underscores', () => {
 })
 
 
-describe('Inside of bolded text, text that is italiczed/again-bolded at the same time', () => {
+describe('Inside of bolded text, text that is italicized/again-bolded at the same time', () => {
   it('can have its inner bold convention closed first', () => {
     expect(Up.parse('__Please ___stop__ eating the cardboard_ immediately__')).to.deep.equal(
       insideDocumentAndParagraph([
@@ -166,8 +166,8 @@ describe('Inside of bolded text, text that is italiczed/again-bolded at the same
 })
 
 
-describe('Inside of bolded text, italiczed/bolded text with its bold convention closed first', () => {
-  it('can have the reamining italics convention and bold convention closed by 3 or more underscores', () => {
+describe('Inside of bolded text, italicized/bolded text with its bold convention closed first', () => {
+  it('can have the remaining italics convention and bold convention closed by 3 or more underscores', () => {
     expect(Up.parse('__Please ___stop__ eating the cardboard immediately___')).to.deep.equal(
       insideDocumentAndParagraph([
         new Up.Bold([
@@ -184,8 +184,8 @@ describe('Inside of bolded text, italiczed/bolded text with its bold convention 
 })
 
 
-describe('Inside of bolded text, italiczed/bolded text with its italics convention closed first', () => {
-  it('can have the reamining 2 bold conventions closed by 4 or more underscores', () => {
+describe('Inside of bolded text, italicized/bolded text with its italics convention closed first', () => {
+  it('can have the remaining 2 bold conventions closed by 4 or more underscores', () => {
     expect(Up.parse('__Please ___stop_ eating the cardboard immediately____')).to.deep.equal(
       insideDocumentAndParagraph([
         new Up.Bold([
@@ -202,8 +202,8 @@ describe('Inside of bolded text, italiczed/bolded text with its italics conventi
 })
 
 
-describe('Inside of italiczed text, italiczed/bolded text with its bold convention closed first', () => {
-  it('can have the reamining two italics convention closed by 3 or more underscores', () => {
+describe('Inside of italicized text, italicized/bolded text with its bold convention closed first', () => {
+  it('can have the remaining two italics convention closed by 3 or more underscores', () => {
     expect(Up.parse('_Please ___stop__ eating the cardboard immediately___')).to.deep.equal(
       insideDocumentAndParagraph([
         new Up.Italic([
@@ -220,8 +220,8 @@ describe('Inside of italiczed text, italiczed/bolded text with its bold conventi
 })
 
 
-describe('Inside of italiczed text, italiczed/bolded text with its inner italics convention closed first', () => {
-  it('can have the reamining bold convention and italics convention closed by 3 or more underscores', () => {
+describe('Inside of italicized text, italicized/bolded text with its inner italics convention closed first', () => {
+  it('can have the remaining bold convention and italics convention closed by 3 or more underscores', () => {
     expect(Up.parse('_Please ___stop_ eating the cardboard immediately___')).to.deep.equal(
       insideDocumentAndParagraph([
         new Up.Italic([
@@ -238,7 +238,7 @@ describe('Inside of italiczed text, italiczed/bolded text with its inner italics
 })
 
 
-describe('Matching clusters of 3+ underscores each surrounded by whitespce', () => {
+describe('Matching clusters of 3+ underscores each surrounded by whitespace', () => {
   it('are preserved as plain text', () => {
     expect(Up.parse('I believe _____ will win the primary in _____ easily.')).to.deep.equal(
       insideDocumentAndParagraph([
@@ -303,7 +303,7 @@ describe('A start delimiter consisting of 5+ underscores, with an italics conven
 })
 
 
-describe('Text that is italiczed/bolded at the same time', () => {
+describe('Text that is italicized/bolded at the same time', () => {
   it('can have its italics convention closed first and be followed by bolded text', () => {
     expect(Up.parse('___Nimble_ navigators?__ __Tropical.__')).to.deep.equal(
       insideDocumentAndParagraph([
@@ -320,7 +320,7 @@ describe('Text that is italiczed/bolded at the same time', () => {
       ]))
   })
 
-  it('can have its italics convention closed first and be followed by italiczed text', () => {
+  it('can have its italics convention closed first and be followed by italicized text', () => {
     expect(Up.parse('___Nimble_ navigators?__ _Tropical._')).to.deep.equal(
       insideDocumentAndParagraph([
         new Up.Bold([
@@ -352,7 +352,7 @@ describe('Text that is italiczed/bolded at the same time', () => {
       ]))
   })
 
-  it('can have its bold convention closed first and be followed by italiczed text', () => {
+  it('can have its bold convention closed first and be followed by italicized text', () => {
     expect(Up.parse('___Nimble__ navigators?_ _Tropical._')).to.deep.equal(
       insideDocumentAndParagraph([
         new Up.Italic([

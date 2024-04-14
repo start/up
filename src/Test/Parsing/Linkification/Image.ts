@@ -3,7 +3,7 @@ import * as Up from '../../../Main'
 import { expectEveryPermutationOfBrackets, insideDocumentAndParagraph } from '../Helpers'
 
 
-describe('An image convention (with its URL) followed immediately by a (second) parenthesized/bracketd URL', () => {
+describe('An image convention (with its URL) followed immediately by a (second) parenthesized/bracketed URL', () => {
   it('produces an image node within a link pointing to that second URL', () => {
     expect(Up.parse('After you beat the Elite Four, [image: you fight Gary](https://example.com/fight.svg)(http://example.com/finalbattle).')).to.deep.equal(
       insideDocumentAndParagraph([

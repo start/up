@@ -4,7 +4,7 @@ import { insideDocumentAndParagraph } from '../Helpers'
 
 
 describe('A paragraph with 2 separate instances of overlapped conventions with equal continuity priority', () => {
-  it('prorduce the correct nodes for each', () => {
+  it('produce the correct nodes for each', () => {
     expect(Up.parse('I *love ==drinking* whole== milk. I *love ==drinking* whole== milk.')).to.deep.equal(
       insideDocumentAndParagraph([
         new Up.Text('I '),

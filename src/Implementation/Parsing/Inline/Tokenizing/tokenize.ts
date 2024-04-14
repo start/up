@@ -108,7 +108,7 @@ class Tokenizer {
   //
   // - Media URL conventions
   // - Link URL conventions
-  // - "Forgiving" convections (those which don't require balanced delimiters on either side)
+  // - "Forgiving" conventions (those which don't require balanced delimiters on either side)
   // - Raw bracket conventions
   // - Typographical conventions
   //
@@ -126,7 +126,7 @@ class Tokenizer {
   private rawParentheticalBracketConventions = this.getRawParentheticalBracketConventions()
 
   // This convention is similar to `parentheticalRawBracketConventions`, but raw curly brackets are only
-  // relevant inside of the example user input convention.
+  // relevant inside the example user input convention.
   private rawCurlyBracketConvention = this.getRawCurlyBracketConvention()
 
   // When tokenizing media (i.e. audio, image, or video), we open a convention for the description. Once
@@ -164,7 +164,7 @@ class Tokenizer {
   // - Inline quote
   // - Highlighting
   //
-  // We'll call these our "forgving" conventions!
+  // We'll call these our "forgiving" conventions!
   //
   // We handle these conventions in a manner incompatible with the rest of our conventions, so we throw all
   // that special logic into the `ForgivingConventionHandler` class. More information can be found in
@@ -187,10 +187,10 @@ class Tokenizer {
 
   // Speaking of forgiving writing conventions...
   //
-  // For a delimiter to close a forgving convention, it must look like it's touching the end of the content
+  // For a delimiter to close a forgiving convention, it must look like it's touching the end of the content
   // it's enclosing (i.e. it must be following a non-whitespace character).
   //
-  // However, let's look at the following contrived eample:
+  // However, let's look at the following contrived example:
   //
   //   Madam MeowMeow stood up. "I love my dog ("Bow-Wow" is his name), and you must rescue him!"
   //
@@ -279,7 +279,7 @@ class Tokenizer {
         // We don't do this for footnotes in inline documents, however. For more information about footnotes
         // in inline documents, see the `getFootnoteConventionsForInlineDocuments` method.
         startsWith: ANY_OPTIONAL_WHITESPACE + this.getFootnoteStartDelimiter(bracket),
-        endsWith: this.getFootnotEndDelimiter(bracket)
+        endsWith: this.getFootnoteEndDelimiter(bracket)
       }))
   }
 
@@ -291,7 +291,7 @@ class Tokenizer {
     return PARENTHETICAL_BRACKETS.map(bracket =>
       this.getTokenizableRichConvention(NORMAL_PARENTHETICAL, {
         startsWith: this.getFootnoteStartDelimiter(bracket),
-        endsWith: this.getFootnotEndDelimiter(bracket),
+        endsWith: this.getFootnoteEndDelimiter(bracket),
 
         whenOpening: () => { this.bufferedContent += PARENTHESIS.open },
         whenClosing: () => { this.bufferedContent += PARENTHESIS.close }
@@ -302,7 +302,7 @@ class Tokenizer {
     return bracket.startPattern + escapeForRegex('^') + ANY_OPTIONAL_WHITESPACE
   }
 
-  private getFootnotEndDelimiter(bracket: Bracket): string {
+  private getFootnoteEndDelimiter(bracket: Bracket): string {
     return bracket.endPattern
   }
 
@@ -580,7 +580,7 @@ class Tokenizer {
         whenClosing: (url: string) => this.closeLinkifyingUrlForRichConventions(url)
       }
 
-      const argsForMediaConentions = {
+      const argsForMediaConventions = {
         bracket,
         canOnlyOpenIfDirectlyFollowing: [TokenRole.MediaEndAndUrl],
         whenClosing: (url: string) => this.closeLinkifyingUrlForMediaConventions(url)
@@ -594,7 +594,7 @@ class Tokenizer {
 
       const allArgs = [
         argsForRichConventions,
-        argsForMediaConentions,
+        argsForMediaConventions,
         argsForExampleUserInput
       ]
 
@@ -666,7 +666,7 @@ class Tokenizer {
 
       whenOpening: urlPrefix => { this.bufferedContent += urlPrefix },
 
-      failsIfWhitespaceIsEnounteredBeforeClosing: true,
+      failsIfWhitespaceIsEncounteredBeforeClosing: true,
       insteadOfClosingOuterConventionsWhileOpen: () => this.handleTextAwareOfRawBrackets(),
       whenClosingItAlsoClosesInnerConventions: true,
 
@@ -706,7 +706,7 @@ class Tokenizer {
   }
 
   private closeLinkifyingUrlForExampleUserInputConvention(url: string): void {
-    // We're going to (corretly) assume that the last token is `ExampleUserInput`
+    // We're going to (correctly) assume that the last token is `ExampleUserInput`
     const indexOfExampleUserInputToken = this.tokens.length - 1
 
     this.encloseWithinLink({ startingBackAtTokenIndex: indexOfExampleUserInputToken, url })
@@ -846,16 +846,20 @@ class Tokenizer {
   }
 
   private tryToResolveOpenConventions(): boolean {
-    let open: OpenConvention | undefined
+    while (true) {
+      const openConvention = this.openConventions.pop();
 
-    while (open = this.openConventions.pop()) {
-      const insteadOfFailing = open.definition.insteadOfFailingWhenLeftUnclosed
+      if (!openConvention) {
+        break
+      }
+
+      const insteadOfFailing = openConvention.definition.insteadOfFailingWhenLeftUnclosed
 
       if (insteadOfFailing) {
         insteadOfFailing()
       } else {
         // Well, this convention is left unclosed! We need to fail.
-        this.backTrackToBefore(open)
+        this.backTrackToBefore(openConvention)
         return false
       }
     }
@@ -925,14 +929,14 @@ class Tokenizer {
     // we check only two properties:
     //
     // 1. isCutShortByWhitespace
-    // 2. failsIfWhitespaceIsEnounteredBeforeClosing
+    // 2. failsIfWhitespaceIsEncounteredBeforeClosing
     //
     // This is completely sufficient for now, but it wouldn't work if any of our conventions had any leading
     // whitespace in their end patterns.
     const canTryToBufferWhitespace =
       this.openConventions.every(open =>
         !open.definition.isCutShortByWhitespace
-        && !open.definition.failsIfWhitespaceIsEnounteredBeforeClosing)
+        && !open.definition.failsIfWhitespaceIsEncounteredBeforeClosing)
 
     do {
       // First, let's try to skip any content that will *never* open or close any conventions.
@@ -1008,7 +1012,7 @@ class Tokenizer {
         return false
       }
 
-      if (open.definition.failsIfWhitespaceIsEnounteredBeforeClosing && this.isCurrentCharWhitespace()) {
+      if (open.definition.failsIfWhitespaceIsEncounteredBeforeClosing && this.isCurrentCharWhitespace()) {
         this.backTrackToBefore(open)
         return true
       }
@@ -1069,7 +1073,7 @@ class Tokenizer {
   // of those here. If we can't open one of those conventions, this method returns false.
   //
   // If there aren't any subsequent required conventions, or if we *are* able to open one of them, this
-  // method retuns true.
+  // method returns true.
   private tryToOpenASubsequentRequiredConventionIfThereAreAny(closing: OpenConvention): boolean {
     const subsequentRequiredConventions = closing.definition.mustBeDirectlyFollowedBy
 
@@ -1098,7 +1102,7 @@ class Tokenizer {
     }
 
     return this.forgivingConventionHandlers.some(handler => {
-      const initialMarkupIndx = this.markupConsumer.index()
+      const initialMarkupIndex = this.markupConsumer.index()
       const result = this.markupConsumer.consume(handler.delimiterPattern)
 
       if (!result) {
@@ -1112,7 +1116,7 @@ class Tokenizer {
       }
 
       // The delimiter we found didn't close anything! Let's put it back.
-      this.markupConsumer.setIndex(initialMarkupIndx)
+      this.markupConsumer.setIndex(initialMarkupIndex)
       return false
     })
   }
@@ -1147,7 +1151,7 @@ class Tokenizer {
     // single parent. If splitting a convention produces an empty piece on one side, that empty piece is
     // discarded. This process is fully explained in `nestOverlappingConventions.ts`.
     //
-    // We can avoid some superficial overlapping by shifting our new end token past any overlapping end tokens
+    // We can avoid some superficial overlapping by shifting our new end token past any overlapping end
     // tokens (but not past any content!). For example:
     //
     //   I've had enough! **I hate [SPOILER: Professor Oak!**]
@@ -1160,12 +1164,12 @@ class Tokenizer {
     // This is more than just an optimization tactic, however! It actually improves the final abstract
     // syntax tree. How? Well...
     //
-    // It's less disruptive to split certain conventions than to split others. We'd rather split an
-    // stress convention than an inline revealable convention, and we'd rather split an inline revealable
+    // It's less disruptive to split certain conventions than to split others. We'd rather split a stress
+    // convention than an inline revealable convention, and we'd rather split an inline revealable
     // convention than a footnote.
     //
     // Once our process for splitting overlapping conventions has determined that a convention is being
-    // overlapped by one that we’d rather split, it (naturaly) splits the one we’d rather split. Because we’d
+    // overlapped by one that we’d rather split, it (naturally) splits the one we’d rather split. Because we’d
     // rather split  a stress convention than an inline revealable convention, the stress convention in the
     // above example would be split in two, with one half outside the revealable convention, and the other half
     // inside. By moving the revealable convention's end token inside the stress convention, we avoid having to
@@ -1181,7 +1185,7 @@ class Tokenizer {
     //
     // For example:
     //
-    //   *[Sadly*, Starcraft 2 is dead.] (reddit.com/r/starcraft)
+    //   *[Sadly*, StarCraft 2 is dead.] (reddit.com/r/starcraft)
     //
     // All rich conventions save the current count of tokens at the time of their opening, treating that count
     // as a start token index. When a given convention closes, it inserts its start token back at that saved
@@ -1216,8 +1220,8 @@ class Tokenizer {
         //    were a start token, we would have already looped past its end token.
         //
         // Therefore, if the current token were a start token (it isn't), the only way for *our* start token
-        // to be after the corresponding end token is for us to have already looped past our own start token
-        // token! That's not possble, because we break from the loop once we reach our start token's index.
+        // to be after the corresponding end token is for us to have already looped past our own start
+        // token! That's not possible, because we break from the loop once we reach our start token's index.
         && startTokenIndex > this.tokens.indexOf(token.correspondingEnclosingToken)
 
       if (shouldEndTokenAppearBeforeCurrentToken) {
@@ -1311,6 +1315,7 @@ class Tokenizer {
   }
 
   private tryToTokenizeEnOrEmDash(): boolean {
+    // This pattern matches two or more hyphens.
     const result = this.markupConsumer.consume(EN_OR_EM_DASH_PATTERN)
 
     if (!result) {
@@ -1439,7 +1444,7 @@ class Tokenizer {
     //
     // If a subsequent required convention has failed, we consider the predecessor convention to have
     // failed, too, and we don't try opening it again. This logic is subject to change, but for now,
-    // because all of the subsequent required conventions for a given predecessor have incompatible start
+    // because all the subsequent required conventions for a given predecessor have incompatible start
     // patterns, there's no point in trying again.
     const subsequentRequiredConventions =
       conventionToOpen.mustBeDirectlyFollowedBy

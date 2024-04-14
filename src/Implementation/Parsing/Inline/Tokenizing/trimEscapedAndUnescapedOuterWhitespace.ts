@@ -15,7 +15,7 @@ export function trimEscapedAndUnescapedOuterWhitespace(markup: string): string {
   // 1. They are themselves escaped
   // 2. They appear in inline code
   //
-  // If a given backslash is not escaped, it escapes the following charatcer without being
+  // If a given backslash is not escaped, it escapes the following character without being
   // preserved itself. And if there is no following character (i.e. if the backslash was
   // the last character in the markup), then the backslash is simply ignored.
   while (true) {

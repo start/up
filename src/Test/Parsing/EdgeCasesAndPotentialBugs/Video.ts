@@ -4,7 +4,7 @@ import { insideDocumentAndParagraph } from '../Helpers'
 
 
 describe('A paragraph directly followed by a video on its own line', () => {
-  it('produces a pagraph node followed by a video node, not a line block', () => {
+  it('produces a paragraph node followed by a video node, not a line block', () => {
     const markup = `
 Do not pour the spiders into your sister's cereal.
 [video: spiders crawling out of mouth][http://example.com/spiders.webm]`
@@ -55,7 +55,7 @@ describe('An otherwise-valid video convention with mismatched brackets surroundi
 
 
 context('Unmatched opening parentheses in a video description have no affect on', () => {
-  specify('parentheses surounding the URL', () => {
+  specify('parentheses surrounding the URL', () => {
     expect(Up.parse('[video: sad :( sad :( sounds](http://example.com/sad.ogg)')).to.deep.equal(
       new Up.Document([
         new Up.Video('sad :( sad :( sounds', 'http://example.com/sad.ogg')

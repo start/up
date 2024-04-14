@@ -12,7 +12,7 @@ Game;               Developer;            Platform;         Release Date
 Chrono Trigger;     Square
 Terranigma;         Quintet;              Super Nintendo;   October 20, 1995
 Command & Conquer
-Starcraft;          Blizzard;             PC;               March 31, 1998`
+StarCraft;          Blizzard;             PC;               March 31, 1998`
 
     expect(Up.parse(markup)).to.deep.equal(
       new Up.Document([
@@ -37,7 +37,7 @@ Starcraft;          Blizzard;             PC;               March 31, 1998`
               new Up.Table.Row.Cell([new Up.Text('Command & Conquer')])
             ]),
             new Up.Table.Row([
-              new Up.Table.Row.Cell([new Up.Text('Starcraft')]),
+              new Up.Table.Row.Cell([new Up.Text('StarCraft')]),
               new Up.Table.Row.Cell([new Up.Text('Blizzard')]),
               new Up.Table.Row.Cell([new Up.Text('PC')]),
               new Up.Table.Row.Cell([new Up.Text('March 31, 1998')])

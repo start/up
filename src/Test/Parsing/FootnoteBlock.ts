@@ -408,7 +408,7 @@ Anyway, none of that matters.`
       ]))
   })
 
-  context('Tabless:', () => {
+  context('Tables:', () => {
     specify('Their header rows', () => {
       const markup = `
 Table:
@@ -891,7 +891,7 @@ I wear glasses (^ It's actually been a dream of mine ever since I was young.) ev
 })
 
 
-describe('Nesed footnotes (footnotes referenced by other footnotes)', () => {
+describe('Nested footnotes (footnotes referenced by other footnotes)', () => {
   it('appear in their footnote block after any non-nested footnotes (and are assigned reference numbers after any non-nested footnotes)', () => {
     const markup = "Me? I'm totally normal. (^That said, I don't eat cereal. (^Well, I *do*, but I pretend not to.) Never have.) Really. (^Probably.)"
 

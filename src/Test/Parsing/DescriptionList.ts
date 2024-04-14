@@ -243,7 +243,7 @@ Poem
         ]))
     })
 
-    specify('One space folled by one tab', () => {
+    specify('One space followed by one tab', () => {
       const markup = `
 Poem
  \tRoses are red

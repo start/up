@@ -112,7 +112,7 @@ Game;               Developer;            Publisher;        Release Date
 Chrono Trigger;     Square;;                                March 11, 1995
 Terranigma;         Quintet;              Nintendo;         October 20, 1995
 Command & Conquer;  Westwood Studios;;                      August 31, 1995
-Starcraft;          Blizzard;;                              March 31, 1998`
+StarCraft;          Blizzard;;                              March 31, 1998`
 
     expect(Up.parse(markup)).to.deep.equal(
       new Up.Document([
@@ -140,7 +140,7 @@ Starcraft;          Blizzard;;                              March 31, 1998`
               new Up.Table.Row.Cell([new Up.Text('August 31, 1995')])
             ]),
             new Up.Table.Row([
-              new Up.Table.Row.Cell([new Up.Text('Starcraft')]),
+              new Up.Table.Row.Cell([new Up.Text('StarCraft')]),
               new Up.Table.Row.Cell([new Up.Text('Blizzard')], 2),
               new Up.Table.Row.Cell([new Up.Text('March 31, 1998')])
             ])
@@ -160,7 +160,7 @@ Game;               Developer;            Publisher;        Marketer;       Rele
 Chrono Trigger;     Square;;;                                               March 11, 1995
 Terranigma;         Quintet;              Nintendo;         Quintet;        October 20, 1995
 Command & Conquer;  Westwood Studios;;;                                     August 31, 1995
-Starcraft;          Blizzard;;;                                             March 31, 1998`
+StarCraft;          Blizzard;;;                                             March 31, 1998`
 
     expect(Up.parse(markup)).to.deep.equal(
       new Up.Document([
@@ -190,7 +190,7 @@ Starcraft;          Blizzard;;;                                             Marc
               new Up.Table.Row.Cell([new Up.Text('August 31, 1995')])
             ]),
             new Up.Table.Row([
-              new Up.Table.Row.Cell([new Up.Text('Starcraft')]),
+              new Up.Table.Row.Cell([new Up.Text('StarCraft')]),
               new Up.Table.Row.Cell([new Up.Text('Blizzard')], 3),
               new Up.Table.Row.Cell([new Up.Text('March 31, 1998')])
             ])
@@ -265,7 +265,7 @@ Game;               Developer;            Publisher
 Chrono Trigger;     Square;;
 Terranigma;         Quintet;              Nintendo
 Command & Conquer;  Westwood Studios;;
-Starcraft;          Blizzard;;`
+StarCraft;          Blizzard;;`
 
     expect(Up.parse(markup)).to.deep.equal(
       new Up.Document([
@@ -289,7 +289,7 @@ Starcraft;          Blizzard;;`
               new Up.Table.Row.Cell([new Up.Text('Westwood Studios')], 2)
             ]),
             new Up.Table.Row([
-              new Up.Table.Row.Cell([new Up.Text('Starcraft')]),
+              new Up.Table.Row.Cell([new Up.Text('StarCraft')]),
               new Up.Table.Row.Cell([new Up.Text('Blizzard')], 2)
             ])
           ])
@@ -308,7 +308,7 @@ Game;               Developer;            Publisher;      Marketer
 Chrono Trigger;     Square;;;
 Terranigma;         Quintet;              Nintendo;       Quintet
 Command & Conquer;  Westwood Studios;;;
-Starcraft;          Blizzard;;;`
+StarCraft;          Blizzard;;;`
 
     expect(Up.parse(markup)).to.deep.equal(
       new Up.Document([
@@ -334,7 +334,7 @@ Starcraft;          Blizzard;;;`
               new Up.Table.Row.Cell([new Up.Text('Westwood Studios')], 3)
             ]),
             new Up.Table.Row([
-              new Up.Table.Row.Cell([new Up.Text('Starcraft')]),
+              new Up.Table.Row.Cell([new Up.Text('StarCraft')]),
               new Up.Table.Row.Cell([new Up.Text('Blizzard')], 3)
             ])
           ])
@@ -380,7 +380,7 @@ Game;               Developer;            Publisher
 Chrono Trigger;     Square;; \t \t
 Terranigma;         Quintet;  \t \t       Nintendo
 Command & Conquer;  Westwood Studios;;
-Starcraft;          Blizzard;; \t \t`
+StarCraft;          Blizzard;; \t \t`
 
     expect(Up.parse(markup)).to.deep.equal(
       new Up.Document([
@@ -404,7 +404,7 @@ Starcraft;          Blizzard;; \t \t`
               new Up.Table.Row.Cell([new Up.Text('Westwood Studios')], 2)
             ]),
             new Up.Table.Row([
-              new Up.Table.Row.Cell([new Up.Text('Starcraft')]),
+              new Up.Table.Row.Cell([new Up.Text('StarCraft')]),
               new Up.Table.Row.Cell([new Up.Text('Blizzard')], 2)
             ])
           ])
@@ -629,7 +629,7 @@ Game;               Developer;            Publisher;        Marketer;       Rele
 Chrono Trigger;     Square;                                 ;;              March 11, 1995
 Terranigma;         Quintet;              Nintendo;         Quintet;        October 20, 1995
 Command & Conquer;  Westwood Studios;                       ;;              August 31, 1995
-Starcraft;          Blizzard;                               ;;                March 31, 1998`
+StarCraft;          Blizzard;                               ;;                March 31, 1998`
 
     expect(Up.parse(markup)).to.deep.equal(
       new Up.Document([
@@ -661,7 +661,7 @@ Starcraft;          Blizzard;                               ;;                Ma
               new Up.Table.Row.Cell([new Up.Text('August 31, 1995')])
             ]),
             new Up.Table.Row([
-              new Up.Table.Row.Cell([new Up.Text('Starcraft')]),
+              new Up.Table.Row.Cell([new Up.Text('StarCraft')]),
               new Up.Table.Row.Cell([new Up.Text('Blizzard')]),
               new Up.Table.Row.Cell([], 2),
               new Up.Table.Row.Cell([new Up.Text('March 31, 1998')])

@@ -11,7 +11,7 @@ export class Document extends OutlineSyntaxNodeContainer {
   //
   // 1. Footnotes extracted into footnote blocks
   // 2. A table of contents produced from `children`
-  // 3. Section links associated with the apprioriate table of contents entries
+  // 3. Section links associated with the appropriate table of contents entries
   //
   // Responsibilities 1 and 3 mutate the `children` argument (and its descendants).
   static create(children: OutlineSyntaxNode[]): Document {
@@ -48,7 +48,7 @@ export namespace Document {
     // If there are section links within `documentChildren`, they are associated with the
     // appropriate entries (mutating the section links).
     //
-    // This methods also mutates the entries themselves, assigning them their table of contents
+    // This method also mutates the entries themselves, assigning them their table of contents
     // ordinals.
     static createThenAssociateSectionLinksWithEntries(documentChildren: OutlineSyntaxNode[]): TableOfContents {
       const entries = TableOfContents.getEntries(documentChildren)

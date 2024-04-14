@@ -52,35 +52,36 @@ function parseAndGetResult(
     const token = tokens[tokenIndex]
 
     // Not all tokens have a value, so the `value` field of `ParseableToken` can
-    // be undefined. However, tokens of certain `role`s will never have always
-    // have a value, which we rely upon below.
-    const tokenValue = token.value!
+    // be undefined.
+    //
+    // However, tokens of certain `role`s will always have a value. We rely upon
+    // this below.
 
     switch (token.role) {
       case until: 
         break TokenLoop
 
       case TokenRole.Text:
-        nodes.push(new Text(tokenValue))
+        nodes.push(new Text(token.value!))
         continue
 
       case TokenRole.InlineCode:
-        nodes.push(new InlineCode(tokenValue))
+        nodes.push(new InlineCode(token.value!))
         continue
 
       case TokenRole.ExampleUserInput:
-        nodes.push(new ExampleUserInput(tokenValue))
+        nodes.push(new ExampleUserInput(token.value!))
         continue
 
       case TokenRole.SectionLink:
-        nodes.push(new SectionLink(tokenValue))
+        nodes.push(new SectionLink(token.value!))
         continue
 
       case TokenRole.BareUrl: {
-        const url = tokenValue
+        const url = token.value!
 
         const [urlScheme] = URL_SCHEME_PATTERN.exec(url)!
-        const urlAfterScheme = url.substr(urlScheme.length)
+        const urlAfterScheme = url.substring(urlScheme.length)
 
         nodes.push(new LINK.SyntaxNodeType([new Text(urlAfterScheme)], url))
 
@@ -107,7 +108,7 @@ function parseAndGetResult(
 
     for (const media of [AUDIO, IMAGE, VIDEO]) {
       if (token.role === media.tokenRoleForStartAndDescription) {
-        const description = tokenValue.trim()
+        const description = token.value!.trim()
 
         // The next token will always be a `MediaEndAndUrl` token. All media conventions
         // use the same role for their end tokens.

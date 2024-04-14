@@ -492,7 +492,7 @@ I do eat apples, though.`
 })
 
 
-context('When there are several outline conventions, all of them are given soure line numbers. This includes when:', () => {
+context('When there are several outline conventions, all of them are given source line numbers. This includes when:', () => {
   specify('They are all at the top-level of the document', () => {
     const markup = `
 ==============

@@ -10,9 +10,9 @@ export class TextConsumer {
     this.setIndex(0)
   }
 
-  setIndex(newIndex: number) {
+  setIndex(newIndex: number): void {
     this._index = newIndex
-    this._remaining = this.entireText.substr(newIndex)
+    this._remaining = this.entireText.substring(newIndex)
     this._currentChar = this._remaining[0]
     this._previousChar = this.entireText[newIndex - 1]
   }

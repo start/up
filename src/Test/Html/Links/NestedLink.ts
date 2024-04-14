@@ -184,7 +184,7 @@ context("When a link is nested deeply within another link, it doesn't produce an
 })
 
 
-context('When severeal links are nested within each other', () => {
+context('When several links are nested within each other', () => {
   specify('only the outermost link produces an <a> element', () => {
     const document = new Up.Document([
       new Up.Paragraph([

@@ -4,6 +4,9 @@ compiled
 # Visual Studio Code workspace settings
 .vscode
 
+# WebStorm workspace settings
+.idea
+
 # Folder appearance options for macOS
 *.DS_Store
 

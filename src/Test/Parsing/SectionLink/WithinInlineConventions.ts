@@ -349,7 +349,7 @@ I love all sorts of fancy stuff.`
       ], new Up.Document.TableOfContents([sodaHeading, interestingHeading])))
   })
 
-  specify('Parnetheses', () => {
+  specify('Parentheses', () => {
     const markup = `
 I have plenty of good traits. (See [section: interesting].)
 

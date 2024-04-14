@@ -92,7 +92,7 @@ export function parseParagraphOrLineBlock(args: OutlineParser.Args): OutlinePars
     }
 
     // Before we include the current line in our paragraph or line block, let's make sure the line
-    // didn't conssist solely of media conventions (see list item 3 above).
+    // didn't consist solely of media conventions (see list item 3 above).
     const mediaPromotedToOutline = tryToPromoteMediaToOutline(inlineSyntaxNodes)
 
     if (mediaPromotedToOutline) {

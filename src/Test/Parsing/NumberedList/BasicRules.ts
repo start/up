@@ -213,7 +213,7 @@ describe('Multiple indented or blank lines immediately following a bulleted list
 * Goodbye, world!
   ===============`
 
-    const hellodHeading =
+    const helloHeading =
       new Up.Heading([new Up.Text('Hello, world!')], {
         level: 1,
         titleMarkup: 'Hello, world!',
@@ -231,7 +231,7 @@ describe('Multiple indented or blank lines immediately following a bulleted list
       new Up.Document([
         new Up.BulletedList([
           new Up.BulletedList.Item([
-            hellodHeading,
+            helloHeading,
             new Up.Paragraph([
               new Up.Text('It is really late, and I am really tired.')
             ]),
@@ -243,7 +243,7 @@ describe('Multiple indented or blank lines immediately following a bulleted list
             goodbyeHeading
           ])
         ])
-      ], new Up.Document.TableOfContents([hellodHeading, goodbyeHeading])))
+      ], new Up.Document.TableOfContents([helloHeading, goodbyeHeading])))
   })
 })
 
@@ -282,7 +282,7 @@ describe('A bulleted list item containing multiple indented lines', () => {
 * Goodbye, world!
   ===============`
 
-    const hellodHeading =
+    const helloHeading =
       new Up.Heading([new Up.Text('Hello, world!')], {
         level: 1,
         titleMarkup: 'Hello, world!',
@@ -300,7 +300,7 @@ describe('A bulleted list item containing multiple indented lines', () => {
       new Up.Document([
         new Up.BulletedList([
           new Up.BulletedList.Item([
-            hellodHeading,
+            helloHeading,
             new Up.Paragraph([
               new Up.Text('Upcoming features:')
             ]),
@@ -321,7 +321,7 @@ describe('A bulleted list item containing multiple indented lines', () => {
             goodbyeHeading
           ])
         ])
-      ], new Up.Document.TableOfContents([hellodHeading, goodbyeHeading])))
+      ], new Up.Document.TableOfContents([helloHeading, goodbyeHeading])))
   })
 })
 
@@ -372,7 +372,7 @@ context('Subsequent lines in a bulleted list item must be indented.', () => {
         ]))
     })
 
-    specify('One space folled by one tab', () => {
+    specify('One space followed by one tab', () => {
       const markup = `
 * Roses are red
  \tViolets are blue`

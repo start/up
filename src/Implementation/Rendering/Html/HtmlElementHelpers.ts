@@ -32,11 +32,11 @@ export function singleTagHtmlElement(tagName: string, attrs: Attrs = {}): string
 //     </li>
 //   </ol>
 //
-// The purpose of this constant is to make that behavior a bit clearer.
-export const EMPTY_ATTRBUTE_VALUE = undefined
+// The purpose of this constant is to make that behavior a bit more explicit.
+export const EMPTY_ATTRIBUTE_VALUE = undefined
 
 export type Attrs = {
-  [name: string]: string | number | typeof EMPTY_ATTRBUTE_VALUE
+  [name: string]: string | number | typeof EMPTY_ATTRIBUTE_VALUE
 }
 
 
@@ -57,7 +57,7 @@ function htmlAttrs(attrs: Attrs): string[] {
 function htmlAttr(attrs: Attrs, attrName: string): string {
   const value = attrs[attrName]
 
-  return (value === EMPTY_ATTRBUTE_VALUE)
+  return (value === EMPTY_ATTRIBUTE_VALUE)
     ? attrName
     : `${attrName}="${escapeHtmlAttrValue(value)}"`
 }

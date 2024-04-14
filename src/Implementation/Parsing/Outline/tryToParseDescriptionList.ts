@@ -55,7 +55,7 @@ export function tryToParseDescriptionList(args: OutlineParser.Args): OutlinePars
     const sourceLineNumberForDescription =
       args.sourceLineNumber + markupLineConsumer.countLinesConsumed()
 
-    // Let's parse the desription's first line.
+    // Let's parse the description's first line.
     const descriptionResult =
       markupLineConsumer.consumeLineIfMatches(INDENTED_PATTERN, {
         andIf: result => !BLANK_PATTERN.test(result.line)

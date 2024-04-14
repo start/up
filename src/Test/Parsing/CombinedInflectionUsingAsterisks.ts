@@ -114,7 +114,7 @@ context("You can emphasize/stress text at the same time when you're already with
 
 
 context('A start delimiter consisting of 3 asterisks with its emphasis ended first', () => {
-  it('can have its stress conventionclosed with 3 asterisks', () => {
+  it('can have its stress convention closed with 3 asterisks', () => {
     expect(Up.parse('Well, ***Xamarin* is now free***!')).to.deep.equal(
       insideDocumentAndParagraph([
         new Up.Text('Well, '),

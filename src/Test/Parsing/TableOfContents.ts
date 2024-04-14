@@ -561,7 +561,7 @@ I enjoy apples
   # Cost
     ----
 
-    Typically, apples cost twenty dolloars per pound.`
+    Typically, apples cost twenty dollars per pound.`
 
       const applesHeading =
         new Up.Heading([new Up.Text('I enjoy apples')], {
@@ -597,7 +597,7 @@ I enjoy apples
               new Up.NumberedList([
                 new Up.NumberedList.Item([
                   costHeading,
-                  new Up.Paragraph([new Up.Text('Typically, apples cost twenty dolloars per pound.')])
+                  new Up.Paragraph([new Up.Text('Typically, apples cost twenty dollars per pound.')])
                 ])
               ])
             ])
@@ -673,7 +673,7 @@ I enjoy apples
   * Cost
     -----------------
 
-    Typically, apples cost twenty dolloars per pound.`
+    Typically, apples cost twenty dollars per pound.`
 
       const applesHeading =
         new Up.Heading([new Up.Text('I enjoy apples')], {
@@ -709,7 +709,7 @@ I enjoy apples
               new Up.BulletedList([
                 new Up.BulletedList.Item([
                   costHeading,
-                  new Up.Paragraph([new Up.Text('Typically, apples cost twenty dolloars per pound.')])
+                  new Up.Paragraph([new Up.Text('Typically, apples cost twenty dollars per pound.')])
                 ])
               ])
             ])
@@ -767,7 +767,7 @@ I enjoy apples
 > > Cost
 > > ----
 > >
-> > Typically, apples cost twenty dolloars per pound.`
+> > Typically, apples cost twenty dollars per pound.`
 
       const applesHeading =
         new Up.Heading([new Up.Text('I enjoy apples')], {
@@ -801,7 +801,7 @@ I enjoy apples
             new Up.Paragraph([new Up.Text('Very cheap.')]),
             new Up.Blockquote([
               costHeading,
-              new Up.Paragraph([new Up.Text('Typically, apples cost twenty dolloars per pound.')])
+              new Up.Paragraph([new Up.Text('Typically, apples cost twenty dollars per pound.')])
             ])
           ])
         ], tableOfContents))
@@ -1044,8 +1044,8 @@ Purchasing
     const numberedList = bulletedList.items[0].children[1] as Up.NumberedList
     const descriptionList = numberedList.items[0].children[1] as Up.DescriptionList
 
-    const [bestFruitHeading, purchasingHeading] = descriptionList.items[0].description.children as any[]
-    const entries = document.tableOfContents.entries as any[]
+    const [bestFruitHeading, purchasingHeading] = descriptionList.items[0].description.children
+    const entries = document.tableOfContents.entries
 
     expect(entries[0] === bestFruitHeading).to.be.true
     expect(entries[1] === purchasingHeading).to.be.true

@@ -101,7 +101,7 @@ context('Within any attribute value, all instances of " and & are escaped. Speci
     expect(up.render(document)).to.equal(html)
   })
 
-  specify('id attribute of footntoes in a footnote block', () => {
+  specify('id attribute of footnotes in a footnote block', () => {
     const up = new Up.Up({
       rendering: {
         terms: {
