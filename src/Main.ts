@@ -47,7 +47,7 @@ export { OutlineSyntaxNode } from './Implementation/SyntaxNodes/OutlineSyntaxNod
 export { SyntaxNode } from './Implementation/SyntaxNodes/SyntaxNode'
 
 // This must always match the `version` field in `package.json`.
-export const VERSION = '1.0.1'
+export const VERSION = '1.0.2'
 
 // Below, we export bound functions to allow developers to use Up without having to create
 // any instances of the `Up` class.
