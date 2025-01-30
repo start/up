@@ -11,10 +11,10 @@ type InlineCodeTokenizationResult = null | {
 
 // Text surrounded on either side by an equal number of backticks is treated as inline code.
 //
-// If `markup` starts with inline code, this function tokenizes it, ultimately producing an
-// `InlineCode` token. If `markup` instead starts with an unmatched inline code start delimiter
-// (i.e. streak of backticks), this function produces a text token for that unmatched delimiter.
-// Otherwise, this method does nothing.
+// If `markup` starts with inline code, this function consumes it and produces an `InlineCode`
+// token. If `markup` instead starts with an unmatched inline code start delimiter (i.e. streak of
+// backticks), this function produces a text token for that unmatched delimiter. Otherwise, this
+// function does nothing.
 //
 // Within inline code, backticks can be escaped with a backslash. That being said, inline code can
 // contain streaks of *unescaped* backticks that aren't exactly as long as the delimiters.
@@ -22,29 +22,29 @@ type InlineCodeTokenizationResult = null | {
 // In this example, the delimiters are 1 backtick long, so the inline code can contain streaks of
 // 2 backticks:
 //
-// `let display = ``score:`` + 5`
+//   `let display = ``score:`` + 5`
 //
 // In this example, the delimiters are 2 backticks long, so the inline code can contain "streaks"
 // of 1 backtick:
 //
-// ``let display = `score:` + 5``
+//   ``let display = `score:` + 5``
 //
 // Delimiters can be any length.
-//
-// Like (outline) code blocks, backslashes are treated as regular characters within inline code,
-// which means backticks within inline code cannot be escaped (hence the fancy delimiter syntax).
 //
 // If inline code needs to start or end with backticks, those backticks can be separated from the
 // outer delimiters by a single space. This single space is trimmed away:
 //
-// ` ``inline_code`` `
+//   ` ``inline_code`` `
 //
-// Anything beyond that single space is preserved. If there are two spaces between the delimiter
-// and the starting/ending backticks, only one is trimmed away.
+// Anything beyond that single space is preserved. If there are 2 spaces between the delimiter
+// and the starting/ending backticks, only 1 is trimmed away.
 //
-// Furthermore, that single space is only trimmed away when it's used to separate a delimiter from
-// backticks in the inline code. If a given "side" of inline code has any non-whitespace characters
-// between the delimiter and the first backtick, nothing gets trimmed from that side.
+// Note: If either "side" of inline code contains any non-space characters between the inner and
+// outer backticks, no space is trimmed from that side.
+//
+//   `` `key`: ``
+//
+// (In the above example, a space is trimmed from the beginning, not the end.)
 export function tryToTokenizeInlineCode(markup: string): InlineCodeTokenizationResult {
   const markupConsumer = new TextConsumer(markup)
 
